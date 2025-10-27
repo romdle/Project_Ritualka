@@ -14,4 +14,4 @@ async def get_data():
 
 
 
-## запуск локалки через команду      uvicorn backend.main:app --reload    в директории project
+## запуск локалки через команду      uvicorn main:app --reload    в директории backend
