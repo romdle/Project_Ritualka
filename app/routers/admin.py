@@ -4,9 +4,10 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 from typing import Dict, Optional
+from uuid import uuid4
 from urllib.parse import parse_qs
 
-from fastapi import APIRouter, Depends, Request, Response, status
+from fastapi import APIRouter, Depends, Request, Response, UploadFile, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
@@ -21,6 +22,12 @@ from database import (
     get_db,
 )
 
+STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
+UPLOAD_DIR = STATIC_DIR / "uploads"
+ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "templates"
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -30,7 +37,8 @@ def _parse_product_form(
     name: str,
     price: str,
     description: Optional[str],
-    image_url: Optional[str],
+    category: Optional[str],
+    image_path: Optional[str],
 ) -> Optional[ProductData]:
     """Validate and transform raw form data into ``ProductData``."""
 
@@ -44,14 +52,48 @@ def _parse_product_form(
         return None
 
     description_value = description.strip() if description else None
-    image_url_value = image_url.strip() if image_url else None
+
+    category_value = category.strip() if category else None
+    if not category_value:
+        return None
 
     return ProductData(
         name=name,
         price=price_value,
         description=description_value or None,
-        image_url=image_url_value or None,
+        image_path=image_path or None,
+        category=category_value,
     )
+
+async def _save_uploaded_image(upload: UploadFile) -> str:
+    filename = Path(upload.filename or "")
+    suffix = filename.suffix.lower()
+    if suffix not in ALLOWED_IMAGE_EXTENSIONS:
+        raise ValueError("Недопустимый формат изображения.")
+
+    stem = filename.stem or "image"
+    unique_name = f"{stem}_{uuid4().hex}{suffix}"
+    destination = UPLOAD_DIR / unique_name
+
+    data = await upload.read()
+    with destination.open("wb") as buffer:
+        buffer.write(data)
+    await upload.close()
+
+    return destination.relative_to(STATIC_DIR).as_posix()
+
+
+async def _resolve_image_path(
+    form_data: Dict[str, object], existing_image: Optional[str]
+) -> Optional[str]:
+    uploaded = form_data.get("image")
+    if isinstance(uploaded, UploadFile) and uploaded.filename:
+        try:
+            return await _save_uploaded_image(uploaded)
+        except ValueError:
+            await uploaded.close()
+            raise
+    return existing_image or None
 
 
 @router.get("/login", response_class=HTMLResponse)
@@ -156,20 +198,49 @@ async def create_product_action(
 ) -> Response:
     """Persist a new product in the database."""
 
-    form_data = await _read_form_data(request)
-    name = form_data.get("name", "")
-    price = form_data.get("price", "")
+    form = await request.form()
+    form_data = dict(form.multi_items())
+    name = str(form_data.get("name", ""))
+    price = str(form_data.get("price", ""))
     description = form_data.get("description")
-    image_url = form_data.get("image_url")
+    category = str(form_data.get("category", ""))
+    existing_image = str(form_data.get("existing_image", "") or "")
 
-    product_data = _parse_product_form(name, price, description, image_url)
+    try:
+        image_path = await _resolve_image_path(form_data, existing_image)
+    except ValueError as exc:
+        context = {
+            "request": request,
+            "action": "/admin/products/new",
+            "title": "Добавить продукт",
+            "submit_label": "Добавить",
+            "product": {
+                "name": name,
+                "price": price,
+                "description": description,
+                "category": category,
+                "image_path": existing_image,
+            },
+            "error": str(exc),
+        }
+        return templates.TemplateResponse(
+            "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
+        )
+
+    product_data = _parse_product_form(name, price, description, category, image_path)
     if product_data is None:
         context = {
             "request": request,
             "action": "/admin/products/new",
             "title": "Добавить продукт",
             "submit_label": "Добавить",
-            "product": {"name": name, "price": price, "description": description, "image_url": image_url},
+            "product": {
+                "name": name,
+                "price": price,
+                "description": description,
+                "category": category,
+                "image_path": image_path,
+            },
             "error": "Пожалуйста, укажите корректные данные продукта.",
         }
         return templates.TemplateResponse(
@@ -222,11 +293,13 @@ async def update_product_action(
 ) -> Response:
     """Update an existing product."""
 
-    form_data = await _read_form_data(request)
-    name = form_data.get("name", "")
-    price = form_data.get("price", "")
+    form = await request.form()
+    form_data = dict(form.multi_items())
+    name = str(form_data.get("name", ""))
+    price = str(form_data.get("price", ""))
     description = form_data.get("description")
-    image_url = form_data.get("image_url")
+    category = str(form_data.get("category", ""))
+    existing_image = str(form_data.get("existing_image", "") or "")
 
     existing = fetch_product_by_id(db, product_id)
     if existing is None:
@@ -236,7 +309,30 @@ async def update_product_action(
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
-    product_data = _parse_product_form(name, price, description, image_url)
+    try:
+        current_image = existing.get("image_path") if isinstance(existing, dict) else None
+        image_path = await _resolve_image_path(form_data, existing_image or current_image)
+    except ValueError as exc:
+        context = {
+            "request": request,
+            "action": f"/admin/products/{product_id}",
+            "title": "Редактирование продукта",
+            "submit_label": "Сохранить",
+            "product": {
+                "id": product_id,
+                "name": name,
+                "price": price,
+                "description": description,
+                "category": category,
+                "image_path": existing_image or current_image,
+            },
+            "error": str(exc),
+        }
+        return templates.TemplateResponse(
+            "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
+        )
+
+    product_data = _parse_product_form(name, price, description, category, image_path)
     if product_data is None:
         context = {
             "request": request,
@@ -248,7 +344,8 @@ async def update_product_action(
                 "name": name,
                 "price": price,
                 "description": description,
-                "image_url": image_url,
+                "category": category,
+                "image_path": image_path,
             },
             "error": "Пожалуйста, укажите корректные данные продукта.",
         }

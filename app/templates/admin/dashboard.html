@@ -22,7 +22,8 @@
                     <th>Название</th>
                     <th>Цена</th>
                     <th>Описание</th>
-                    <th>Ссылка на изображение</th>
+                    <th>Категория</th>
+                    <th>Изображение</th>
                     <th>Действия</th>
                 </tr>
             </thead>
@@ -33,9 +34,16 @@
                     <td>{{ product.name }}</td>
                     <td>{{ "%.2f"|format(product.price) }}</td>
                     <td>{{ product.description or "—" }}</td>
+                    <td>{{ product.category or "—" }}</td>
                     <td>
-                        {% if product.image_url %}
-                        <a href="{{ product.image_url }}" target="_blank">Просмотреть</a>
+                        {% if product.img_path %}
+                        <a href="{{ request.url_for('static', path=product.img_path) }}" target="_blank">
+                            <img
+                                src="{{ request.url_for('static', path=product.img_path) }}"
+                                alt="{{ product.name }}"
+                                style="max-height: 80px; width: auto; display: block; margin: 0 auto;"
+                            />
+                        </a>
                         {% else %}
                         —
                         {% endif %}

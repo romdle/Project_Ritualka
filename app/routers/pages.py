@@ -26,7 +26,7 @@ async def list_products(
     db: sqlite3.Connection = Depends(get_db),
 ):
     cursor = db.execute(
-        "SELECT name, price, description, image_url FROM products ORDER BY id"
+        "SELECT name, price, description, image_path, category FROM products ORDER BY id"
     )
     products = [dict(row) for row in cursor.fetchall()]
     return {"items": products}
@@ -38,7 +38,11 @@ async def product(
     db: sqlite3.Connection = Depends(get_db),
 ):
     cursor = db.execute(
-        "SELECT name, price, description, image_url FROM products WHERE id = ?",
+        """
+        SELECT name, price, description, image_path, category
+        FROM products
+        WHERE id = ?
+        """,
         (product_id,),
     )
     product_row = cursor.fetchone()
