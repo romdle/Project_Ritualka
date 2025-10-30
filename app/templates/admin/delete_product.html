@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Удалить продукт</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Удалить продукт</h1>
+        <nav>
+            <a href="/admin">Вернуться к списку</a>
+            <a href="/admin/logout">Выйти</a>
+        </nav>
+    </header>
+    <main>
+        <p>Вы действительно хотите удалить продукт <strong>{{ product.name }}</strong> (ID {{ product.id }})?</p>
+        <form method="post" action="/admin/products/{{ product.id }}/delete">
+            <button type="submit">Удалить</button>
+            <a href="/admin/products/{{ product.id }}">Отмена</a>
+        </form>
+    </main>
+</body>
+</html>

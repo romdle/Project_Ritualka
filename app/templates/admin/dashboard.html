@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Админ панель — продукты</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <header>
+        <h1>Список продуктов</h1>
+        <nav>
+            <a href="/admin/products/new">Добавить продукт</a>
+            <a href="/admin/logout">Выйти</a>
+        </nav>
+    </header>
+    <main>
+        {% if products %}
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Описание</th>
+                    <th>Ссылка на изображение</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ "%.2f"|format(product.price) }}</td>
+                    <td>{{ product.description or "—" }}</td>
+                    <td>
+                        {% if product.image_url %}
+                        <a href="{{ product.image_url }}" target="_blank">Просмотреть</a>
+                        {% else %}
+                        —
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/admin/products/{{ product.id }}">Редактировать</a>
+                        <a href="/admin/products/{{ product.id }}/delete">Удалить</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>В базе данных пока нет продуктов.</p>
+        {% endif %}
+    </main>
+</body>
+</html>

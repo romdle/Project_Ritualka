@@ -1,13 +1,18 @@
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
-from routers import pages
+from pathlib import Path
+
+from routers import admin, pages
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+BASE_DIR = Path(__file__).resolve().parent
+
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
 app.include_router(pages.router)
+app.include_router(admin.router)
 
 
 

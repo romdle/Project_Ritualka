@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <header>
+        <h1>{{ title }}</h1>
+        <nav>
+            <a href="/admin">Вернуться к списку</a>
+            <a href="/admin/logout">Выйти</a>
+        </nav>
+    </header>
+    <main>
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <form method="post" action="{{ action }}">
+            <div>
+                <label for="name">Название</label>
+                <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value="{{ (product.name if product else '') | default('', true) }}"
+                    required
+                />
+            </div>
+            <div>
+                <label for="price">Цена</label>
+                <input
+                    id="price"
+                    name="price"
+                    type="number"
+                    step="0.01"
+                    value="{{ (product.price if product else '') | default('', true) }}"
+                    required
+                />
+            </div>
+            <div>
+                <label for="description">Описание</label>
+                <textarea id="description" name="description" rows="4">{{ (product.description if product else '') | default('', true) }}</textarea>
+            </div>
+            <div>
+                <label for="image_url">Ссылка на изображение</label>
+                <input
+                    id="image_url"
+                    name="image_url"
+                    type="url"
+                    value="{{ (product.image_url if product else '') | default('', true) }}"
+                />
+            </div>
+            <button type="submit">{{ submit_label }}</button>
+        </form>
+    </main>
+</body>
+</html>
