@@ -1,12 +1,14 @@
-{
-  "mainPage": {
-    "banners": [
-      {"title": "Памятники премиум", "image": "banner1.jpg"},
-      {"title": "Эконом вариант", "image": "banner2.jpg"}
-    ]
-  },
-  "catalog": [
-    {"id": 1, "name": "Памятник классический", "price": "15000", "image": "product1.jpg"},
-    {"id": 2, "name": "Памятник гранитный", "price": "25000", "image": "product2.jpg"}
-  ]
-}
+[
+    {
+        "name": "Товар 1",
+        "price": 100.0,
+        "description": "Описание товара 1",
+        "image_url": "https://example.com/image1.jpg"
+    },
+    {
+        "name": "Товар 2",
+        "price": 200.0,
+        "description": "Описание товара 2",
+        "image_url": "https://example.com/image2.jpg"
+    }
+]

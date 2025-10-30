@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
+from starlette.staticfiles import StaticFiles
 
 from routers import pages
 
@@ -18,4 +18,6 @@ app.include_router(pages.router)
 
 
 
-## запуск локалки через команду      uvicorn main:app --reload    в директории backend\
+
+
+## запуск локалки через команду      uvicorn main:app --reload    в директории app\
