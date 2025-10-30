@@ -15,9 +15,4 @@ app.include_router(pages.router)
 
 
 
-
-
-
-
-
 ## запуск локалки через команду      uvicorn main:app --reload    в директории app\
