@@ -54,7 +54,13 @@
             </div>
             <div>
                 <label for="description">Описание</label>
-                <textarea id="description" name="description" rows="4">{{ (product.description if product else '') | default('', true) }}</textarea>
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="3"
+                    required
+                >{{ (product.description if product else '') | default('', true) }}
+                </textarea>
             </div>
             <div>
                 <label for="image">Изображение</label>

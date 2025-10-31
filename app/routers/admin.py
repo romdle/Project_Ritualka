@@ -59,7 +59,9 @@ def _parse_product_form(
     except (TypeError, ValueError):
         return None
 
-    description_value = description.strip() if description else None
+    description_value = description.strip() if description else ""
+    if not description_value:
+        return None
 
     category_value = category.strip() if category else None
     if not category_value:
@@ -71,7 +73,7 @@ def _parse_product_form(
     return ProductData(
         name=name,
         price=price_value,
-        description=description_value or None,
+        description=description_value,
         img_path=image_path or None,
         category=category_value,
     )
@@ -272,7 +274,10 @@ async def create_product_action(
     form = await request.form()
     name = str(form.get("name", ""))
     price = str(form.get("price", ""))
-    description = form.get("description")
+    description_raw = form.get("description")
+    description = (
+        description_raw if isinstance(description_raw, str) else ""
+    )
     category = str(form.get("category", ""))
     upload = form.get("image")
     existing_image_raw = form.get("existing_image")
@@ -444,7 +449,10 @@ async def update_product_action(
     form = await request.form()
     name = str(form.get("name", ""))
     price = str(form.get("price", ""))
-    description = form.get("description")
+    description_raw = form.get("description")
+    description = (
+        description_raw if isinstance(description_raw, str) else ""
+    )
     category = str(form.get("category", ""))
     upload = form.get("image")
     existing_image_raw = form.get("existing_image")
@@ -501,6 +509,30 @@ async def update_product_action(
             "categories": categories_for_render,
             "selected_category": selected_category_value,
             "error": str(exc),
+        }
+        return templates.TemplateResponse(
+            "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
+        )
+
+    if not description.strip():
+        context = {
+            "request": request,
+            "action": f"/admin/products/{product_id}",
+            "title": "Редактирование продукта",
+            "submit_label": "Сохранить",
+            "product": {
+                "id": product_id,
+                "name": name,
+                "price": price,
+                "description": description,
+                "category": category,
+                "img_path": image_path or existing_image or current_image,
+                "image_path": image_path or existing_image or current_image,
+                "pending_image_to_delete": old_image_to_delete or pending_delete_image,
+            },
+            "categories": categories_for_render,
+            "selected_category": selected_category_value,
+            "error": "Пожалуйста, добавьте описание продукта.",
         }
         return templates.TemplateResponse(
             "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
