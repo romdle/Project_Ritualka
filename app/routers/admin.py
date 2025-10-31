@@ -3,13 +3,14 @@ from __future__ import annotations
 
 import sqlite3
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 from uuid import uuid4
 from urllib.parse import parse_qs
 
 from fastapi import APIRouter, Depends, Request, Response, UploadFile, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from starlette.datastructures import UploadFile as StarletteUploadFile
 
 import auth
 from database import (
@@ -61,11 +62,14 @@ def _parse_product_form(
         name=name,
         price=price_value,
         description=description_value or None,
-        image_path=image_path or None,
+        img_path=image_path or None,
         category=category_value,
     )
 
-async def _save_uploaded_image(upload: UploadFile) -> str:
+UploadFileType = Union[UploadFile, StarletteUploadFile]
+
+
+async def _save_uploaded_image(upload: UploadFileType) -> str:
     filename = Path(upload.filename or "")
     suffix = filename.suffix.lower()
     if suffix not in ALLOWED_IMAGE_EXTENSIONS:
@@ -84,16 +88,23 @@ async def _save_uploaded_image(upload: UploadFile) -> str:
 
 
 async def _resolve_image_path(
-    form_data: Dict[str, object], existing_image: Optional[str]
+    upload: Optional[UploadFile], existing_image: Optional[str]
 ) -> Optional[str]:
-    uploaded = form_data.get("image")
-    if isinstance(uploaded, UploadFile) and uploaded.filename:
-        try:
-            return await _save_uploaded_image(uploaded)
-        except ValueError:
-            await uploaded.close()
-            raise
-    return existing_image or None
+    if isinstance(upload, (UploadFile, StarletteUploadFile)) and upload.filename:
+        if upload.filename:
+            try:
+                return await _save_uploaded_image(upload)
+            except ValueError:
+                await upload.close()
+                raise
+        await upload.close()
+
+    if existing_image:
+        stripped = existing_image.strip()
+        if stripped:
+            return stripped
+
+    return None
 
 
 @router.get("/login", response_class=HTMLResponse)
@@ -199,15 +210,20 @@ async def create_product_action(
     """Persist a new product in the database."""
 
     form = await request.form()
-    form_data = dict(form.multi_items())
-    name = str(form_data.get("name", ""))
-    price = str(form_data.get("price", ""))
-    description = form_data.get("description")
-    category = str(form_data.get("category", ""))
-    existing_image = str(form_data.get("existing_image", "") or "")
+    name = str(form.get("name", ""))
+    price = str(form.get("price", ""))
+    description = form.get("description")
+    category = str(form.get("category", ""))
+    upload = form.get("image")
+    existing_image_raw = form.get("existing_image")
+    existing_image = (
+        existing_image_raw.strip()
+        if isinstance(existing_image_raw, str)
+        else ""
+    )
 
     try:
-        image_path = await _resolve_image_path(form_data, existing_image)
+        image_path = await _resolve_image_path(upload, existing_image)
     except ValueError as exc:
         context = {
             "request": request,
@@ -219,6 +235,7 @@ async def create_product_action(
                 "price": price,
                 "description": description,
                 "category": category,
+                "img_path": existing_image,
                 "image_path": existing_image,
             },
             "error": str(exc),
@@ -239,6 +256,7 @@ async def create_product_action(
                 "price": price,
                 "description": description,
                 "category": category,
+                "img_path": image_path,
                 "image_path": image_path,
             },
             "error": "Пожалуйста, укажите корректные данные продукта.",
@@ -294,12 +312,17 @@ async def update_product_action(
     """Update an existing product."""
 
     form = await request.form()
-    form_data = dict(form.multi_items())
-    name = str(form_data.get("name", ""))
-    price = str(form_data.get("price", ""))
-    description = form_data.get("description")
-    category = str(form_data.get("category", ""))
-    existing_image = str(form_data.get("existing_image", "") or "")
+    name = str(form.get("name", ""))
+    price = str(form.get("price", ""))
+    description = form.get("description")
+    category = str(form.get("category", ""))
+    upload = form.get("image")
+    existing_image_raw = form.get("existing_image")
+    existing_image = (
+        existing_image_raw.strip()
+        if isinstance(existing_image_raw, str)
+        else ""
+    )
 
     existing = fetch_product_by_id(db, product_id)
     if existing is None:
@@ -310,8 +333,10 @@ async def update_product_action(
         )
 
     try:
-        current_image = existing.get("image_path") if isinstance(existing, dict) else None
-        image_path = await _resolve_image_path(form_data, existing_image or current_image)
+        current_image: Optional[str] = None
+        if isinstance(existing, dict):
+            current_image = existing.get("img_path") or existing.get("image_path")
+        image_path = await _resolve_image_path(upload, existing_image or current_image)
     except ValueError as exc:
         context = {
             "request": request,
@@ -345,6 +370,7 @@ async def update_product_action(
                 "price": price,
                 "description": description,
                 "category": category,
+                "img_path": image_path,
                 "image_path": image_path,
             },
             "error": "Пожалуйста, укажите корректные данные продукта.",
