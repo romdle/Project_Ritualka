@@ -23,8 +23,16 @@ from database import (
 )
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
+STATIC_ROOT = STATIC_DIR.resolve()
 UPLOAD_DIR = STATIC_DIR / "uploads"
 ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+
+CATEGORY_CHOICES = [
+    "Стандартный",
+    "Эксклюзивный",
+    "Семейный",
+    "Детский",
+]
 
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -56,6 +64,9 @@ def _parse_product_form(
     category_value = category.strip() if category else None
     if not category_value:
         return None
+    
+    if category_value not in CATEGORY_CHOICES:
+        return None
 
     return ProductData(
         name=name,
@@ -64,6 +75,18 @@ def _parse_product_form(
         img_path=image_path or None,
         category=category_value,
     )
+
+
+def _prepare_category_choices(selected: Optional[str]) -> tuple[list[str], str]:
+    value = selected.strip() if isinstance(selected, str) else ""
+    choices = list(CATEGORY_CHOICES)
+    if value and value not in choices:
+        choices.append(value)
+
+    if not value and choices:
+        value = choices[0]
+
+    return choices, value
 
 UploadFileType = Union[UploadFile, StarletteUploadFile]
 
@@ -86,24 +109,60 @@ async def _save_uploaded_image(upload: UploadFileType) -> str:
     return destination.relative_to(STATIC_DIR).as_posix()
 
 
+def _image_storage_path(image_reference: str) -> Optional[Path]:
+    if not image_reference:
+        return None
+
+    relative = Path(str(image_reference).strip().lstrip("/"))
+    try:
+        candidate = (STATIC_ROOT / relative).resolve()
+        candidate.relative_to(STATIC_ROOT)
+    except (ValueError, RuntimeError):
+        return None
+
+    return candidate
+
+
+def _delete_image_file(image_reference: str) -> None:
+    path = _image_storage_path(image_reference)
+    if path and path.exists():
+        try:
+            path.unlink()
+        except OSError:
+            pass
+
+
 async def _resolve_image_path(
     upload: Optional[UploadFile], existing_image: Optional[str]
-) -> Optional[str]:
-    if isinstance(upload, (UploadFile, StarletteUploadFile)) and upload.filename:
-        if upload.filename:
+) -> tuple[Optional[str], Optional[str]]:
+    existing_value_raw = (
+        existing_image.strip() if isinstance(existing_image, str) else ""
+    )
+    existing_value = existing_value_raw
+    if existing_value:
+        resolved_existing = _image_storage_path(existing_value)
+        if resolved_existing:
+            existing_value = resolved_existing.relative_to(STATIC_ROOT).as_posix()
+
+    if isinstance(upload, (UploadFile, StarletteUploadFile)):
+        filename = upload.filename or ""
+        if filename:
             try:
-                return await _save_uploaded_image(upload)
+                saved_path = await _save_uploaded_image(upload)
             except ValueError:
                 await upload.close()
                 raise
+
+            if existing_value and existing_value != saved_path:
+                return saved_path, existing_value
+            return saved_path, None
+        
         await upload.close()
 
-    if existing_image:
-        stripped = existing_image.strip()
-        if stripped:
-            return stripped
+    if existing_value:
+        return existing_value, None
 
-    return None
+    return None, None
 
 
 @router.get("/login", response_class=HTMLResponse)
@@ -186,13 +245,15 @@ async def dashboard(
 )
 async def new_product_form(request: Request) -> HTMLResponse:
     """Render the form used to add a new product."""
-
+    categories, selected_category = _prepare_category_choices(None)
     context: Dict[str, object] = {
         "request": request,
         "action": "/admin/products/new",
         "title": "Добавить продукт",
         "submit_label": "Добавить",
         "product": None,
+        "categories": categories,
+        "selected_category": selected_category,
         "error": None,
     }
     return templates.TemplateResponse("admin/product_form.html", context)
@@ -222,8 +283,11 @@ async def create_product_action(
     )
 
     try:
-        image_path = await _resolve_image_path(upload, existing_image)
+        image_path, old_image_to_delete = await _resolve_image_path(
+            upload, existing_image
+        )
     except ValueError as exc:
+        categories, selected_category = _prepare_category_choices(category)
         context = {
             "request": request,
             "action": "/admin/products/new",
@@ -237,6 +301,8 @@ async def create_product_action(
                 "img_path": existing_image,
                 "image_path": existing_image,
             },
+            "categories": categories,
+            "selected_category": selected_category,
             "error": str(exc),
         }
         return templates.TemplateResponse(
@@ -245,6 +311,7 @@ async def create_product_action(
 
     product_data = _parse_product_form(name, price, description, category, image_path)
     if product_data is None:
+        categories, selected_category = _prepare_category_choices(category)
         context = {
             "request": request,
             "action": "/admin/products/new",
@@ -258,6 +325,8 @@ async def create_product_action(
                 "img_path": image_path,
                 "image_path": image_path,
             },
+            "categories": categories,
+            "selected_category": selected_category,
             "error": "Пожалуйста, укажите корректные данные продукта.",
         }
         return templates.TemplateResponse(
@@ -265,6 +334,8 @@ async def create_product_action(
         )
 
     create_product(db, product_data)
+    if old_image_to_delete:
+        _delete_image_file(old_image_to_delete)
     return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
 
 
@@ -287,13 +358,21 @@ async def edit_product_form(
             {"request": request, "product_id": product_id},
             status_code=status.HTTP_404_NOT_FOUND,
         )
-
+    
+    selected_category = None
+    if isinstance(product, dict):
+        selected_category = product.get("category")
+    else:
+        selected_category = getattr(product, "category", None)
+    categories, selected_category = _prepare_category_choices(selected_category)
     context = {
         "request": request,
         "action": f"/admin/products/{product_id}",
         "title": "Редактирование продукта",
         "submit_label": "Сохранить",
         "product": product,
+        "categories": categories,
+        "selected_category": selected_category,
         "error": None,
     }
     return templates.TemplateResponse("admin/product_form.html", context)
@@ -331,11 +410,20 @@ async def update_product_action(
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
+    categories_for_render, selected_category_value = _prepare_category_choices(category)
+    current_image: Optional[str] = None
+    if isinstance(existing, dict):
+        current_image = existing.get("img_path") or existing.get("image_path")
+    else:
+        current_image = getattr(existing, "img_path", None) or getattr(
+            existing, "image_path", None
+        )
+
+    old_image_to_delete: Optional[str] = None
     try:
-        current_image: Optional[str] = None
-        if isinstance(existing, dict):
-            current_image = existing.get("img_path") or existing.get("image_path")
-        image_path = await _resolve_image_path(upload, existing_image or current_image)
+        image_path, old_image_to_delete = await _resolve_image_path(
+            upload, existing_image or current_image
+        )
     except ValueError as exc:
         context = {
             "request": request,
@@ -348,8 +436,11 @@ async def update_product_action(
                 "price": price,
                 "description": description,
                 "category": category,
+                "img_path": existing_image or current_image,
                 "image_path": existing_image or current_image,
             },
+            "categories": categories_for_render,
+            "selected_category": selected_category_value,
             "error": str(exc),
         }
         return templates.TemplateResponse(
@@ -372,13 +463,17 @@ async def update_product_action(
                 "img_path": image_path,
                 "image_path": image_path,
             },
+            "categories": categories_for_render,
+            "selected_category": selected_category_value,
             "error": "Пожалуйста, укажите корректные данные продукта.",
         }
         return templates.TemplateResponse(
             "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
         )
 
-    update_product(db, product_id, product_data)
+    updated = update_product(db, product_id, product_data)
+    if updated and old_image_to_delete:
+        _delete_image_file(old_image_to_delete)
     return RedirectResponse(url=f"/admin/products/{product_id}", status_code=status.HTTP_303_SEE_OTHER)
 
 
@@ -427,5 +522,21 @@ async def delete_product_action(
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
-    delete_product(db, product_id)
+    image_reference: Optional[str] = None
+    if isinstance(product, dict):
+        image_reference = (
+            product.get("img_path")
+            or product.get("image_path")
+            or product.get("image")
+        )
+    else:
+        image_reference = (
+            getattr(product, "img_path", None)
+            or getattr(product, "image_path", None)
+            or getattr(product, "image", None)
+        )
+
+    deleted = delete_product(db, product_id)
+    if deleted and image_reference:
+        _delete_image_file(image_reference)
     return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)

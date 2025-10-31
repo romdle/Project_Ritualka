@@ -41,13 +41,16 @@
             </div>
             <div>
                 <label for="category">Категория</label>
-                <input
-                    id="category"
-                    name="category"
-                    type="text"
-                    value="{{ (product.category if product else '') | default('', true) }}"
-                    required
-                />
+                {% set category_options = categories if categories is defined else [] %}
+                {% set fallback_category = category_options[0] if category_options else '' %}
+                {% set current_category = selected_category if selected_category is defined else (product.category if product else fallback_category) %}
+                <select id="category" name="category" required>
+                    {% for option in category_options %}
+                    <option value="{{ option }}" {% if option == current_category %}selected{% endif %}>
+                        {{ option }}
+                    </option>
+                    {% endfor %}
+                </select>
             </div>
             <div>
                 <label for="description">Описание</label>
