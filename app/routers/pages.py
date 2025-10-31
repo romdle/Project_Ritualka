@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from database import get_db
+from database import fetch_all_products, fetch_product_by_id, get_db
 
 TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "templates"
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
@@ -25,10 +25,7 @@ async def category(name: str):
 async def list_products(
     db: sqlite3.Connection = Depends(get_db),
 ):
-    cursor = db.execute(
-        "SELECT name, price, description, image_path, category FROM products ORDER BY id"
-    )
-    products = [dict(row) for row in cursor.fetchall()]
+    products = fetch_all_products(db)
     return {"items": products}
 
 
@@ -37,15 +34,7 @@ async def product(
     product_id: int,
     db: sqlite3.Connection = Depends(get_db),
 ):
-    cursor = db.execute(
-        """
-        SELECT name, price, description, image_path, category
-        FROM products
-        WHERE id = ?
-        """,
-        (product_id,),
-    )
-    product_row = cursor.fetchone()
+    product_row = fetch_product_by_id(db, product_id)
     if product_row is None:
         raise HTTPException(status_code=404, detail="Product not found")
     return dict(product_row)
