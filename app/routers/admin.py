@@ -300,6 +300,7 @@ async def create_product_action(
                 "category": category,
                 "img_path": existing_image,
                 "image_path": existing_image,
+                "pending_image_to_delete": None,
             },
             "categories": categories,
             "selected_category": selected_category,
@@ -308,6 +309,31 @@ async def create_product_action(
         return templates.TemplateResponse(
             "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
         )
+    
+    if not image_path:
+        categories, selected_category = _prepare_category_choices(category)
+        context = {
+            "request": request,
+            "action": "/admin/products/new",
+            "title": "Добавить продукт",
+            "submit_label": "Добавить",
+            "product": {
+                "name": name,
+                "price": price,
+                "description": description,
+                "category": category,
+                "img_path": image_path,
+                "image_path": image_path,
+                "pending_image_to_delete": None,
+            },
+            "categories": categories,
+            "selected_category": selected_category,
+            "error": "Пожалуйста, добавьте изображение продукта.",
+        }
+        return templates.TemplateResponse(
+            "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
+        )
+
 
     product_data = _parse_product_form(name, price, description, category, image_path)
     if product_data is None:
@@ -324,6 +350,7 @@ async def create_product_action(
                 "category": category,
                 "img_path": image_path,
                 "image_path": image_path,
+                "pending_image_to_delete": None,
             },
             "categories": categories,
             "selected_category": selected_category,
@@ -333,7 +360,32 @@ async def create_product_action(
             "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
         )
 
-    create_product(db, product_data)
+    try:
+        create_product(db, product_data)
+    except sqlite3.IntegrityError:
+        categories, selected_category = _prepare_category_choices(category)
+        context = {
+            "request": request,
+            "action": "/admin/products/new",
+            "title": "Добавить продукт",
+            "submit_label": "Добавить",
+            "product": {
+                "name": name,
+                "price": price,
+                "description": description,
+                "category": category,
+                "img_path": image_path,
+                "image_path": image_path,
+                "pending_image_to_delete": None,
+            },
+            "categories": categories,
+            "selected_category": selected_category,
+            "error": "Невозможно создать продукт: имя уже используется.",
+        }
+        return templates.TemplateResponse(
+            "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
+        )
+    
     if old_image_to_delete:
         _delete_image_file(old_image_to_delete)
     return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
@@ -401,6 +453,12 @@ async def update_product_action(
         if isinstance(existing_image_raw, str)
         else ""
     )
+    pending_delete_image_raw = form.get("pending_delete_image")
+    pending_delete_image = (
+        pending_delete_image_raw.strip()
+        if isinstance(pending_delete_image_raw, str)
+        else ""
+    )
 
     existing = fetch_product_by_id(db, product_id)
     if existing is None:
@@ -438,6 +496,7 @@ async def update_product_action(
                 "category": category,
                 "img_path": existing_image or current_image,
                 "image_path": existing_image or current_image,
+                "pending_image_to_delete": pending_delete_image,
             },
             "categories": categories_for_render,
             "selected_category": selected_category_value,
@@ -462,6 +521,7 @@ async def update_product_action(
                 "category": category,
                 "img_path": image_path,
                 "image_path": image_path,
+                "pending_image_to_delete": pending_delete_image,
             },
             "categories": categories_for_render,
             "selected_category": selected_category_value,
@@ -471,7 +531,35 @@ async def update_product_action(
             "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
         )
 
-    updated = update_product(db, product_id, product_data)
+    if not old_image_to_delete and pending_delete_image:
+        old_image_to_delete = pending_delete_image
+
+    try:
+        updated = update_product(db, product_id, product_data)
+    except sqlite3.IntegrityError:
+        context = {
+            "request": request,
+            "action": f"/admin/products/{product_id}",
+            "title": "Редактирование продукта",
+            "submit_label": "Сохранить",
+            "product": {
+                "id": product_id,
+                "name": name,
+                "price": price,
+                "description": description,
+                "category": category,
+                "img_path": image_path or existing_image or current_image,
+                "image_path": image_path or existing_image or current_image,
+                "pending_image_to_delete": old_image_to_delete or pending_delete_image,
+            },
+            "categories": categories_for_render,
+            "selected_category": selected_category_value,
+            "error": "Невозможно сохранить продукт: имя уже используется.",
+        }
+        return templates.TemplateResponse(
+            "admin/product_form.html", context, status_code=status.HTTP_400_BAD_REQUEST
+        )
+    
     if updated and old_image_to_delete:
         _delete_image_file(old_image_to_delete)
     return RedirectResponse(url=f"/admin/products/{product_id}", status_code=status.HTTP_303_SEE_OTHER)

@@ -71,6 +71,13 @@
                     </a>
                 </p>
                 <input type="hidden" name="existing_image" value="{{ product.img_path }}" />
+                {% if product.pending_image_to_delete %}
+                <input
+                    type="hidden"
+                    name="pending_delete_image"
+                    value="{{ product.pending_image_to_delete }}"
+                />
+                {% endif %}
                 {% endif %}
             </div>
             <button type="submit">{{ submit_label }}</button>
