@@ -1,4 +1,3 @@
-"""Routes powering the admin panel."""
 from __future__ import annotations
 
 import sqlite3

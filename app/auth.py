@@ -32,7 +32,7 @@ def login_user(response: Response) -> None:
         AUTH_COOKIE_NAME,
         token,
         httponly=True,
-        max_age=60 * 60 * 12,  # 12 hours
+        max_age=60 * 60,  # 1 hour
         samesite="lax",
     )
 
