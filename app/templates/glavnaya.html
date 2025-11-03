@@ -5,192 +5,185 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>студия-гранита.рф — Главная</title>
   <style>
-  :root{
-    --accent:#246e37;
-    --dark:#1E1E1E;
-    --bg:#F6F6F6;
-    --card:#ECECEC;
-    --text:#2B2B2B;
-    --container-max:96%; /* #Значения ширина основного контейнера относительно ширины экрана 1920x1080 */
-    --space-xs:1.25%; /* #Значения минимальный отступ для базовой сетки */
-    --space-sm:2.5%; /* #Значения малый отступ для секций и карточек */
-    --space-md:3.5%; /* #Значения средний отступ для внутренних сеток */
-    --space-lg:5.4%; /* #Значения крупный отступ для секций */
-    --space-xl:8.2%; /* #Значения максимальный отступ для геро-секции */
-    --radius-sm:4%; /* #Значения скругление малых элементов */
-    --radius-md:6%; /* #Значения скругление карточек и блоков */
-    --radius-lg:10%; /* #Значения скругление крупных блоков */
-    --product-grid-gap:2.5%; /* #Значения горизонтальный зазор между карточками товара */
-    --home-card-columns:4; /* #Значения количество карточек товара на экране 1920x1080 */
-    --base-font-size:clamp(94%,1vw,110%); /* #Значения базовый размер шрифта от ширины экрана */
+  :root{ --accent:#246e37; --dark:#1E1E1E; --bg:#F6F6F6; --card:#ECECEC; --text:#2B2B2B; --maxw:1200px; }
+  html,body{height:100%}
+  body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+  .hero-section{position:relative;background:linear-gradient(135deg,#1f2937,#111827);overflow:hidden}
+  .hero-section::before{content:"";position:absolute;inset:0;background-image:var(--hero-bg-image,none);background-size:cover;background-position:center;opacity:.58;mix-blend-mode:screen;filter:saturate(120%)}
+  .hero-section::after{content:"";position:absolute;inset:0;background:rgba(80,110,200,.35);mix-blend-mode:multiply}
+  .hero-inner{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 32px;padding-top:128px;padding-bottom:128px;display:flex;flex-wrap:wrap;gap:48px;align-items:center}
+  .hero-content{flex:1 1 420px;max-width:640px}
+  .hero-title{color:#fff;margin:0 0 24px;font-family:Georgia,serif;font-size:48px;font-weight:400;line-height:1.3}
+  .hero-text{color:#d1d5db;margin:0 0 32px;font-size:18px;line-height:1.8}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:16px}
+  .hero-button{display:inline-flex;align-items:center;justify-content:center;background:#246e37;color:#fff;text-decoration:none;border-radius:999px;padding:14px 38px;font-size:16px;font-weight:500;letter-spacing:.2px;transition:background .3s ease,transform .3s ease;min-width:220px;box-shadow:0 12px 24px rgba(36,110,55,.25)}
+  .hero-button:hover{background:#1e5a2d;transform:translateY(-2px)}
+  .hero-media{flex:1 1 360px;max-width:520px;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+  .hero-media .media{height:360px;width:100%}
+  .hero-media-note{color:rgba(255,255,255,.7);font-size:13px}
+  .container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  /* Header */
+  header{background:var(--dark)}
+  .header-inner{height:100px;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
+  .brand-badge{width:32px;height:32px;border-radius:999px;background:#ffffff1a}
+  nav a{color:#fff;opacity:.9;text-decoration:none;padding:8px 12px;display:inline-block}
+  nav a:hover{opacity:1}
+  nav a.active{box-shadow:inset 0 -2px 0 0 var(--accent)}
+  .btn-outline{border:1px solid var(--accent);background:transparent;color:#fff;border-radius:12px;padding:10px 16px;cursor:pointer}
+  .btn-outline.dark-text{color:var(--text)}
+  .btn-filled{background:var(--dark);color:#fff;border-radius:12px;padding:12px 18px;text-decoration:none;display:inline-block}
+  /* Sections */
+  .section{padding:48px 0;border-bottom:1px solid #E5E5E5}
+  h1{font-size:40px;line-height:1.2;margin:0 0 16px}
+  h2{font-size:28px;margin:0 0 16px}
+  p{line-height:1.7;margin:0}
+  /* Layout */
+  .grid{display:grid;gap:24px}
+  .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .row{display:flex;gap:16px;align-items:center}
+  .row-wrap{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  .mx-auto{margin-left:auto;margin-right:auto}
+  .w-24{width:6rem}
+  .h-0\.5{height:2px}
+  .w-full{width:100%}
+  .px-8{padding-left:2rem;padding-right:2rem}
+  .py-4{padding-top:1rem;padding-bottom:1rem}
+  .bg-\[\#246e37\]{background-color:#246e37}
+  .hover\:bg-\[\#1e5a2d\]:hover{background-color:#1e5a2d}
+  .text-white{color:#fff}
+  .rounded-md{border-radius:0.375rem}
+  .transition-all{transition:all .3s ease}
+  .flex{display:flex}
+  .items-center{align-items:center}
+  .justify-center{justify-content:center}
+  .gap-2{gap:0.5rem}
+  .font-medium{font-weight:500}
+  .product-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:flex-start}
+  .product-row.product-row--home{margin-top:28px;margin-bottom:40px}
+  .product-row--catalog{justify-content:flex-start}
+  .product-tile{flex:1 1 calc((100% - 72px)/4);max-width:calc((100% - 72px)/4);min-width:240px;min-height:540px;background:var(--card);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;box-sizing:border-box;transition:box-shadow .3s ease,transform .3s ease}
+  .product-tile:hover{box-shadow:0 16px 36px rgba(0,0,0,.08);transform:translateY(-4px)}
+  .product-image-link{display:block;width:100%;height:360px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
+  .product-image-link img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+  .product-image-link:hover img{transform:scale(1.05)}
+  .product-image-placeholder{width:100%;height:100%;position:relative}
+  .product-image-placeholder::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
+  .product-tile-body{display:flex;flex-direction:column;gap:12px;margin-top:14px;flex:1}
+  .product-name{color:#2B2B2B;font-family:Georgia,serif;font-size:18px;line-height:1.6;font-weight:400}
+  .product-tile-description{color:#6B6B6B;font-size:14px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;min-height:calc(1.6em * 2)}
+  .product-price{color:#2B2B2B;font-size:16px;font-weight:500;margin:12px 0;text-align:left}
+  .product-tile-more{display:inline-block;margin-top:14px;font-size:14px;letter-spacing:.2px;color:#246e37;text-decoration:none;align-self:flex-start}
+  .product-tile-more:hover{text-decoration:underline}
+  .product-detail{display:flex;gap:28px;align-items:flex-start}
+  .product-main-image{width:520px;height:680px;border-radius:18px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
+  .product-main-image img{width:100%;height:100%;object-fit:cover}
+  .product-main-image::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
+  .product-main-image.has-image::after{display:none}
+  .product-info{display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:680px;flex:1;margin-left:0;border-radius:18px;padding:36px 36px 32px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);box-shadow:0 22px 54px rgba(15,23,42,.12)}
+  .product-info-content{flex:1;display:flex;flex-direction:column;gap:24px}
+  .product-title{font-family:Georgia,serif;font-size:42px;font-weight:400;line-height:1.3;margin:0}
+  .product-description-text{color:#6B6B6B;font-size:16px;line-height:1.8}
+  .category-heading{color:#2B2B2B;font-family:Georgia,serif;font-size:28px;font-weight:400;margin:0}
+  .product-category-pill{display:inline-block;padding:6px 16px;background:rgba(36,110,55,.1);color:#246e37;border-radius:8px;font-size:13px;letter-spacing:.3px}
+  .product-info-content .product-category-pill{align-self:flex-start;margin-bottom:4px}  
+  .product-price-label{color:#6B6B6B;margin:0;font-size:14px;letter-spacing:.5px;text-transform:uppercase}
+  .product-price-amount{color:#2B2B2B;font-family:Georgia,serif;font-size:34px;font-weight:400;margin-top:8px}
+  .product-divider{width:100%;height:1px;background:#E6E6E6;margin:16px 0}
+  .description-heading{color:#2B2B2B;margin-bottom:16px;font-family:Georgia,serif;font-size:20px;font-weight:400}
+  .back-link{display:flex;align-items:center;gap:8px;color:#6B6B6B;margin-bottom:32px;text-decoration:none;font-size:15px;transition:color .3s ease}
+  .back-link:hover{color:#246e37}
+  .back-link svg{width:16px;height:16px}
+  .callback-button{width:100%;max-width:360px;padding:18px 32px;background:#246e37;color:#fff;border-radius:10px;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:500;border:none;margin-top:0}
+  .callback-button:hover{background:#1e5a2d}
+  .callback-button svg{width:18px;height:18px}
+  .similar-header{color:#2B2B2B;margin-bottom:8px;font-family:Georgia,serif;font-size:32px;font-weight:400}
+  .similar-accent{width:80px;height:2px;background:#246e37;margin:14px 0 24px}
+  .product-support-note{color:#6B6B6B;font-size:14px;line-height:1.7;max-width:520px;text-align:center;margin:16px auto 0}
+  @media (max-width:680px){ .product-row{justify-content:flex-start} .product-tile{margin:0} .product-main-image{width:100%;max-width:520px;height:auto} .product-main-image img{height:auto} }
+  .card{background:var(--card);border-radius:16px;padding:16px}
+  .media{height:180px;border-radius:14px;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .media::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
+  .media.has-image::after{display:none}
+  .media img{width:100%;height:100%;object-fit:cover;display:block}
+  .muted{opacity:.7}
+  .materials-section{padding-top:64px;padding-bottom:64px}
+  .materials-header{text-align:center;max-width:720px;margin:0 auto 48px}
+  .materials-title{color:#2B2B2B;margin:0 0 16px;font-family:Georgia,serif;font-size:38px;font-weight:400;line-height:1.3}
+  .materials-accent{width:96px;height:2px;background:#246e37;margin:0 auto 24px}
+  .materials-description{color:#6B6B6B;margin:0 auto;font-size:16px;line-height:1.7;max-width:640px}
+  .materials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;max-width:1024px;margin:0 auto}
+  .material-card{background:var(--card);border-radius:18px;padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px}
+  .material-image{width:100%;aspect-ratio:1/1;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);display:flex;align-items:center;justify-content:center;color:#6B6B6B;font-size:12px;letter-spacing:.3em;text-transform:uppercase}
+  .material-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .material-title{color:#2B2B2B;margin:0;font-family:Georgia,serif;font-size:18px;font-weight:400}
+  .material-text{color:#6B6B6B;margin:0;font-size:14px;line-height:1.6}
+  .section-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .btn-view-all{border:1px solid var(--accent);color:var(--accent);border-radius:10px;padding:8px 16px;font-size:14px;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+  .btn-view-all:hover{background:rgba(36,110,55,.08)}
+  .status-card{background:var(--card);border-radius:16px;padding:20px;font-size:16px}
+  .status-card.error{border:1px solid #e57373;background:#fdecea;color:#8a1c1c}
+  .product-description{line-height:1.7;font-size:16px}
+  /* Footer */
+  footer{background:var(--dark);color:#fff}
+  footer a{color:#fff}
+  .footer-top{padding:40px 0}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:rgba(255,255,255,.7);font-size:12px}
+  /* Utilities */
+  .space-v-16{margin-top:16px}
+  .space-v-8{margin-top:8px}
+  .link{color:var(--text);text-decoration:none;border-bottom:1px solid transparent}
+  .link:hover{border-color:var(--text)}
+  /* Responsive */
+  @media (max-width:960px){
+    .grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .hero-inner{padding-top:104px;padding-bottom:104px;gap:32px}
+    .hero-media{max-width:440px;margin:0 auto}
   }
-  *{box-sizing:border-box;}
-  html{height:100%;scroll-behavior:smooth;}
-  body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;font-size:var(--base-font-size);line-height:1.6;}
-  img,video{max-width:100%;height:auto;display:block;}
-  a{text-decoration:none;color:inherit;}
-  main{display:block;}
-  .container{width:var(--container-max);max-width:var(--container-max);margin:0 auto;} /* #Значения ширина контейнера с учетом базового экрана */
-  header{position:sticky;top:0;width:100%;background:var(--dark);z-index:40;}
-  .header-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--space-sm);padding:calc(var(--space-xs)*1.4) 0;} /* #Значения вертикальные отступы шапки */
-  .brand{display:flex;align-items:center;gap:calc(var(--space-xs)*0.7);color:#fff;} /* #Значения расстояние между логотипом и текстом */
-  .brand-badge{width:2.6vw;height:2.6vw;max-width:12%;max-height:12%;border-radius:50%;background:rgba(255,255,255,0.12);} /* #Значения диаметр логотипа относительно ширины экрана */
-  nav{display:flex;align-items:center;gap:calc(var(--space-xs)*0.8);}
-  nav a{color:#fff;opacity:0.9;padding:calc(var(--space-xs)*0.6) calc(var(--space-xs));border-radius:var(--radius-sm);transition:opacity 0.3s ease,background 0.3s ease;}
-  nav a:hover,nav a:focus-visible{opacity:1;background:rgba(255,255,255,0.08);}
-  nav a.active{background:rgba(255,255,255,0.16);}
-  .header-contact{color:#fff;opacity:0.9;display:inline-flex;align-items:center;padding:calc(var(--space-xs)*0.6) calc(var(--space-xs));border-radius:var(--radius-sm);transition:background 0.3s ease;}
-  .header-contact:hover,.header-contact:focus-visible{background:rgba(255,255,255,0.12);}
-  .hero-section{position:relative;background:linear-gradient(135deg,#1f2937,#111827);overflow:hidden;}
-  .hero-section::before{content:"";position:absolute;inset:0;background-image:var(--hero-bg-image,none);background-size:cover;background-position:center;opacity:0.58;mix-blend-mode:screen;filter:saturate(120%);}
-  .hero-section::after{content:"";position:absolute;inset:0;background:rgba(80,110,200,0.35);mix-blend-mode:multiply;}
-  .hero-inner{position:relative;z-index:1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-lg);padding:var(--space-xl) 0;} /* #Значения отступы и зазоры геро-блока */
-  .hero-content{flex:1 1 48%;display:flex;flex-direction:column;gap:var(--space-sm);max-width:60%;} /* #Значения ширина текстовой части геро-блока */
-  .hero-title{color:#fff;margin:0;font-family:Georgia,serif;font-size:clamp(190%,4.6vw,280%);line-height:1.3;font-weight:400;} /* #Значения размер заголовка геро-блока */
-  .hero-text{color:rgba(255,255,255,0.72);margin:0;font-size:clamp(110%,2.4vw,140%);} /* #Значения размер подзаголовка геро-блока */
-  .hero-actions{display:flex;flex-wrap:wrap;gap:var(--space-sm);} /* #Значения расстояние между кнопками геро-блока */
-  .hero-button{display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-weight:500;border-radius:999px;padding:calc(var(--space-xs)*0.9) calc(var(--space-md));font-size:clamp(110%,2.8vw,130%);letter-spacing:0.04em;transition:transform 0.3s ease,background 0.3s ease;min-width:32%;min-height:9vh;box-shadow:0 1.4vw 2.8vw rgba(36,110,55,0.25);} /* #Значения минимальная ширина кнопки и отступы */
-  .hero-button:hover,.hero-button:focus-visible{background:#1e5a2d;transform:translateY(-1vw);}
-  .hero-media{flex:1 1 38%;display:flex;flex-direction:column;gap:var(--space-xs);align-items:flex-start;}
-  .hero-media .media{width:100%;aspect-ratio:4/3;border-radius:var(--radius-lg);overflow:hidden;background:rgba(255,255,255,0.08);backdrop-filter:blur(6px);} /* #Значения соотношение медиа в геро-блоке */
-  .hero-media-note{color:rgba(255,255,255,0.7);font-size:clamp(82%,1.8vw,100%);}
-  .section{padding:var(--space-lg) 0;border-bottom:1px solid rgba(0,0,0,0.08);}
-  h1,h2,h3{margin:0;font-family:Georgia,serif;font-weight:400;}
-  h1{font-size:clamp(180%,4vw,240%);}
-  h2{font-size:clamp(150%,3.6vw,210%);}
-  p{margin:0;line-height:1.8;}
-  .muted{opacity:0.7;}
-  .grid{display:grid;gap:var(--space-md);}
-  .grid.cols-3{grid-template-columns:repeat(auto-fit,minmax(26%,1fr));}
-  .grid.cols-2{grid-template-columns:repeat(auto-fit,minmax(40%,1fr));}
-  .row{display:flex;align-items:center;gap:var(--space-xs);}
-  .row-wrap{display:flex;flex-wrap:wrap;gap:var(--space-xs);}
-  .product-row{display:grid;gap:var(--product-grid-gap);grid-template-columns:repeat(auto-fit,minmax(48%,1fr));} /* #Значения сетка карточек по умолчанию */
-  .product-row.product-row--home{margin-top:var(--space-sm);margin-bottom:var(--space-md);grid-template-columns:repeat(var(--home-card-columns),minmax(0,1fr));} /* #Значения 4 карточки в ряду на 1920x1080 */
-  .product-tile{display:flex;flex-direction:column;gap:var(--space-sm);background:var(--card);border-radius:var(--radius-md);padding:calc(var(--space-sm));transition:transform 0.3s ease,box-shadow 0.3s ease;min-height:clamp(48vh,58vh,68vh);} /* #Значения высота карточек товара */
-  .product-tile:hover{transform:translateY(-1.2vw);box-shadow:0 1.2vw 2.6vw rgba(0,0,0,0.1);}
-  .product-image-link{display:block;width:100%;aspect-ratio:3/4;border-radius:calc(var(--radius-md)*0.8);overflow:hidden;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:0.2vw solid rgba(0,0,0,0.04);} /* #Значения соотношение сторон изображения товара */
-  .product-image-link img{width:100%;height:100%;object-fit:cover;transition:transform 0.35s ease;}
-  .product-image-link:hover img,.product-image-link:focus-visible img{transform:scale(1.05);}
-  .product-name{color:var(--text);font-size:clamp(120%,2.4vw,150%);line-height:1.5;} /* #Значения размер названия товара */
-  .product-price{color:var(--text);font-weight:600;font-size:clamp(110%,2.2vw,140%);} /* #Значения размер цены товара */
-  .product-tile-description{color:#6B6B6B;font-size:clamp(96%,2vw,118%);line-height:1.6;} /* #Значения размер описания карточки */
-  .product-tile-more{color:var(--accent);font-size:clamp(96%,2vw,118%);} /* #Значения размер ссылки Подробнее */
-  .product-detail{display:grid;grid-template-columns:minmax(0,48%) minmax(0,48%);gap:var(--product-grid-gap);align-items:start;} /* #Значения ширина колонок страницы товара */
-  .product-main-image{width:100%;aspect-ratio:3/4;border-radius:var(--radius-lg);overflow:hidden;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:0.2vw solid rgba(0,0,0,0.05);}
-  .product-main-image img{width:100%;height:100%;object-fit:cover;}
-  .product-info{display:flex;flex-direction:column;gap:var(--space-md);background:rgba(255,255,255,0.92);border-radius:var(--radius-lg);padding:calc(var(--space-md));backdrop-filter:blur(0.4vw);} /* #Значения внутренние отступы блока информации */
-  .product-description-text{color:#6B6B6B;font-size:clamp(98%,2vw,120%);line-height:1.8;}
-  .product-category-pill{display:inline-block;padding:calc(var(--space-xs)*0.4) calc(var(--space-xs));background:rgba(36,110,55,0.12);color:var(--accent);border-radius:999px;font-size:clamp(86%,1.6vw,100%);letter-spacing:0.05em;}
-  .product-price-amount{font-size:clamp(160%,3.8vw,220%);color:var(--text);} /* #Значения размер цены в карточке товара */
-  .product-divider{width:100%;height:0.3vh;background:rgba(0,0,0,0.08);} /* #Значения толщина разделительной линии */
-  .description-heading{font-size:clamp(120%,2.6vw,150%);margin-bottom:calc(var(--space-xs)*0.6);}
-  .category-heading{color:var(--text);font-size:clamp(150%,3.4vw,210%);margin:0;} /* #Значения размер заголовка категории */
-  .back-link{display:inline-flex;align-items:center;gap:calc(var(--space-xs)*0.6);color:#6B6B6B;margin-bottom:var(--space-sm);font-size:clamp(96%,2vw,118%);transition:color 0.3s ease;}
-  .back-link:hover,.back-link:focus-visible{color:var(--accent);}
-  .callback-button{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:calc(var(--space-xs)*0.7);padding:calc(var(--space-xs)*1.2) calc(var(--space-md));background:var(--accent);color:#fff;border-radius:999px;font-size:clamp(110%,2.6vw,140%);font-weight:500;min-height:9vh;transition:background 0.3s ease,transform 0.3s ease;border:none;} /* #Значения размеры кнопки обратного звонка */
-  .callback-button:hover,.callback-button:focus-visible{background:#1e5a2d;transform:translateY(-0.8vw);}
-  .similar-header{font-size:clamp(170%,4vw,230%);margin-bottom:calc(var(--space-xs));}
-  .similar-accent{width:24%;height:0.4vh;background:var(--accent);margin-bottom:calc(var(--space-sm)*0.6);}
-  .product-support-note{color:#6B6B6B;font-size:clamp(92%,1.8vw,110%);text-align:center;}
-  .materials-section{padding:var(--space-lg) 0;}
-  .materials-header{text-align:center;max-width:78%;margin:0 auto var(--space-md);} /* #Значения максимальная ширина заголовка материалов */
-  .materials-title{font-size:clamp(180%,4.2vw,240%);margin-bottom:calc(var(--space-xs));}
-  .materials-accent{width:18%;height:0.4vh;background:var(--accent);margin:0 auto calc(var(--space-xs));}
-  .materials-description{color:#6B6B6B;font-size:clamp(98%,2vw,118%);margin:0 auto;}
-  .materials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(30%,1fr));gap:var(--space-md);width:86%;margin:0 auto;} /* #Значения ширина сетки материалов */
-  .align-center{align-items:center;}
-  .section-intro{text-align:center;padding:calc(var(--space-md)) 0 calc(var(--space-xs));}
-  .section-intro-title{font-family:Georgia,serif;font-size:clamp(180%,4vw,240%);font-weight:400;line-height:1.3;}
-  .section-intro-accent{width:18%;height:0.4vh;background:var(--accent);margin:calc(var(--space-xs)*0.6) auto 0;border-radius:var(--radius-sm);}
-  .material-card{background:var(--card);border-radius:var(--radius-lg);padding:calc(var(--space-sm));display:flex;flex-direction:column;align-items:center;gap:var(--space-sm);text-align:center;}
-  .material-image{width:100%;aspect-ratio:1/1;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);color:#6B6B6B;font-size:clamp(70%,1.4vw,90%);letter-spacing:0.4em;text-transform:uppercase;}
-  .material-text{color:#6B6B6B;font-size:clamp(94%,2vw,112%);line-height:1.6;} /* #Значения размер текста карточек материалов */
-  .section-header{display:flex;align-items:center;justify-content:space-between;gap:var(--space-xs);flex-wrap:wrap;}
-  .btn-view-all{border:0.2vw solid var(--accent);color:var(--accent);border-radius:999px;padding:calc(var(--space-xs)*0.6) calc(var(--space-xs)*1.4);font-size:clamp(96%,2vw,118%);display:inline-flex;align-items:center;gap:calc(var(--space-xs)*0.4);} /* #Значения размеры кнопки Смотреть все */
-  .btn-view-all:hover,.btn-view-all:focus-visible{background:rgba(36,110,55,0.12);}
-  .status-card{background:var(--card);border-radius:var(--radius-md);padding:calc(var(--space-sm));font-size:clamp(96%,2vw,118%);width:100%;display:block;} /* #Значения размер карточек статуса */
-  .status-card.error{border:0.3vw solid #e57373;background:rgba(253,236,234,0.9);color:#8a1c1c;}
-  footer{background:var(--dark);color:#fff;}
-  .footer-top{padding:var(--space-lg) 0;}
-  .footer-top-title{font-weight:600;margin-bottom:calc(var(--space-xs)*0.6);}
-  .footer-muted{opacity:0.7;font-size:clamp(86%,1.8vw,100%);}
-  .footer-bottom{border-top:1px solid rgba(255,255,255,0.12);padding:calc(var(--space-xs)*0.8) 0;color:rgba(255,255,255,0.7);font-size:clamp(70%,1.6vw,90%);} /* #Значения высота нижней части подвала */
-  .space-v-16{margin-top:var(--space-sm);}
-  .space-v-8{margin-top:calc(var(--space-xs)*0.6);}
-  .space-v-24{margin-top:var(--space-lg);}
-  .link{color:var(--text);border-bottom:0.2vw solid transparent;}
-  .link:hover,.link:focus-visible{border-color:var(--text);}
-  .card{background:var(--card);border-radius:var(--radius-md);padding:calc(var(--space-sm));}
-  .media{height:auto;aspect-ratio:16/9;border-radius:var(--radius-md);background:linear-gradient(135deg,#d9d9d9,#c8c8c8);display:flex;align-items:center;justify-content:center;overflow:hidden;} /* #Значения соотношение медиа-блока */
-  .media img{width:100%;height:100%;object-fit:cover;}
-  #ymap{height:45vh;border-radius:var(--radius-md);background:repeating-conic-gradient(from 0deg,#f1f1f1 0deg 20deg,#e7e7e7 20deg 40deg);} /* #Значения высота карты */
-  .map-note{font-size:clamp(78%,1.6vw,96%);opacity:0.7;margin-top:calc(var(--space-xs)*0.5);}
-  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;padding:var(--space-sm);z-index:60;}
-  .modal{background:#fff;border-radius:var(--radius-lg);width:100%;max-width:88%;padding:calc(var(--space-sm));display:flex;flex-direction:column;gap:var(--space-sm);} /* #Значения размеры модального окна */
-  .modal h3{margin:0;font-size:clamp(140%,3.4vw,190%);}
-  .form-row{display:flex;flex-direction:column;gap:calc(var(--space-xs)*0.4);}
-  .form-row input,.form-row textarea{padding:calc(var(--space-xs)*0.8);border-radius:var(--radius-sm);border:0.2vw solid #ddd;font-size:clamp(96%,2vw,118%);} /* #Значения поля ввода формы */
-  .form-actions{display:flex;gap:var(--space-xs);align-items:center;flex-wrap:wrap;}
-  .btn{cursor:pointer;padding:calc(var(--space-xs)*0.8) calc(var(--space-xs)*1.2);border-radius:999px;border:0.2vw solid var(--accent);background:var(--accent);color:#fff;font-size:clamp(96%,2vw,118%);min-height:8vh;min-width:26%;display:inline-flex;align-items:center;justify-content:center;} /* #Значения размеры основной кнопки формы */
-  .btn.secondary{background:transparent;color:var(--text);}
-  .btn-outline{border:0.2vw solid var(--accent);background:transparent;color:var(--accent);border-radius:999px;padding:calc(var(--space-xs)*0.8) calc(var(--space-xs)*1.4);font-size:clamp(96%,2vw,118%);min-height:8vh;min-width:26%;display:inline-flex;align-items:center;justify-content:center;transition:background 0.3s ease,color 0.3s ease;} /* #Значения размеры обводочной кнопки */
-  .btn-outline.dark-text{color:var(--text);}
-  .btn-outline:hover,.btn-outline:focus-visible{background:rgba(36,110,55,0.12);}
-  .btn-filled{background:var(--dark);color:#fff;border-radius:999px;padding:calc(var(--space-xs)*0.8) calc(var(--space-xs)*1.4);min-height:8vh;min-width:26%;display:inline-flex;align-items:center;justify-content:center;font-size:clamp(96%,2vw,118%);transition:background 0.3s ease;} /* #Значения размеры кнопки с фоном */
-  .btn-filled:hover,.btn-filled:focus-visible{background:rgba(30,30,30,0.85);}
-  .contact-details{font-size:clamp(98%,2vw,120%);gap:calc(var(--space-xs)*0.8);} /* #Значения размер текста контактов */
-  .error{color:#b00020;font-size:clamp(78%,1.6vw,96%);display:none;}
-  .success{display:none;padding:calc(var(--space-xs)*0.8);border-radius:var(--radius-sm);background:rgba(231,247,234,0.9);border:0.2vw solid #cdebd4;color:#1f6f3b;font-size:clamp(88%,1.8vw,102%);} /* #Значения блок успешной отправки формы */
-  @media screen and (max-width: 1400px){
-    .product-row.product-row--home{grid-template-columns:repeat(3,minmax(0,1fr));} /* #Значения 3 карточки при ширине до 1400px */
+  @media (max-width:680px){
+    .header-inner{height:88px}
+    .grid.cols-2,.grid.cols-3{grid-template-columns:1fr}
+    h1{font-size:30px}
+    .hero-inner{padding:72px 24px}
+    .hero-title{font-size:36px}
+    .hero-text{font-size:16px;margin-bottom:28px}
+    .hero-button{width:100%;min-width:0}
+    .hero-media{display:none}
+    .product-detail{flex-direction:column}
+    .product-info{min-height:auto;width:100%;padding:28px 24px;box-shadow:none}
   }
-  @media screen and (max-width: 1200px){
-    .product-row.product-row--home{grid-template-columns:repeat(2,minmax(0,1fr));} /* #Значения 2 карточки при ширине до 1200px */
-  }
-  @media screen and (max-width: 1024px){
-    .hero-inner{flex-direction:column;align-items:flex-start;}
-    .hero-content{max-width:100%;}
-    .hero-media{width:100%;}
-    .product-detail{grid-template-columns:1fr;}
-    .product-row{grid-template-columns:repeat(auto-fit,minmax(60%,1fr));}
-    .materials-grid{width:94%;grid-template-columns:repeat(auto-fit,minmax(44%,1fr));}
-  }
-  @media screen and (max-width: 768px){
-    body{font-size:clamp(96%,2.4vw,120%);}
-    .header-inner{flex-direction:column;align-items:flex-start;}
-    nav{flex-wrap:wrap;}
-    .hero-inner{padding:var(--space-lg) 0;}
-    .hero-media{display:none;}
-    .product-row{grid-template-columns:repeat(auto-fit,minmax(84%,1fr));}
-    .materials-grid{grid-template-columns:repeat(auto-fit,minmax(72%,1fr));}
-    .hero-button,.callback-button,.btn,.btn-filled{min-width:60%;} /* #Значения ширина кнопок на мобильных устройствах */
-  }
-  @media screen and (max-width: 480px){
-    .container{width:92%;} /* #Значения ширина контейнера на очень узких экранах */
-    .hero-actions{flex-direction:column;}
-    .product-row{grid-template-columns:1fr;}
-    .materials-grid{grid-template-columns:1fr;}
-    .modal{padding:calc(var(--space-xs)*1.2);}
-    .form-actions{flex-direction:column;align-items:stretch;}
-    .btn{width:100%;min-width:0;}
-  }
+  /* Modal */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:24px;z-index:1000}
+  .modal{background:#fff;border-radius:16px;max-width:520px;width:100%;padding:20px}
+  .modal h3{margin:0 0 12px;font-size:22px}
+  .form-row{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+  .form-row input, .form-row textarea{padding:12px;border-radius:10px;border:1px solid #ddd;font-size:16px}
+  .form-actions{display:flex;gap:12px;align-items:center;margin-top:16px}
+  .error{color:#b00020;font-size:13px;display:none}
+  .success{display:none;padding:10px;border-radius:10px;background:#e7f7ea;border:1px solid #cdebd4;color:#1f6f3b;font-size:14px;margin-top:8px}
+  .btn{cursor:pointer;padding:12px 16px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:#fff}
+  .btn.secondary{background:transparent;color:var(--text)}
+  .hidden{display:none !important}
+  /* Map placeholder */
+  #ymap{height:360px;border-radius:12px;background:repeating-conic-gradient(from 0deg, #f1f1f1 0deg 20deg, #e7e7e7 20deg 40deg)}
+  .map-note{font-size:12px;opacity:.7;margin-top:8px}
   </style>
 </head>
 <body>
   <header>
     <div class="container header-inner">
-      <a href="/" class="brand" data-route="" aria-label="На главную">
+      <a href="#/" class="brand" data-link="home" aria-label="На главную">
         <div class="brand-badge" aria-hidden="true"></div>
         <strong>студия-гранита.рф</strong>
       </a>
       <nav class="row" aria-label="Главная навигация">
-        <a href="/catalog" data-route="catalog">Каталог</a>
-        <a href="/about" data-route="about">О компании</a>
-        <a href="/contacts" data-route="contacts">Контакты</a>
+        <a href="#/catalog" data-link="catalog">Каталог</a>
+        <a href="#/about" data-link="about">О компании</a>
+        <a href="#/contacts" data-link="contacts">Контакты</a>
       </nav>
       <div class="row">
-        <a href="tel:+74951234567" class="header-contact">+7 (495) 123-45-67</a>
+        <a href="tel:+74951234567" style="color:#fff;opacity:.9;text-decoration:none">+7 (495) 123-45-67</a>
       </div>
     </div>
   </header>
@@ -201,20 +194,20 @@
     <div class="container footer-top">
       <div class="grid cols-3">
         <div>
-          <div class="footer-top-title">студия-гранита.рф</div>
-          <div class="space-v-8 footer-muted">Изготовление и установка памятников. Работаем с 20XX года.</div>
+          <div style="font-weight:600">студия-гранита.рф</div>
+          <div class="space-v-8" style="opacity:.7;font-size:14px">Изготовление и установка памятников. Работаем с 20XX года.</div>
         </div>
         <div>
-          <div class="footer-top-title space-v-8">Навигация</div>
+          <div style="font-weight:600" class="space-v-8">Навигация</div>
           <div class="row-wrap">
-            <a href="/catalog" data-route="catalog">Каталог</a>
-            <a href="/about" data-route="about">О компании</a>
-            <a href="/contacts" data-route="contacts">Контакты</a>
+            <a href="#/catalog">Каталог</a>
+            <a href="#/about">О компании</a>
+            <a href="#/contacts">Контакты</a>
           </div>
         </div>
         <div>
-          <div class="footer-top-title space-v-8">Контакты</div>
-          <div class="row-wrap footer-muted">
+          <div style="font-weight:600" class="space-v-8">Контакты</div>
+          <div class="row-wrap">
             <a href="tel:+74951234567">+7 (495) 123-45-67</a>
             <a href="mailto:info@студия-гранита.рф">info@студия-гранита.рф</a>
           </div>
@@ -294,11 +287,7 @@
   }
 
   function setActiveNav(base){
-    const activeBase = base === 'product' ? 'catalog' : base;
-    $all('nav a[data-route]').forEach(a=>{
-      const route = a.getAttribute('data-route') || '';
-      a.classList.toggle('active', route === activeBase);
-    });
+    $all('nav a').forEach(a=>a.classList.toggle('active', a.getAttribute('href')===('#/'+base)));
   }
   function titleFor(base){
     const map = { '':'Главная', catalog:'Каталог', about:'О компании', contacts:'Контакты', product:'Памятник' };
@@ -343,7 +332,7 @@
   }
 
   function productLink(id){
-    return '/product/' + encodeURIComponent(String(id));
+    return '#/product/' + encodeURIComponent(String(id));
   }
 
   function priceText(product){
@@ -403,12 +392,13 @@
   }
 
   function media(height, imageUrl='', altText=''){
+    const style = height ? ` style="height:${height}px"` : '';
     if(imageUrl){
       const safeUrl = escapeAttribute(imageUrl);
       const safeAlt = escapeHtml(altText || 'Изображение памятника');
-      return `<div class="media has-image"><img src="${safeUrl}" alt="${safeAlt}" loading="lazy"></div>`;
+      return `<div class="media has-image"${style}><img src="${safeUrl}" alt="${safeAlt}" loading="lazy"></div>`;
     }
-    return `<div class="media"></div>`;
+    return `<div class="media"${style}></div>`;
   }
 
   function normalizeProduct(raw){
@@ -474,12 +464,12 @@
       const visible = category.items.slice(0, 4);
       const cards = visible.length
         ? visible.map(productCard).join('')
-        : `<div class="status-card">В этой категории пока нет товаров.</div>`;
+        : `<div class="status-card" style="width:100%;">В этой категории пока нет товаров.</div>`;
       return `
             <div class="space-v-16">
               <div class="section-header home-category-header">
                 <h2 class="category-heading">${heading}</h2>
-                <a class="btn-view-all" href="/catalog" data-route="catalog" aria-label="${aria}">Смотреть все</a>
+                <a class="btn-view-all" href="#/catalog" aria-label="${aria}">Смотреть все</a>
               </div>
               <div class="product-row product-row--home">
                 ${cards}
@@ -501,7 +491,6 @@
       : 'Описание появится позже.';
     const dataId = escapeAttribute(id);
     const link = productLink(id);
-    const routeAttr = escapeAttribute(`product/${encodeURIComponent(String(id))}`);
     const aria = escapeAttribute(`Подробнее о ${nameRaw}`);
     const safeImage = escapeAttribute(image);
     const safeAlt = escapeHtml(nameRaw);
@@ -510,7 +499,7 @@
       : `<div class="product-image-placeholder" aria-hidden="true"></div>`;
     return `
       <article class="product-tile" data-testid="product-card-${dataId}">
-        <a class="product-image-link${image ? ' has-image' : ''}" href="${link}" data-route="${routeAttr}" aria-label="${aria}">
+        <a class="product-image-link${image ? ' has-image' : ''}" href="${link}" aria-label="${aria}">
           ${imageContent}
         </a>
         <div class="product-tile-body">
@@ -518,7 +507,7 @@
           <div class="product-price">${priceText(product)}</div>
           <div class="product-tile-description">${description}</div>
         </div>
-        <a class="product-tile-more" href="${link}" data-route="${routeAttr}" aria-label="${aria}">Подробнее →</a>
+        <a class="product-tile-more" href="${link}" aria-label="${aria}">Подробнее →</a>
       </article>
     `;
   }
@@ -533,9 +522,9 @@
             <h1 class="hero-title">Мы создаём памятники с заботой и уважением</h1>
             <p class="hero-text">Мы сопровождаем семьи на каждом этапе: от выбора материала до установки. Работаем с натуральным гранитом, мрамором и габбро‑диабазом. Бережно относимся к традициям и деталям, чтобы память о близких сохраняла достоинство долгие годы.</p>
             <div class="hero-actions">
-              <a class="hero-button" id="cta-home" href="/catalog" data-route="catalog">Перейти в каталог</a>
-              <a class="btn-filled" data-action="callback" data-prefill="Интересует памятник">Заказать консультацию</a>
+              <a class="hero-button" id="cta-home" href="#/catalog">Перейти в каталог</a>
             </div>
+          </div>
           </div>
         </div>
       </section>
@@ -564,9 +553,9 @@
           </div>
         </div>
       </section>
-      <div class="container section-intro">
-        <div class="section-intro-title">Наши работы</div>
-        <div class="section-intro-accent"></div>
+      <div class="container" style="text-align:center;padding:32px 0 12px;">
+        <div style="font-family: Georgia, serif; font-size: 38px; font-weight: 400; line-height: 1.3;">Наши работы</div>
+        <div class="w-24 h-0.5 bg-[#246e37] mx-auto" style="margin-top:12px;"></div>
       </div>
       <section class="section" id="catalog-preview">
         <div class="container">
@@ -602,7 +591,7 @@
     return `
       <section class="section">
         <div class="container">
-          <div class="grid cols-2 align-center">
+          <div class="grid cols-2" style="align-items:center">
             <div>
               <h2>О компании</h2>
               <p>Наша миссия — сохранять память о близких с уважением и тактом. Мы уделяем внимание каждой детали: от выбора камня и разработки эскиза до монтажа и ухода. Используем проверенные материалы и технологии, чтобы памятник на долгие годы сохранял форму и красоту.</p>
@@ -623,14 +612,14 @@
           <h2>Свяжитесь с нами</h2>
           <div class="space-v-16"></div>
           <div class="card">
-            <div class="row-wrap contact-details">
+            <div class="row-wrap" style="font-size:16px">
               <div><strong>Телефон:</strong> <a class="link" href="tel:+74951234567">+7 (495) 123‑45‑67</a></div>
               <div><strong>E‑mail:</strong> <a class="link" href="mailto:info@студия-гранита.рф">info@студия‑гранита.рф</a></div>
               <div><strong>Адрес:</strong> г. Москва, ул. Примерная, 12</div>
               <div><strong>Часы:</strong> Пн–Сб 10:00–18:00</div>
             </div>
             <div class="space-v-16"></div>
-            <button class="btn-outline dark-text" data-action="callback">Заказать звонок</button>
+            <button class="btn-outline dark-text" style="border-color:var(--accent)" data-action="callback">Заказать звонок</button>
           </div>
           <div class="space-v-16"></div>
           <div class="card">
@@ -667,7 +656,7 @@
           <div class="container">
             ${renderStatus('Товар не найден или был удалён.')}
             <div class="space-v-16"></div>
-            <a class="btn-view-all" href="/catalog" data-route="catalog">Вернуться в каталог</a>
+            <a class="btn-view-all" href="#/catalog">Вернуться в каталог</a>
           </div>
         </section>
       `;
@@ -679,7 +668,7 @@
     const price = priceValue(product) || 'по запросу';
     const description = product.description
       ? `<div class="product-description-text">${formatTextBlock(product.description)}</div>`
-      : `<div class="product-description-text muted">Описание появится позже.</div>`;
+      : `<div class="product-description-text" style="opacity:.7;">Описание появится позже.</div>`;
     const image = productImage(product);
     const safeImage = escapeAttribute(image);
     const safeAlt = escapeHtml(nameRaw);
@@ -687,11 +676,11 @@
     const similarItems = similarList(product);
     const similarCards = similarItems.length
       ? `<div class="product-row">${similarItems.map(productCard).join('')}</div>`
-      : `<div class="status-card">Пока нет похожих памятников.</div>`;
+      : `<div class="status-card" style="width:100%;">Пока нет похожих памятников.</div>`;
     return `
       <section class="section">
         <div class="container">
-            <a class="back-link" href="/catalog" data-route="catalog">
+            <a class="back-link" href="#/catalog">
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11.707 4.293a1 1 0 0 1 0 1.414L8.414 9H17a1 1 0 1 1 0 2H8.414l3.293 3.293a1 1 0 0 1-1.414 1.414l-5-5a1 1 0 0 1 0-1.414l5-5a1 1 0 0 1 1.414 0Z"/></svg>
             <span>Назад к каталогу</span>
           </a>
@@ -720,7 +709,7 @@
             </div>
           </div>
         </div>
-        <div class="container space-v-24">
+        <div class="container" style="margin-top:56px;">
           <div class="similar-header">Похожие памятники</div>
           <div class="similar-accent"></div>
           ${similarCards}
@@ -732,55 +721,15 @@
 
 
   // ---------------- Router ----------------
-  function currentRoute(){
-    const path = location.pathname.replace(/\/+$/, '') || '/';
-    const parts = path.split('/').filter(Boolean);
-    const base = parts[0] || '';
-    const param = parts.length > 1 ? decodeURIComponent(parts[1]) : '';
+  function parseHash(){
+    const hash = location.hash || '#/';
+    const parts = hash.split('/');
+    const base = parts[1] || '';
+    const param = parts[2];
     return { base, param };
   }
-
-  function normalizePath(path){
-    if(!path) return '/';
-    if(path.startsWith('/')) return path || '/';
-    return '/' + path.replace(/^\/+/, '');
-  }
-
-  function navigateToHref(path){
-    const normalized = normalizePath(path);
-    if(normalized === location.pathname){
-      render();
-      return;
-    }
-    history.pushState({}, '', normalized);
-    render();
-  }
-
-  function navigateToRoute(route){
-    const clean = (route || '').replace(/^\/+|\/+$/g, '');
-    navigateToHref(clean ? '/' + clean : '/');
-  }
-
-  function handleLinkClick(event){
-    const link = event.target.closest('a');
-    if(!link) return;
-    const href = link.getAttribute('href') || '';
-    if(link.target === '_blank' || link.hasAttribute('download')) return;
-    if(href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
-    const routeAttr = link.getAttribute('data-route');
-    if(routeAttr !== null){
-      event.preventDefault();
-      navigateToRoute(routeAttr);
-      return;
-    }
-    if(href){
-      event.preventDefault();
-      navigateToHref(href);
-    }
-  }
-
   function render(){
-    const { base, param } = currentRoute();
+    const { base, param } = parseHash();
     document.title = 'студия-гранита.рф — ' + titleFor(base);
     const app = $('#app');
     let html = '';
@@ -796,10 +745,9 @@
     wirePageInteractions();
   }
 
-  window.addEventListener('popstate', render);
+  window.addEventListener('hashchange', render);
   document.addEventListener('DOMContentLoaded', ()=>{
     $('#year').textContent = String(new Date().getFullYear());
-    document.addEventListener('click', handleLinkClick);
     render();
     loadProducts();
     maybeRunTests();
@@ -808,7 +756,7 @@
   async function loadProducts(){
     setState({ loading: true, error: null });
     try{
-      const response = await fetch('/api/products');
+      const response = await fetch('/products');
       if(!response.ok){
         throw new Error('Не удалось получить список товаров');
       }
@@ -899,7 +847,7 @@
   function expect(cond, msg){ if(!cond) throw new Error(msg); }
   function textIncludes(sel, substr){ const el = document.querySelector(sel); return !!el && !!el.textContent && el.textContent.includes(substr); }
   function count(sel){ return document.querySelectorAll(sel).length; }
-  function navigate(path){ navigateToHref(path); }
+  function navigate(hash){ window.location.hash = hash; }
 
   
   let testsScheduled = false;
@@ -919,18 +867,18 @@
   }
 
   function runTests(){
-    const prev = location.pathname;
+    const prev = window.location.hash;
     console.group('%cUI tests','color:gray');
     try{
-      navigate('/');
+      navigate('#/');
       expect(textIncludes('h1','Мы создаём памятники'), 'Home: заголовок не найден');
       expect(count('#cta-home')===1, 'Home: основной CTA должен быть один');
 
-      navigate('/catalog');
+      navigate('#/catalog');
       if(state.products.length){
         expect(count('[data-testid^="product-card-"]')===state.products.length, 'Catalog: кол-во карточек не совпало');
         const firstProduct = state.products[0];
-        navigate(`/product/${encodeURIComponent(firstProduct.id)}`);
+        navigate(`#/product/${encodeURIComponent(firstProduct.id)}`);
         expect(textIncludes('h2', firstProduct.name || firstProduct.title || ''), 'Product: заголовок не совпал');
         expect(textIncludes('section .container','Цена:'), 'Product: цена не отображается');
         expect(count('.media')>=1, 'Product: изображения не отображаются');
@@ -938,10 +886,10 @@
         expect(count('[data-testid^="product-card-"]')===0, 'Catalog: каталог должен быть пустым');
       }
 
-      navigate('/about');
+      navigate('#/about');
       expect(textIncludes('h2','О компании'), 'About: заголовок не найден');
 
-      navigate('/contacts');
+      navigate('#/contacts');
       expect(document.getElementById('ymap')!==null, 'Contacts: контейнер карты отсутствует');
       expect(textIncludes('.card','Заказать звонок'), 'Contacts: кнопка не найдена');
 
@@ -949,8 +897,7 @@
     }catch(e){
       console.error('✘ Тест упал:', e.message);
     }finally{
-      history.replaceState({}, '', prev || '/');
-      render();
+      window.location.hash = prev;
       console.groupEnd();
     }
   }
