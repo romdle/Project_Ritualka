@@ -31,6 +31,48 @@
   .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
   .row{display:flex;gap:16px;align-items:center}
   .row-wrap{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  .mx-auto{margin-left:auto;margin-right:auto}
+  .w-24{width:6rem}
+  .h-0\.5{height:2px}
+  .w-full{width:100%}
+  .px-8{padding-left:2rem;padding-right:2rem}
+  .py-4{padding-top:1rem;padding-bottom:1rem}
+  .bg-\[\#246e37\]{background-color:#246e37}
+  .hover\:bg-\[\#1e5a2d\]:hover{background-color:#1e5a2d}
+  .text-white{color:#fff}
+  .rounded-md{border-radius:0.375rem}
+  .transition-all{transition:all .3s ease}
+  .flex{display:flex}
+  .items-center{align-items:center}
+  .justify-center{justify-content:center}
+  .gap-2{gap:0.5rem}
+  .font-medium{font-weight:500}
+  .product-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
+  .product-row--catalog{justify-content:flex-start}
+  .product-tile{width:235px;height:534px;background:var(--card);border-radius:20px;padding:20px 18px;display:flex;flex-direction:column;box-sizing:border-box}
+  .product-image-link{display:block;width:100%;height:320px;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8)}
+  .product-image-link img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+  .product-image-link:hover img{transform:scale(1.05)}
+  .product-image-placeholder{width:100%;height:100%;position:relative}
+  .product-image-placeholder::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
+  .product-tile-body{display:flex;flex-direction:column;gap:12px;margin-top:18px;flex:1}
+  .product-name{font-weight:500;font-size:16px;line-height:1.4}
+  .product-category{font-size:14px}
+  .product-price{font-size:15px;font-weight:500;margin-top:auto}
+  .product-tile-more{margin-top:20px;font-size:14px;color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;align-self:flex-start}
+  .product-tile-more:hover{border-color:var(--accent)}
+  .product-detail{display:flex;gap:36px;align-items:flex-start}
+  .product-main-image{width:481.5px;height:642px;border-radius:20px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8)}
+  .product-main-image img{width:100%;height:100%;object-fit:cover}
+  .product-main-image::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
+  .product-main-image.has-image::after{display:none}
+  .product-info{display:flex;flex-direction:column;gap:20px;min-height:642px;flex:1}
+  .product-info-content{display:flex;flex-direction:column;gap:16px}
+  .callback-button{margin-top:auto;font-size:16px;font-weight:500}
+  .product-title{font-family:Georgia,serif;font-size:42px;font-weight:400;line-height:1.3;margin:0}
+  .product-description-text{color:#6B6B6B;font-size:16px;line-height:1.8}
+  @media (max-width:1200px){ .product-detail{flex-direction:column;align-items:center} .product-info{width:100%;min-height:auto} .callback-button{margin-top:24px;width:100%} }
+  @media (max-width:680px){ .product-row{justify-content:flex-start} .product-tile{margin:0 auto} .product-main-image{width:100%;max-width:481.5px;height:auto} .product-main-image img{height:auto} }
   /* Cards & media */
   .card{background:var(--card);border-radius:16px;padding:16px}
   .media{height:180px;border-radius:14px;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -343,14 +385,14 @@
       const visible = category.items.slice(0, 4);
       const cards = visible.length
         ? visible.map(productCard).join('')
-        : `<div class="status-card" style="grid-column:1 / -1;">В этой категории пока нет товаров.</div>`;
+        : `<div class="status-card" style="width:100%;">В этой категории пока нет товаров.</div>`;
       return `
             <div class="space-v-16">
               <div class="section-header">
                 <h2>${heading}</h2>
                 <a class="btn-view-all" href="#/catalog" aria-label="${aria}">Смотреть все</a>
               </div>
-              <div class="grid cols-2">
+              <div class="product-row">
                 ${cards}
               </div>
             </div>
@@ -369,13 +411,22 @@
     const dataId = escapeAttribute(id);
     const link = productLink(id);
     const aria = escapeAttribute(`Подробнее о ${nameRaw}`);
+    const safeImage = escapeAttribute(image);
+    const safeAlt = escapeHtml(nameRaw);
+    const imageContent = image
+      ? `<img src="${safeImage}" alt="${safeAlt}" loading="lazy">`
+      : `<div class="product-image-placeholder" aria-hidden="true"></div>`;
     return `
-      <article class="card" data-testid="product-card-${dataId}">
-        ${media(180, image, nameRaw)}
-        <div class="space-v-8" style="font-weight:500">${name}</div>
-        <div class="muted" style="font-size:14px">${categoryText}</div>
-        <div class="space-v-8" style="font-size:14px">${priceText(product)}</div>
-        <a class="link" href="${link}" aria-label="${aria}">Подробнее →</a>
+      <article class="product-tile" data-testid="product-card-${dataId}">
+        <a class="product-image-link${image ? ' has-image' : ''}" href="${link}" aria-label="${aria}">
+          ${imageContent}
+        </a>
+        <div class="product-tile-body">
+          <div class="product-name">${name}</div>
+          <div class="product-category muted">${categoryText}</div>
+          <div class="product-price">${priceText(product)}</div>
+        </div>
+        <a class="product-tile-more" href="${link}" aria-label="${aria}">Подробнее →</a>
       </article>
     `;
   }
@@ -422,6 +473,10 @@
           </div>
         </div>
       </section>
+      <div class="container" style="text-align:center;padding:32px 0 12px;">
+        <div style="font-family: Georgia, serif; font-size: 38px; font-weight: 400; line-height: 1.3;">Наши работы</div>
+        <div class="w-24 h-0.5 bg-[#246e37] mx-auto" style="margin-top:12px;"></div>
+      </div>
       <section class="section" id="catalog-preview">
         <div class="container">
           ${renderHomeCategories()}
@@ -440,7 +495,7 @@
     }else if(!state.products.length){
       content = renderStatus('Каталог пока пуст. Возвращайтесь позже.');
     }else{
-      content = `<div class="grid cols-3 space-v-16">${state.products.map(productCard).join('')}</div>`;
+      content = `<div class="product-row product-row--catalog">${state.products.map(productCard).join('')}</div>`;
     }
     return `
       <section class="section">
@@ -532,40 +587,28 @@
     const categoryName = escapeHtml(displayCategoryName(product.category));
     const price = priceText(product);
     const description = product.description
-      ? `<div class="product-description">${formatTextBlock(product.description)}</div>`
+      ? `<div class="product-description-text">${formatTextBlock(product.description)}</div>`
       : `<div class="muted">Описание появится позже.</div>`;
     const image = productImage(product);
-    const similar = similarList(product);
-    const similarHtml = similar.length
-      ? similar.map(productCard).join('')
-      : `<div class="status-card" style="grid-column:1 / -1;">Мы пока не нашли похожих товаров.</div>`;
+    const safeImage = escapeAttribute(image);
+    const safeAlt = escapeHtml(nameRaw);
     const callbackPrefill = escapeAttribute(`Интересует ${nameRaw}`);
     return `
       <section class="section">
         <div class="container">
-          <div class="grid cols-2" style="align-items:start">
-            <div>
-              ${media(360, image, nameRaw)}
-              <div class="grid cols-3 space-v-16">
-                ${media(120, image, nameRaw)}
-                ${media(120)}
-                ${media(120)}
+          <div class="product-detail">
+            <div class="product-main-image${image ? ' has-image' : ''}">
+              ${image ? `<img src="${safeImage}" alt="${safeAlt}" loading="lazy">` : ''}
+            </div>
+            <div class="product-info">
+              <div class="product-info-content">
+                <h2 class="product-title">${name}</h2>
+                <div class="muted">Категория: ${categoryName}</div>
+                <div style="font-size:18px">${price}</div>
+                ${description}
               </div>
+              <button class="w-full px-8 py-4 bg-[#246e37] text-white rounded-md transition-all hover:bg-[#1e5a2d] flex items-center justify-center gap-2 callback-button" data-action="callback" data-prefill="${callbackPrefill}">Заказать звонок</button>
             </div>
-            <div>
-              <h2>${name}</h2>
-              <div class="space-v-8 muted">Категория: ${categoryName}</div>
-              <div class="space-v-8" style="font-size:18px">${price}</div>
-              <div class="space-v-16"></div>
-              ${description}
-              <div class="space-v-16"></div>
-              <button class="btn-outline dark-text" style="border-color:var(--accent)" data-action="callback" data-prefill="${callbackPrefill}">Заказать звонок</button>
-            </div>
-          </div>
-          <div class="space-v-16"></div>
-          <h2>Похожие памятники</h2>
-          <div class="grid cols-3 space-v-16">
-            ${similarHtml}
           </div>
         </div>
       </section>
