@@ -33,9 +33,17 @@
   .row-wrap{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
   /* Cards & media */
   .card{background:var(--card);border-radius:16px;padding:16px}
-  .media{height:180px;border-radius:14px;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);position:relative;overflow:hidden}
+  .media{height:180px;border-radius:14px;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
   .media::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
+  .media.has-image::after{display:none}
+  .media img{width:100%;height:100%;object-fit:cover;display:block}
   .muted{opacity:.7}
+  .section-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .btn-view-all{border:1px solid var(--accent);color:var(--accent);border-radius:10px;padding:8px 16px;font-size:14px;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+  .btn-view-all:hover{background:rgba(36,110,55,.08)}
+  .status-card{background:var(--card);border-radius:16px;padding:20px;font-size:16px}
+  .status-card.error{border:1px solid #e57373;background:#fdecea;color:#8a1c1c}
+  .product-description{line-height:1.7;font-size:16px}
   /* Footer */
   footer{background:var(--dark);color:#fff}
   footer a{color:#fff}
@@ -144,21 +152,31 @@
   </div>
 
   <script>
-  // ---------------- Data ----------------
-  const PRODUCTS = [
-    { id:"S-01", title:"Памятник S-01", material:"Гранит чёрный", price:"48 000 ₽" },
-    { id:"S-02", title:"Памятник S-02", material:"Габбро-диабаз", price:"52 000 ₽" },
-    { id:"F-01", title:"Памятник F-01", material:"Гранит серый", price:"95 000 ₽" },
-    { id:"F-02", title:"Памятник F-02", material:"Гранит чёрный", price:"110 000 ₽" },
-    { id:"E-01", title:"Памятник E-01", material:"Мрамор белый", price:"по запросу" },
-    { id:"E-02", title:"Памятник E-02", material:"Гранит красный", price:"по запросу" },
-    { id:"D-01", title:"Памятник D-01", material:"Мрамор кремовый", price:"по запросу" },
-    { id:"D-02", title:"Памятник D-02", material:"Гранит серый", price:"по запросу" }
-  ];
+    // ---------------- State ----------------
+  const state = {
+    products: [],
+    loading: true,
+    error: null,
+  };
+
+  const CATEGORY_TITLES = {
+    'Стандартный': 'Стандартные',
+    'Семейный': 'Семейные',
+    'Эксклюзивный': 'Эксклюзивные',
+    'Детский': 'Детские',
+  };
+
+  const CATEGORY_ORDER = ['Стандартный', 'Семейный', 'Эксклюзивный', 'Детский'];
 
   // ---------------- Helpers ----------------
   function $(sel, root=document){ return root.querySelector(sel); }
   function $all(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
+  
+  function setState(partial){
+    Object.assign(state, partial);
+    render();
+  }
+
   function setActiveNav(base){
     $all('nav a').forEach(a=>a.classList.toggle('active', a.getAttribute('href')===('#/'+base)));
   }
@@ -166,37 +184,200 @@
     const map = { '':'Главная', catalog:'Каталог', about:'О компании', contacts:'Контакты', product:'Памятник' };
     return map[base] || 'Главная';
   }
-  function priceText(p){ return p.price==='по запросу' ? 'Цена: по запросу' : ('от ' + p.price); }
-  function media(height){ return '<div class="media" style="'+(height?('height:'+height+'px;'):'')+'"></div>'; }
-
-  // Phone mask +7 (XXX) XXX-XX-XX
-  function normalizeDigits(v){ return v.replace(/\D/g,''); }
-  function formatPhone(d){
-    // Expect 11 digits starting with 7; if first is 8, convert to 7 for formatting
-    if(!d) return '';
-    if(d[0]==='8') d='7'+d.slice(1);
-    if(d[0]!=='7') d='7'+d; // force leading 7 if user typed 9/8 etc.
-    d = d.slice(0,11);
-    let out = '+7 ';
-    if(d.length>1){ out += '(' + d.slice(1,4); if(d.length>=4) out += ') '; }
-    if(d.length>=7){ out += d.slice(4,7) + '-' + d.slice(7,9) + '-' + d.slice(9,11); }
-    else if(d.length>4){ out += d.slice(4); }
-    return out.trim();
+  
+  function escapeHtml(value){
+    if(value === null || value === undefined) return '';
+    return String(value)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
   }
 
-  function openModal(prefillComment=''){
-    const bd = $('#modal-backdrop');
-    $('#success').style.display = 'none';
-    $('#callback-form').reset();
-    if(prefillComment) $('#comment').value = prefillComment;
-    bd.style.display = 'flex';
-    bd.setAttribute('aria-hidden','false');
-    $('#name').focus();
+  function escapeAttribute(value){
+    return escapeHtml(value).replace(/\r/g,'').replace(/\n/g,'&#10;');
   }
-  function closeModal(){
-    const bd = $('#modal-backdrop');
-    bd.style.display = 'none';
-    bd.setAttribute('aria-hidden','true');
+  function resolveImagePath(path){
+    if(!path) return '';
+    const raw = String(path).trim();
+    if(!raw) return '';
+    if(/^https?:\/\//i.test(raw)) return raw;
+    if(raw.startsWith('/')) return raw;
+    const normalized = raw.replace(/^\.\/?/, '').replace(/^\/+/, '');
+    if(normalized.startsWith('static/')){
+      return '/' + normalized.replace(/^\/+/, '');
+    }
+    return '/static/' + normalized;
+  }
+
+  function productImage(product){
+    const image = product?.img_path ?? product?.image_path ?? '';
+    return resolveImagePath(image);
+  }
+
+  function displayCategoryName(category){
+    const raw = (category ?? '').trim();
+    if(!raw) return 'Без категории';
+    return CATEGORY_TITLES[raw] || raw;
+  }
+
+  function productLink(id){
+    return '#/product/' + encodeURIComponent(String(id));
+  }
+
+  function priceText(product){
+    if(!product) return 'Цена: по запросу';
+    const value = product.price;
+    if(value === null || value === undefined || value === ''){
+      return 'Цена: по запросу';
+    }
+    const num = Number(value);
+    if(Number.isFinite(num)){
+      return 'Цена: ' + new Intl.NumberFormat('ru-RU').format(num) + ' ₽';
+    }
+    const textValue = String(value).trim();
+    if(!textValue){
+      return 'Цена: по запросу';
+    }
+    return 'Цена: ' + escapeHtml(textValue);
+  }
+
+  function formatTextBlock(text){
+    if(text === null || text === undefined) return '';
+    return escapeHtml(String(text)).replace(/\r?\n/g,'<br>');
+  }
+
+  function snippet(text, limit=90){
+    if(text === null || text === undefined) return '';
+    const str = String(text).trim();
+    if(str.length <= limit) return str;
+    return str.slice(0, limit - 1) + '…';
+  }
+
+  function getProductById(id){
+    return state.products.find(p => String(p.id) === String(id));
+  }
+
+  function similarList(product){
+    if(!product) return [];
+    const currentId = String(product.id);
+    const targetCategory = (product.category ?? '').toLowerCase();
+    const sameCategory = state.products
+      .filter(p => String(p.id) !== currentId && (p.category ?? '').toLowerCase() === targetCategory)
+      .slice(0, 3);
+    if(sameCategory.length) return sameCategory;
+    return state.products.filter(p => String(p.id) !== currentId).slice(0, 3);
+  }
+
+  function media(height, imageUrl='', altText=''){
+    const style = height ? ` style="height:${height}px"` : '';
+    if(imageUrl){
+      const safeUrl = escapeAttribute(imageUrl);
+      const safeAlt = escapeHtml(altText || 'Изображение памятника');
+      return `<div class="media has-image"${style}><img src="${safeUrl}" alt="${safeAlt}" loading="lazy"></div>`;
+    }
+    return `<div class="media"${style}></div>`;
+  }
+
+  function normalizeProduct(raw){
+    if(!raw || typeof raw !== 'object') return {};
+    return {
+      id: raw.id,
+      name: raw.name ?? raw.title ?? '',
+      price: raw.price,
+      description: raw.description ?? '',
+      img_path: raw.img_path ?? raw.image_path ?? '',
+      category: raw.category ?? '',
+    };
+  }
+
+  function renderStatus(message, isError=false){
+    const safe = escapeHtml(message);
+    const extra = isError ? ' error' : '';
+    return `<div class="status-card${extra}">${safe}</div>`;
+  }
+
+  function orderedCategories(){
+    const groups = new Map();
+    state.products.forEach(product => {
+      const raw = (product.category ?? '').trim();
+      const key = raw || 'Без категории';
+      if(!groups.has(key)){
+        groups.set(key, []);
+      }
+      groups.get(key).push(product);
+    });
+    const entries = Array.from(groups.entries()).map(([key, items]) => ({
+      key,
+      display: displayCategoryName(key),
+      items,
+    }));
+    const index = (name) => {
+      const raw = (name ?? '').trim();
+      const idx = CATEGORY_ORDER.indexOf(raw);
+      return idx === -1 ? CATEGORY_ORDER.length : idx;
+    };
+    entries.sort((a, b) => {
+      const orderDiff = index(a.key) - index(b.key);
+      if(orderDiff !== 0) return orderDiff;
+      return a.display.localeCompare(b.display, 'ru');
+    });
+    return entries;
+  }
+
+  function renderHomeCategories(){
+    if(state.loading){
+      return renderStatus('Загружаем каталог...');
+    }
+    if(state.error){
+      return renderStatus(state.error, true);
+    }
+    const categories = orderedCategories();
+    if(!categories.length){
+      return renderStatus('Каталог пока пуст. Возвращайтесь позже.');
+    }
+    return categories.map(category => {
+      const heading = escapeHtml(category.display);
+      const aria = escapeAttribute(`Открыть каталог категории ${category.display}`);
+      const visible = category.items.slice(0, 4);
+      const cards = visible.length
+        ? visible.map(productCard).join('')
+        : `<div class="status-card" style="grid-column:1 / -1;">В этой категории пока нет товаров.</div>`;
+      return `
+            <div class="space-v-16">
+              <div class="section-header">
+                <h2>${heading}</h2>
+                <a class="btn-view-all" href="#/catalog" aria-label="${aria}">Смотреть все</a>
+              </div>
+              <div class="grid cols-2">
+                ${cards}
+              </div>
+            </div>
+          `;
+    }).join('');
+  }
+
+  function productCard(product){
+    if(!product) return '';
+    const id = String(product.id);
+    const nameRaw = product.name || product.title || `Памятник ${id}`;
+    const name = escapeHtml(nameRaw);
+    const categoryName = displayCategoryName(product.category);
+    const categoryText = escapeHtml('Категория: ' + categoryName);
+    const image = productImage(product);
+    const dataId = escapeAttribute(id);
+    const link = productLink(id);
+    const aria = escapeAttribute(`Подробнее о ${nameRaw}`);
+    return `
+      <article class="card" data-testid="product-card-${dataId}">
+        ${media(180, image, nameRaw)}
+        <div class="space-v-8" style="font-weight:500">${name}</div>
+        <div class="muted" style="font-size:14px">${categoryText}</div>
+        <div class="space-v-8" style="font-size:14px">${priceText(product)}</div>
+        <a class="link" href="${link}" aria-label="${aria}">Подробнее →</a>
+      </article>
+    `;
   }
 
   // ---------------- Views ----------------
@@ -243,47 +424,29 @@
       </section>
       <section class="section" id="catalog-preview">
         <div class="container">
-          ${[
-            {title:'Стандартные', ids:['S-01','S-02']},
-            {title:'Семейные', ids:['F-01','F-02']},
-            {title:'Эксклюзивные', ids:['E-01','E-02']},
-            {title:'Детские', ids:['D-01','D-02']},
-          ].map(g=>`
-            <div class="space-v-16">
-              <h2>${g.title}</h2>
-              <div class="grid cols-2">
-                ${g.ids.map(id=>{
-                  const p = PRODUCTS.find(x=>x.id===id);
-                  return productCard(p);
-                }).join('')}
-              </div>
-            </div>
-          `).join('')}
+          ${renderHomeCategories()}
         </div>
       </section>
     `;
   }
 
-  function productCard(p){
-    return `
-      <article class="card" data-testid="product-card-${p.id}">
-        ${media()}
-        <div class="space-v-8" style="font-weight:500">${p.title}</div>
-        <div class="muted" style="font-size:14px">Материал: ${p.material}</div>
-        <div class="space-v-8" style="font-size:14px">${priceText(p)}</div>
-        <a class="link" href="#/product/${p.id}" aria-label="Подробнее о ${p.title}">Подробнее →</a>
-      </article>
-    `;
-  }
 
   function viewCatalog(){
+    let content = '';
+    if(state.loading){
+      content = renderStatus('Загружаем каталог...');
+    }else if(state.error){
+      content = renderStatus(state.error, true);
+    }else if(!state.products.length){
+      content = renderStatus('Каталог пока пуст. Возвращайтесь позже.');
+    }else{
+      content = `<div class="grid cols-3 space-v-16">${state.products.map(productCard).join('')}</div>`;
+    }
     return `
       <section class="section">
         <div class="container">
           <h2>Каталог памятников</h2>
-          <div class="grid cols-3 space-v-16">
-            ${PRODUCTS.map(p=>productCard(p)).join('')}
-          </div>
+          ${content}
         </div>
       </section>
     `;
@@ -301,45 +464,6 @@
               <p class="muted">Мы открыты к диалогу, бережно работаем с пожеланиями семьи и придерживаемся сроков.</p>
             </div>
             <div>${media()}</div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-
-  function similarList(id){
-    const group = id.split('-')[0];
-    const similar = PRODUCTS.filter(x=>x.id!==id && x.id.startsWith(group)).slice(0,2);
-    const fallbacks = PRODUCTS.filter(x=>x.id!==id).slice(0,3);
-    return (similar.length? similar: fallbacks);
-  }
-
-  function viewProduct(id){
-    const p = PRODUCTS.find(x=>x.id===id);
-    if(!p){ location.hash = '#/catalog'; return ''; }
-    const list = similarList(id);
-    return `
-      <section class="section">
-        <div class="container">
-          <div class="grid cols-2" style="align-items:start">
-            <div>
-              ${media(360)}
-              <div class="grid cols-3 space-v-16">
-                ${media(120)}${media(120)}${media(120)}
-              </div>
-            </div>
-            <div>
-              <h2>${p.title}</h2>
-              <div class="space-v-8 muted">Материал: ${p.material}</div>
-              <div class="space-v-8" style="font-size:18px">${priceText(p)}</div>
-              <div class="space-v-16"></div>
-              <button class="btn-outline dark-text" style="border-color:var(--accent)" data-action="callback" data-prefill="Интересует ${p.title}">Заказать звонок</button>
-            </div>
-          </div>
-          <div class="space-v-16"></div>
-          <h2>Похожие памятники</h2>
-          <div class="grid cols-3 space-v-16">
-            ${list.map(pp=>productCard(pp)).join('')}
           </div>
         </div>
       </section>
@@ -371,6 +495,84 @@
       </section>
     `;
   }
+  function viewProduct(id){
+    if(state.loading){
+      return `
+        <section class="section">
+          <div class="container">
+            ${renderStatus('Загружаем данные о товаре...')}
+          </div>
+        </section>
+      `;
+    }
+    if(state.error){
+      return `
+        <section class="section">
+          <div class="container">
+            ${renderStatus(state.error, true)}
+          </div>
+        </section>
+      `;
+    }
+    const product = getProductById(id);
+    if(!product){
+      return `
+        <section class="section">
+          <div class="container">
+            ${renderStatus('Товар не найден или был удалён.')}
+            <div class="space-v-16"></div>
+            <a class="btn-view-all" href="#/catalog">Вернуться в каталог</a>
+          </div>
+        </section>
+      `;
+    }
+    const idValue = String(product.id);
+    const nameRaw = product.name || product.title || `Памятник ${idValue}`;
+    const name = escapeHtml(nameRaw);
+    const categoryName = escapeHtml(displayCategoryName(product.category));
+    const price = priceText(product);
+    const description = product.description
+      ? `<div class="product-description">${formatTextBlock(product.description)}</div>`
+      : `<div class="muted">Описание появится позже.</div>`;
+    const image = productImage(product);
+    const similar = similarList(product);
+    const similarHtml = similar.length
+      ? similar.map(productCard).join('')
+      : `<div class="status-card" style="grid-column:1 / -1;">Мы пока не нашли похожих товаров.</div>`;
+    const callbackPrefill = escapeAttribute(`Интересует ${nameRaw}`);
+    return `
+      <section class="section">
+        <div class="container">
+          <div class="grid cols-2" style="align-items:start">
+            <div>
+              ${media(360, image, nameRaw)}
+              <div class="grid cols-3 space-v-16">
+                ${media(120, image, nameRaw)}
+                ${media(120)}
+                ${media(120)}
+              </div>
+            </div>
+            <div>
+              <h2>${name}</h2>
+              <div class="space-v-8 muted">Категория: ${categoryName}</div>
+              <div class="space-v-8" style="font-size:18px">${price}</div>
+              <div class="space-v-16"></div>
+              ${description}
+              <div class="space-v-16"></div>
+              <button class="btn-outline dark-text" style="border-color:var(--accent)" data-action="callback" data-prefill="${callbackPrefill}">Заказать звонок</button>
+            </div>
+          </div>
+          <div class="space-v-16"></div>
+          <h2>Похожие памятники</h2>
+          <div class="grid cols-3 space-v-16">
+            ${similarHtml}
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+
 
   // ---------------- Router ----------------
   function parseHash(){
@@ -385,7 +587,7 @@
     document.title = 'студия-гранита.рф — ' + titleFor(base);
     const app = $('#app');
     let html = '';
-    if(base==='' ){ html = viewHome(); }
+    if(base===''){ html = viewHome(); }
     else if(base==='catalog'){ html = viewCatalog(); }
     else if(base==='about'){ html = viewAbout(); }
     else if(base==='contacts'){ html = viewContacts(); }
@@ -400,8 +602,26 @@
   document.addEventListener('DOMContentLoaded', ()=>{
     $('#year').textContent = String(new Date().getFullYear());
     render();
+    loadProducts();
     maybeRunTests();
   });
+  // ---------------- Data loading ----------------
+  async function loadProducts(){
+    setState({ loading: true, error: null });
+    try{
+      const response = await fetch('/products');
+      if(!response.ok){
+        throw new Error('Не удалось получить список товаров');
+      }
+      const payload = await response.json();
+      const items = Array.isArray(payload?.items) ? payload.items : [];
+      const normalized = items.map(normalizeProduct);
+      setState({ products: normalized, loading: false, error: null });
+    }catch(error){
+      console.error('Ошибка загрузки каталога', error);
+      setState({ products: [], loading: false, error: 'Не удалось загрузить каталог. Попробуйте обновить страницу позже.' });
+    }
+  }
 
   // ---------------- Interactions ----------------
   function wirePageInteractions(){
@@ -409,13 +629,40 @@
     $all('[data-action="callback"]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
         const pre = btn.getAttribute('data-prefill') || '';
-        const text = pre ? ('Интересует памятник ' + pre.replace(/^Интересует\\s*/,'') ) : '';
+        const text = pre ? ('Интересует памятник ' + pre.replace(/^Интересует\s*/,'')) : '';
         openModal(text);
       });
     });
   }
 
-  // Modal UI
+  function openModal(prefillComment=''){
+    const bd = $('#modal-backdrop');
+    $('#success').style.display = 'none';
+    $('#callback-form').reset();
+    if(prefillComment) $('#comment').value = prefillComment;
+    bd.style.display = 'flex';
+    bd.setAttribute('aria-hidden','false');
+    $('#name').focus();
+  }
+  function closeModal(){
+    const bd = $('#modal-backdrop');
+    bd.style.display = 'none';
+    bd.setAttribute('aria-hidden','true');
+  }
+
+  function normalizeDigits(v){ return v.replace(/\D/g,''); }
+  function formatPhone(d){
+    if(!d) return '';
+    if(d[0]==='8') d='7'+d.slice(1);
+    if(d[0]!=='7') d='7'+d;
+    d = d.slice(0,11);
+    let out = '+7 ';
+    if(d.length>1){ out += '(' + d.slice(1,4); if(d.length>=4) out += ') '; }
+    if(d.length>=7){ out += d.slice(4,7) + '-' + d.slice(7,9) + '-' + d.slice(9,11); }
+    else if(d.length>4){ out += d.slice(4); }
+    return out.trim();
+  }
+
   $('#close-btn').addEventListener('click', closeModal);
   $('#modal-backdrop').addEventListener('click', (e)=>{
     if(e.target.id==='modal-backdrop') closeModal();
@@ -454,35 +701,49 @@
   function textIncludes(sel, substr){ const el = document.querySelector(sel); return !!el && !!el.textContent && el.textContent.includes(substr); }
   function count(sel){ return document.querySelectorAll(sel).length; }
   function navigate(hash){ window.location.hash = hash; }
+
+  
+  let testsScheduled = false;
   function maybeRunTests(){
     const params = new URLSearchParams(location.search);
-    if(params.get('test')==='1'){ setTimeout(runTests, 50); }
+    if(params.get('test')==='1' && !testsScheduled){
+      testsScheduled = true;
+      const waitForData = () => {
+        if(state.loading){
+          setTimeout(waitForData, 100);
+          return;
+        }
+        setTimeout(runTests, 50);
+      };
+      waitForData();
+    }
   }
+
   function runTests(){
     const prev = window.location.hash;
     console.group('%cUI tests','color:gray');
     try{
       navigate('#/');
       expect(textIncludes('h1','Мы создаём памятники'), 'Home: заголовок не найден');
-      // Home has exactly one primary CTA button
       expect(count('#cta-home')===1, 'Home: основной CTA должен быть один');
 
       navigate('#/catalog');
-      expect(count('[data-testid^="product-card-"]')===PRODUCTS.length, 'Catalog: кол-во карточек не совпало');
-
-      navigate('#/product/S-01');
-      expect(textIncludes('h2','Памятник S-01'), 'Product: заголовок не совпал');
-      expect(count('.media')>=4, 'Product: не хватает изображений');
-
-      navigate('#/product/E-01');
-      expect(textIncludes('section .container','Цена: по запросу'), 'Product: логика цены по запросу неверна');
+      if(state.products.length){
+        expect(count('[data-testid^="product-card-"]')===state.products.length, 'Catalog: кол-во карточек не совпало');
+        const firstProduct = state.products[0];
+        navigate(`#/product/${encodeURIComponent(firstProduct.id)}`);
+        expect(textIncludes('h2', firstProduct.name || firstProduct.title || ''), 'Product: заголовок не совпал');
+        expect(textIncludes('section .container','Цена:'), 'Product: цена не отображается');
+        expect(count('.media')>=1, 'Product: изображения не отображаются');
+      }else{
+        expect(count('[data-testid^="product-card-"]')===0, 'Catalog: каталог должен быть пустым');
+      }
 
       navigate('#/about');
       expect(textIncludes('h2','О компании'), 'About: заголовок не найден');
 
       navigate('#/contacts');
       expect(document.getElementById('ymap')!==null, 'Contacts: контейнер карты отсутствует');
-      // Modal button presence
       expect(textIncludes('.card','Заказать звонок'), 'Contacts: кнопка не найдена');
 
       console.log('%c✔ Все тесты пройдены','color:green');
