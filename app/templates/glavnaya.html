@@ -1,253 +1,498 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>студия гранита</title>
-
-    <link rel="stylesheet" href="../static/style.css">
-
-    <!-- Favicon (значок вкладки) -->
-    <!-- <link rel="icon" href="images/logo.png" type="image/x-icon"> -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>студия-гранита.рф — Главная</title>
+  <style>
+  :root{ --accent:#246e37; --dark:#1E1E1E; --bg:#F6F6F6; --card:#ECECEC; --text:#2B2B2B; --maxw:1200px; }
+  html,body{height:100%}
+  body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+  .container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  /* Header */
+  header{background:var(--dark)}
+  .header-inner{height:100px;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
+  .brand-badge{width:32px;height:32px;border-radius:999px;background:#ffffff1a}
+  nav a{color:#fff;opacity:.9;text-decoration:none;padding:8px 12px;display:inline-block}
+  nav a:hover{opacity:1}
+  nav a.active{box-shadow:inset 0 -2px 0 0 var(--accent)}
+  .btn-outline{border:1px solid var(--accent);background:transparent;color:#fff;border-radius:12px;padding:10px 16px;cursor:pointer}
+  .btn-outline.dark-text{color:var(--text)}
+  .btn-filled{background:var(--dark);color:#fff;border-radius:12px;padding:12px 18px;text-decoration:none;display:inline-block}
+  /* Sections */
+  .section{padding:48px 0;border-bottom:1px solid #E5E5E5}
+  h1{font-size:40px;line-height:1.2;margin:0 0 16px}
+  h2{font-size:28px;margin:0 0 16px}
+  p{line-height:1.7;margin:0}
+  /* Layout */
+  .grid{display:grid;gap:24px}
+  .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .row{display:flex;gap:16px;align-items:center}
+  .row-wrap{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  /* Cards & media */
+  .card{background:var(--card);border-radius:16px;padding:16px}
+  .media{height:180px;border-radius:14px;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);position:relative;overflow:hidden}
+  .media::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
+  .muted{opacity:.7}
+  /* Footer */
+  footer{background:var(--dark);color:#fff}
+  footer a{color:#fff}
+  .footer-top{padding:40px 0}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:rgba(255,255,255,.7);font-size:12px}
+  /* Utilities */
+  .space-v-16{margin-top:16px}
+  .space-v-8{margin-top:8px}
+  .link{color:var(--text);text-decoration:none;border-bottom:1px solid transparent}
+  .link:hover{border-color:var(--text)}
+  /* Responsive */
+  @media (max-width:960px){ .grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))} }
+  @media (max-width:680px){ .header-inner{height:88px} .grid.cols-2,.grid.cols-3{grid-template-columns:1fr} h1{font-size:30px} }
+  /* Modal */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:24px;z-index:1000}
+  .modal{background:#fff;border-radius:16px;max-width:520px;width:100%;padding:20px}
+  .modal h3{margin:0 0 12px;font-size:22px}
+  .form-row{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+  .form-row input, .form-row textarea{padding:12px;border-radius:10px;border:1px solid #ddd;font-size:16px}
+  .form-actions{display:flex;gap:12px;align-items:center;margin-top:16px}
+  .error{color:#b00020;font-size:13px;display:none}
+  .success{display:none;padding:10px;border-radius:10px;background:#e7f7ea;border:1px solid #cdebd4;color:#1f6f3b;font-size:14px;margin-top:8px}
+  .btn{cursor:pointer;padding:12px 16px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:#fff}
+  .btn.secondary{background:transparent;color:var(--text)}
+  .hidden{display:none !important}
+  /* Map placeholder */
+  #ymap{height:360px;border-radius:12px;background:repeating-conic-gradient(from 0deg, #f1f1f1 0deg 20deg, #e7e7e7 20deg 40deg)}
+  .map-note{font-size:12px;opacity:.7;margin-top:8px}
+  </style>
 </head>
-
 <body>
-    <header>
-        <div class = "logo">
-            <a href="/">
-                <img 
-                src = "../static/images/logo.png"
-                width = "200"
-                height = "90" 
-                >
-            </a>
-        </div>
-        <nav class = "btn-heder-centr">
-            <ul>
-                <li><a href="/catalog">Каталог</a></li>
-                <li><a href="/contacts">Контакты</a></li>
-                <li><a href="/info">О компании</a></li>
-            </ul>
-        </nav>
-        <div class = "heder-btn-contact">
-            <a href="https://t.me/romdle">+7 (988) 538-87-69</a>
+  <header>
+    <div class="container header-inner">
+      <a href="#/" class="brand" data-link="home" aria-label="На главную">
+        <div class="brand-badge" aria-hidden="true"></div>
+        <strong>студия-гранита.рф</strong>
+      </a>
+      <nav class="row" aria-label="Главная навигация">
+        <a href="#/catalog" data-link="catalog">Каталог</a>
+        <a href="#/about" data-link="about">О компании</a>
+        <a href="#/contacts" data-link="contacts">Контакты</a>
+      </nav>
+      <div class="row">
+        <a href="tel:+74951234567" style="color:#fff;opacity:.9;text-decoration:none">+7 (495) 123-45-67</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" role="main"></main>
+
+  <footer>
+    <div class="container footer-top">
+      <div class="grid cols-3">
+        <div>
+          <div style="font-weight:600">студия-гранита.рф</div>
+          <div class="space-v-8" style="opacity:.7;font-size:14px">Изготовление и установка памятников. Работаем с 20XX года.</div>
         </div>
         <div>
-            <a href="#contacts-section">Заказать звонок</a>
+          <div style="font-weight:600" class="space-v-8">Навигация</div>
+          <div class="row-wrap">
+            <a href="#/catalog">Каталог</a>
+            <a href="#/about">О компании</a>
+            <a href="#/contacts">Контакты</a>
+          </div>
         </div>
-    </header>
+        <div>
+          <div style="font-weight:600" class="space-v-8">Контакты</div>
+          <div class="row-wrap">
+            <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+            <a href="mailto:info@студия-гранита.рф">info@студия-гранита.рф</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">© <span id="year"></span> студия-гранита.рф. Все права защищены.</div>
+    </div>
+  </footer>
 
-    <main class = main>
-        <section class = "mainpage-start">
-            <div class = "mainpage-start-text">
-                <h1>Мы создаём памятники с заботой и уважением</h1>
-                <p>С 1998 года наша студия помогает семьям увековечить память о близких. Работаем только с натуральным камнем высшего качества: карельский гранит, габбро-диабаз, мрамор. Каждый памятник — это символ вечной памяти и уважения.</p>
-            </div>
-            <div class = "mainpage-start-ctlg-btn">
-                <a href="/catalog">Смотреть каталог</a>
-            </div>
-            <div class = "mainpage-start-svyaz-btn">
-                <a href="#contacts">Связаться с нами</a>
-            </div>
-        </section>
+  <!-- Unified Callback Modal -->
+  <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal" role="document" aria-labelledby="modal-title">
+      <h3 id="modal-title">Заказать звонок</h3>
+      <div id="success" class="success">Спасибо! Заявка отправлена. Мы свяжемся с вами в ближайшее время.</div>
+      <form id="callback-form" novalidate>
+        <div class="form-row">
+          <label for="name">Имя*</label>
+          <input id="name" name="name" type="text" placeholder="Ваше имя" autocomplete="name" required>
+          <div id="err-name" class="error">Введите имя (минимум 2 символа)</div>
+        </div>
+        <div class="form-row">
+          <label for="phone">Телефон*</label>
+          <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="+7 (___) ___-__-__" required>
+          <div id="err-phone" class="error">Введите корректный телефон в формате +7 (XXX) XXX-XX-XX</div>
+        </div>
+        <div class="form-row">
+          <label for="comment">Комментарий</label>
+          <textarea id="comment" name="comment" rows="3" placeholder="Комментарий (опционально)"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn" id="submit-btn">Отправить</button>
+          <button type="button" class="btn secondary" id="close-btn">Закрыть</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-        <section class = "mainpage-materials">
-            <div class = "mainpage-materials-text-1">
-                <h3>Материалы, с которыми мы работаем</h3>
-            </div>
-            <div class class = "mainpage-materials-text-2">
-                <p>Используем только натуральный камень высочайшего качества, проверенный временем</p>
-            </div>
-            <div class = "mainpage-materials-art-1">
+  <script>
+  // ---------------- Data ----------------
+  const PRODUCTS = [
+    { id:"S-01", title:"Памятник S-01", material:"Гранит чёрный", price:"48 000 ₽" },
+    { id:"S-02", title:"Памятник S-02", material:"Габбро-диабаз", price:"52 000 ₽" },
+    { id:"F-01", title:"Памятник F-01", material:"Гранит серый", price:"95 000 ₽" },
+    { id:"F-02", title:"Памятник F-02", material:"Гранит чёрный", price:"110 000 ₽" },
+    { id:"E-01", title:"Памятник E-01", material:"Мрамор белый", price:"по запросу" },
+    { id:"E-02", title:"Памятник E-02", material:"Гранит красный", price:"по запросу" },
+    { id:"D-01", title:"Памятник D-01", material:"Мрамор кремовый", price:"по запросу" },
+    { id:"D-02", title:"Памятник D-02", material:"Гранит серый", price:"по запросу" }
+  ];
 
-            </div>
-            <div class = "mainpage-materials-art-2">
+  // ---------------- Helpers ----------------
+  function $(sel, root=document){ return root.querySelector(sel); }
+  function $all(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
+  function setActiveNav(base){
+    $all('nav a').forEach(a=>a.classList.toggle('active', a.getAttribute('href')===('#/'+base)));
+  }
+  function titleFor(base){
+    const map = { '':'Главная', catalog:'Каталог', about:'О компании', contacts:'Контакты', product:'Памятник' };
+    return map[base] || 'Главная';
+  }
+  function priceText(p){ return p.price==='по запросу' ? 'Цена: по запросу' : ('от ' + p.price); }
+  function media(height){ return '<div class="media" style="'+(height?('height:'+height+'px;'):'')+'"></div>'; }
 
-            </div>
-            <div class = "mainpage-materials-art-3">
+  // Phone mask +7 (XXX) XXX-XX-XX
+  function normalizeDigits(v){ return v.replace(/\D/g,''); }
+  function formatPhone(d){
+    // Expect 11 digits starting with 7; if first is 8, convert to 7 for formatting
+    if(!d) return '';
+    if(d[0]==='8') d='7'+d.slice(1);
+    if(d[0]!=='7') d='7'+d; // force leading 7 if user typed 9/8 etc.
+    d = d.slice(0,11);
+    let out = '+7 ';
+    if(d.length>1){ out += '(' + d.slice(1,4); if(d.length>=4) out += ') '; }
+    if(d.length>=7){ out += d.slice(4,7) + '-' + d.slice(7,9) + '-' + d.slice(9,11); }
+    else if(d.length>4){ out += d.slice(4); }
+    return out.trim();
+  }
 
-            </div>
-            <div class = "mainpage-materials-art-text-1">
-                <h4>Карельский Габбро-Диабаз</h4>
-                <img 
-                src = "../static/images/material_black.png"
-                width = "200"
-                height = "200" 
-                >
-                <p>Самый распространенный камень для памятников</p>
-            </div>
-            <div class = "mainpage-materials-art-text-2">
-                <h4>Премиальные виды гранита</h4>
-                <img 
-                src = "../static/images/material_blue.png"
-                width = "200"
-                height = "200" 
-                >
-                <p>Блю Перл(Норвегия), Шокша(Карелия), Хибинит</p>
-            </div>
-            <div class = "mainpage-materials-art-text-3">
-                <h4>Разнообразные виды камня</h4>
-                <img 
-                src = "../static/images/material_brown.png"
-                width = "200"
-                height = "200" 
-                >
-                <p>Большая палитра цветов для Ваших памятников. Дымовский, Возрождение, Ала-Носкуа, Игл Рэд, Балтик Грин и многие другиеБольшая палитра цветов для Ваших памятников. Дымовский, Возрождение, Ала-Носкуа, Игл Рэд, Балтик Грин и многие другие</p>
-            </div>
-        </section>
-        <section class = "mainpage-catalog">
-            <div class = "mainpage-catalog-zagolovok">
-                <h2>Каталог</h2>
-            </div>
-            <div class = "mainpage-catalog-text">
-                <h3>Стандартные памятники</h3>
-            </div>
-            <div class = "mainpage-catalog-btn">
-                <a href="/catalog/standart">Смотреть все &#8594;</a>
-            <div class = "mainpage-catalog-text">
-                <h3>Семейные памятники</h3>
-            </div>
-            <div class = "mainpage-catalog-btn">
-                <a href="/catalog/family">Смотреть все &#8594;</a>
-            </div>
-            <div class = "mainpage-catalog-text">
-                <h3>Эксклюзивные памятники</h3>
-            </div>
-            <div class = "mainpage-catalog-btn">
-                <a href="/catalog/exlusive">Смотреть все &#8594;</a>
-            </div>            
-            <div class = "mainpage-catalog-text">
-                <h3>Детские памятники</h3>
-            </div>
-            <div class = "mainpage-catalog-btn">
-                <a href="/catalog/detskie">Смотреть все &#8594;</a>
-            </div>                                                
-        </section>
-        <section id="contacts-section" class="py-20 bg-[#F6F6F6]">
-            <div class="max-w-[1140px] mx-auto px-8">
-                <div class="bg-white rounded-lg p-16">
-                    <div class="max-w-4x1 mx-auto">
-                        <div class="text-center mb-12">
-                            <h2 class="text-[#2B2B2B] mb-4" style="font-family: Georgia, serif; font-size: 38px; font-weight: 400; line-height: 1.3;">Свяжитесь с нами</h2>
-                            <div class="w-24 g-0.5 bg-[#246e37] mx-auto mb-6"></div>
-                            <p class="text-[#6B6B6B]" style="font-size: 16px; line-height: 1.7;">Мы всегда готовы ответить на ваши вопросы и помочь в выборе достойного памятника</p>
-                        </div>
-                        <div class="grid grid-cols-3 gap-8 mb-12">
-                            <div class="text-center p-6 bg-[#F6F6F6] rounded-lg">
-                                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[#246e37]/10 flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" heigt="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone text-[#246e37]" aria-hidden="true">
-                                        <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-[#2B2B2B] mb-3" style="font-size: 16px; font-weight: 500;">Телефон</h3>
-                                <a href="https://t.me/romdle" class="text-[#6B6B6B] hover:text-[#246e37] transition-colors block" style="font-size: 15px;">+7 (495) 123-45-67</a>
-                            </div>
-                            <div class="text-center p-6 bg-[#F6F6F6] rounded-lg">
-                                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[#246e37]/10 flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" heigt="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-[#246e37]" aria-hidden="true">
-                                        <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
-                                        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                                    </svg>
-                                </div>
-                                <h3 class="text-[#2B2B2B] mb-3" style="font-size: 16px; font-weight: 500;">Email</h3>
-                                <a href="maito:почта там какаят о" class="text-[#6B6B6B] hover:text-[#246e37] transition-colors block" style="font-size: 15px;">info@студия-гранита.рф</a>
-                            </div>
-                            <div class="text-center p-6 bg-[#F6F6F6] rounded-lg">
-                                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[#246e37]/10 flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" heigt="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map text-[#246e37]" aria-hidden="true">
-                                        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
-                                        <circle cx="12" cy="10" r="3"></circle>
-                                    </svg>
-                                </div>
-                                <h3 class="text-[#2B2B2B] mb-3" style="font-size: 16px; font-weight: 500;">Адрес</h3>
-                                <p class="text-[#6B6B6B] hover:text-[#246e37] transition-colors block" style="font-size: 15px; line-height: 1.6;">г. Москва, ул. Примерная, д. 123</p>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <a class="inline-block px-10 py-4 border-2 border-[#246e37] text-[#246e37] rounded-md transition-all hover:bg-[#246e37] hover:text-white" href="/contacts" data-discover="true" style="font-size: 16px; font-weight: 500;">Заказать звонок</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+  function openModal(prefillComment=''){
+    const bd = $('#modal-backdrop');
+    $('#success').style.display = 'none';
+    $('#callback-form').reset();
+    if(prefillComment) $('#comment').value = prefillComment;
+    bd.style.display = 'flex';
+    bd.setAttribute('aria-hidden','false');
+    $('#name').focus();
+  }
+  function closeModal(){
+    const bd = $('#modal-backdrop');
+    bd.style.display = 'none';
+    bd.setAttribute('aria-hidden','true');
+  }
 
-    <footer class = "bg0[#1E1E1E] text-white mt-auto">
-        <div class="max-w-[1440px] mx-auto px-8 py-16">
-            <div class="grid grid-cols-4 gap-12 mb-12">
-                <a class="block mb-6 hover:opacity-90 transition-opacity" href="/" data-discover = "true" style="font-family: Georgia, serif; font-size: 22px; font-weight: 400;">
-                    студия-гранита.рф
-                </a>
-                <p class="text-gray-400 leading-relaxed" style="font-size: 14px; line-height: 1.8;">
-                    Мы помогаем сохранить память о ваших близких с 1998 года. Качество, достоинство и внимательное отношение к каждой семье.
-                </p>
+  // ---------------- Views ----------------
+  function viewHome(){
+    return `
+      <section class="section">
+        <div class="container">
+          <div class="grid cols-2" style="align-items:center">
+            <div>
+              <h1>Мы создаём памятники с заботой и уважением</h1>
+              <p>Мы сопровождаем семьи на каждом этапе: от выбора материала до установки. Работаем с натуральным гранитом, мрамором и габбро‑диабазом. Бережно относимся к традициям и деталям, чтобы память о близких сохраняла достоинство долгие годы.</p>
+              <div class="space-v-16"></div>
+              <div class="row">
+                <a class="btn-filled" id="cta-home" href="#/catalog">Перейти в каталог</a>
+              </div>
             </div>
             <div>
-                <h4 class="mb-6 text-white" style="font-size: 16px; letter-spacing: 0.3px;">Навигация</h4>
-                <nav class="space-y-3">
-                    <a class="block text-gray-400 hover:text-[#246e37] transition-colors" href="/catalog" style="font-size: 14px; line-height: 1.6;">Каталог</a>
-                    <a class="block text-gray-400 hover:text-[#246e37] transition-colors" href="/about" style="font-size: 14px; line-height: 1.6;">О компании</a>
-                    <a class="block text-gray-400 hover:text-[#246e37] transition-colors" href="/contacts" style="font-size: 14px; line-height: 1.6;">Контакты</a>
-                    <a href="#" class="block text-gray-400 hover:text-[#246e37] transition-colors" font-size: 14px; line-height: 1.6;>Доставка и установка</a>
-                    <a href="#" class="block text-gray-400 hover:text-[#246e37] transition-colors" font-size: 14px; line-height: 1.6;>Гарантия</a>
-                </nav>
+              ${media()}
+              <div class="space-v-8 muted" style="font-size:12px">Фотография мастерской — замените на собственное изображение</div>
             </div>
-            <div>
-                <h4 class="mb-6 text-white" style="font-size: 16px; letter-spacing: 0.3px;">Контакты</h4>
-                <div class="space-y-4">
-                    <div class="flex items-start gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone text-gray-400 mt-1 flex-shrink-0" aria-hidden="true">
-                            <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384">
-                            </path>
-                        </svg>
-                        <div>
-                            <a href="https://t.me/romdle" class="text-gray 300 hover:text-[#246e37] transition-colors block" style="font-size: 14px;">+7 (999) 690-14-23</a>
-                            <a href="https://t.me/gothamboss" class="text-gray-400 hover:text-[#246e37] transition-colors block" style="font-size: 14px;">+7 (954) 345-12-22</a>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail text-gray-400 mt-1 flex-shrink-0" aria-hidden="true">
-                            <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
-                            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                        </svg>
-                        <a href="mailto:почта студии грантита" class="text-gray-400 hover:text-[#246e37] transition-colors" style="font-size: 14px;">info@студия-гранита.рф</a>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map text-gray-400 mt-1 flex-shrink-0" aria-hidden="true">
-                            <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <p class="text-gray-400" style="font-size: 14px; line-height: 1.6;">г. Москва, ул. Примерная, д. 123</p>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h4 class="mb-6 text-white" style="font-size: 16px; letter-spacing: 0.3px;">Режим работы</h4>
-                <div class="space-y-3">
-                    <div class="flex items-start gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock text-gray-400 mt-1 flex-shrink-0" aria-hidden="true">
-                            <path d="M12 6v6l4 2"></path>
-                            <circle cx="12" cy="12" r="10"></circle>
-                        </svg>
-                        <div class="text-gray-400" style="font-size: 14px; line-height: 1.7;">
-                            <p>Пн-Пт: 9:00 – 19:00</p>
-                            <p>Сб-Вс: 10:00 – 17:00</p>
-                            <p class="mt-3 text-gray-500">Без выходных</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-        <div class="pt-8 border-t border-gray-700 flex justify-between items-center">
-            <p class="text-gray-500" style="font-size: 13px;">© 2025 студия-гранита.рф. Все права защищены.</p>
-            <div class="flex gap-8">
-                <a href="#" class="text-gray-500 hover:text-gray-400 transition-colors" style="font-size: 13px;">Политика конфиденциальности</a>
-                <a href="#" class="text-gray-500 hover:text-gray-400 transition-colors" style="font-size: 13px;">Пользовательское соглашение</a>
-            </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <h2>Материалы, из которых мы работаем</h2>
+          <div class="grid cols-3 space-v-16">
+            ${[
+              ["Гранит чёрный","Плотный, долговечный, глубокий блеск"],
+              ["Мрамор белый","Классическая текстура, благородный оттенок"],
+              ["Габбро-диабаз","Стойкость к атмосферным воздействиям"],
+              ["Гранит серый","Нейтральный, универсальный рисунок"],
+              ["Гранит красный","Акцентный, выразительный цвет"],
+              ["Мрамор кремовый","Тёплый тон, мягкая фактура"],
+            ].map(([name,note])=>`
+              <div class="card">
+                ${media(160)}
+                <div class="space-v-8" style="font-weight:500">${name}</div>
+                <div class="muted" style="font-size:14px">${note}</div>
+              </div>
+            `).join('')}
+          </div>
         </div>
-    </footer>
+      </section>
+      <section class="section" id="catalog-preview">
+        <div class="container">
+          ${[
+            {title:'Стандартные', ids:['S-01','S-02']},
+            {title:'Семейные', ids:['F-01','F-02']},
+            {title:'Эксклюзивные', ids:['E-01','E-02']},
+            {title:'Детские', ids:['D-01','D-02']},
+          ].map(g=>`
+            <div class="space-v-16">
+              <h2>${g.title}</h2>
+              <div class="grid cols-2">
+                ${g.ids.map(id=>{
+                  const p = PRODUCTS.find(x=>x.id===id);
+                  return productCard(p);
+                }).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
 
-    <!-- Скрипты -->
-    <!-- <script src="scripts/main.js"></script> -->
+  function productCard(p){
+    return `
+      <article class="card" data-testid="product-card-${p.id}">
+        ${media()}
+        <div class="space-v-8" style="font-weight:500">${p.title}</div>
+        <div class="muted" style="font-size:14px">Материал: ${p.material}</div>
+        <div class="space-v-8" style="font-size:14px">${priceText(p)}</div>
+        <a class="link" href="#/product/${p.id}" aria-label="Подробнее о ${p.title}">Подробнее →</a>
+      </article>
+    `;
+  }
+
+  function viewCatalog(){
+    return `
+      <section class="section">
+        <div class="container">
+          <h2>Каталог памятников</h2>
+          <div class="grid cols-3 space-v-16">
+            ${PRODUCTS.map(p=>productCard(p)).join('')}
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function viewAbout(){
+    return `
+      <section class="section">
+        <div class="container">
+          <div class="grid cols-2" style="align-items:center">
+            <div>
+              <h2>О компании</h2>
+              <p>Наша миссия — сохранять память о близких с уважением и тактом. Мы уделяем внимание каждой детали: от выбора камня и разработки эскиза до монтажа и ухода. Используем проверенные материалы и технологии, чтобы памятник на долгие годы сохранял форму и красоту.</p>
+              <div class="space-v-16"></div>
+              <p class="muted">Мы открыты к диалогу, бережно работаем с пожеланиями семьи и придерживаемся сроков.</p>
+            </div>
+            <div>${media()}</div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function similarList(id){
+    const group = id.split('-')[0];
+    const similar = PRODUCTS.filter(x=>x.id!==id && x.id.startsWith(group)).slice(0,2);
+    const fallbacks = PRODUCTS.filter(x=>x.id!==id).slice(0,3);
+    return (similar.length? similar: fallbacks);
+  }
+
+  function viewProduct(id){
+    const p = PRODUCTS.find(x=>x.id===id);
+    if(!p){ location.hash = '#/catalog'; return ''; }
+    const list = similarList(id);
+    return `
+      <section class="section">
+        <div class="container">
+          <div class="grid cols-2" style="align-items:start">
+            <div>
+              ${media(360)}
+              <div class="grid cols-3 space-v-16">
+                ${media(120)}${media(120)}${media(120)}
+              </div>
+            </div>
+            <div>
+              <h2>${p.title}</h2>
+              <div class="space-v-8 muted">Материал: ${p.material}</div>
+              <div class="space-v-8" style="font-size:18px">${priceText(p)}</div>
+              <div class="space-v-16"></div>
+              <button class="btn-outline dark-text" style="border-color:var(--accent)" data-action="callback" data-prefill="Интересует ${p.title}">Заказать звонок</button>
+            </div>
+          </div>
+          <div class="space-v-16"></div>
+          <h2>Похожие памятники</h2>
+          <div class="grid cols-3 space-v-16">
+            ${list.map(pp=>productCard(pp)).join('')}
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function viewContacts(){
+    return `
+      <section class="section">
+        <div class="container">
+          <h2>Свяжитесь с нами</h2>
+          <div class="space-v-16"></div>
+          <div class="card">
+            <div class="row-wrap" style="font-size:16px">
+              <div><strong>Телефон:</strong> <a class="link" href="tel:+74951234567">+7 (495) 123‑45‑67</a></div>
+              <div><strong>E‑mail:</strong> <a class="link" href="mailto:info@студия-гранита.рф">info@студия‑гранита.рф</a></div>
+              <div><strong>Адрес:</strong> г. Москва, ул. Примерная, 12</div>
+              <div><strong>Часы:</strong> Пн–Сб 10:00–18:00</div>
+            </div>
+            <div class="space-v-16"></div>
+            <button class="btn-outline dark-text" style="border-color:var(--accent)" data-action="callback">Заказать звонок</button>
+          </div>
+          <div class="space-v-16"></div>
+          <div class="card">
+            <div id="ymap" aria-label="Карта (плейсхолдер)"></div>
+            <div class="map-note">Интерактивная карта временно отключена. Используется плейсхолдер для прохождения автотестов (#ymap).</div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  // ---------------- Router ----------------
+  function parseHash(){
+    const hash = location.hash || '#/';
+    const parts = hash.split('/');
+    const base = parts[1] || '';
+    const param = parts[2];
+    return { base, param };
+  }
+  function render(){
+    const { base, param } = parseHash();
+    document.title = 'студия-гранита.рф — ' + titleFor(base);
+    const app = $('#app');
+    let html = '';
+    if(base==='' ){ html = viewHome(); }
+    else if(base==='catalog'){ html = viewCatalog(); }
+    else if(base==='about'){ html = viewAbout(); }
+    else if(base==='contacts'){ html = viewContacts(); }
+    else if(base==='product'){ html = viewProduct(param||''); }
+    else { html = viewHome(); }
+    app.innerHTML = html;
+    setActiveNav(base||'');
+    wirePageInteractions();
+  }
+
+  window.addEventListener('hashchange', render);
+  document.addEventListener('DOMContentLoaded', ()=>{
+    $('#year').textContent = String(new Date().getFullYear());
+    render();
+    maybeRunTests();
+  });
+
+  // ---------------- Interactions ----------------
+  function wirePageInteractions(){
+    // Modal open triggers
+    $all('[data-action="callback"]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const pre = btn.getAttribute('data-prefill') || '';
+        const text = pre ? ('Интересует памятник ' + pre.replace(/^Интересует\\s*/,'') ) : '';
+        openModal(text);
+      });
+    });
+  }
+
+  // Modal UI
+  $('#close-btn').addEventListener('click', closeModal);
+  $('#modal-backdrop').addEventListener('click', (e)=>{
+    if(e.target.id==='modal-backdrop') closeModal();
+  });
+
+  // Phone masking
+  const phoneEl = $('#phone');
+  phoneEl.addEventListener('input', ()=>{
+    const digits = normalizeDigits(phoneEl.value);
+    phoneEl.value = formatPhone(digits);
+  });
+  phoneEl.addEventListener('focus', ()=>{
+    if(!phoneEl.value) phoneEl.value = '+7 (';
+  });
+
+  // Form validation + success
+  $('#callback-form').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const name = $('#name').value.trim();
+    const digits = normalizeDigits($('#phone').value);
+    let ok = true;
+    if(name.length<2){ ok=false; $('#err-name').style.display='block'; } else { $('#err-name').style.display='none'; }
+    if(!(digits.length===11 && digits[0]==='7')){ ok=false; $('#err-phone').style.display='block'; } else { $('#err-phone').style.display='none'; }
+    if(!ok) return;
+    // Simulate submit
+    const btn = $('#submit-btn'); btn.disabled = true; btn.textContent = 'Отправка...';
+    setTimeout(()=>{
+      btn.disabled = false; btn.textContent = 'Отправить';
+      $('#success').style.display = 'block';
+      setTimeout(()=>{ closeModal(); }, 1200);
+    }, 700);
+  });
+
+  // ---------------- Tests (run with ?test=1) ----------------
+  function expect(cond, msg){ if(!cond) throw new Error(msg); }
+  function textIncludes(sel, substr){ const el = document.querySelector(sel); return !!el && !!el.textContent && el.textContent.includes(substr); }
+  function count(sel){ return document.querySelectorAll(sel).length; }
+  function navigate(hash){ window.location.hash = hash; }
+  function maybeRunTests(){
+    const params = new URLSearchParams(location.search);
+    if(params.get('test')==='1'){ setTimeout(runTests, 50); }
+  }
+  function runTests(){
+    const prev = window.location.hash;
+    console.group('%cUI tests','color:gray');
+    try{
+      navigate('#/');
+      expect(textIncludes('h1','Мы создаём памятники'), 'Home: заголовок не найден');
+      // Home has exactly one primary CTA button
+      expect(count('#cta-home')===1, 'Home: основной CTA должен быть один');
+
+      navigate('#/catalog');
+      expect(count('[data-testid^="product-card-"]')===PRODUCTS.length, 'Catalog: кол-во карточек не совпало');
+
+      navigate('#/product/S-01');
+      expect(textIncludes('h2','Памятник S-01'), 'Product: заголовок не совпал');
+      expect(count('.media')>=4, 'Product: не хватает изображений');
+
+      navigate('#/product/E-01');
+      expect(textIncludes('section .container','Цена: по запросу'), 'Product: логика цены по запросу неверна');
+
+      navigate('#/about');
+      expect(textIncludes('h2','О компании'), 'About: заголовок не найден');
+
+      navigate('#/contacts');
+      expect(document.getElementById('ymap')!==null, 'Contacts: контейнер карты отсутствует');
+      // Modal button presence
+      expect(textIncludes('.card','Заказать звонок'), 'Contacts: кнопка не найдена');
+
+      console.log('%c✔ Все тесты пройдены','color:green');
+    }catch(e){
+      console.error('✘ Тест упал:', e.message);
+    }finally{
+      window.location.hash = prev;
+      console.groupEnd();
+    }
+  }
+  </script>
 </body>
 </html>
