@@ -49,29 +49,31 @@
   .font-medium{font-weight:500}
   .product-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:flex-start}
   .product-row--catalog{justify-content:flex-start}
-  .product-tile{width:252px;min-height:540px;background:var(--card);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;box-sizing:border-box;transition:box-shadow .3s ease,transform .3s ease}
+  .product-tile{flex:1 1 calc((100% - 72px)/4);max-width:calc((100% - 72px)/4);min-width:240px;min-height:520px;background:var(--card);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;box-sizing:border-box;transition:box-shadow .3s ease,transform .3s ease}
   .product-tile:hover{box-shadow:0 16px 36px rgba(0,0,0,.08);transform:translateY(-4px)}
   .product-image-link{display:block;width:100%;height:330px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
   .product-image-link img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
   .product-image-link:hover img{transform:scale(1.05)}
   .product-image-placeholder{width:100%;height:100%;position:relative}
   .product-image-placeholder::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
-  .product-tile-body{display:flex;flex-direction:column;gap:12px;margin-top:16px;flex:1}
+  .product-tile-body{display:flex;flex-direction:column;gap:10px;margin-top:14px;flex:1}
   .product-name{color:#2B2B2B;font-family:Georgia,serif;font-size:18px;line-height:1.6;font-weight:400}
-  .product-price{color:#2B2B2B;font-size:15px;margin-top:8px}
-  .product-tile-more{margin-top:20px;font-size:14px;color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;align-self:flex-start}
-  .product-tile-more:hover{border-color:var(--accent)}
+  .product-tile-description{color:#6B6B6B;font-size:14px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;min-height:calc(1.6em * 3)}
+  .product-price{color:#2B2B2B;font-size:15px;margin-top:auto}
+  .product-tile-more{display:inline-block;margin-top:14px;font-size:14px;letter-spacing:.2px;color:#246e37;text-decoration:none;align-self:flex-start}
+  .product-tile-more:hover{text-decoration:underline}
   .product-detail{display:flex;gap:36px;align-items:flex-start}
-  .product-main-image{width:481.5px;height:642px;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
+  .product-main-image{width:520px;height:680px;border-radius:18px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
   .product-main-image img{width:100%;height:100%;object-fit:cover}
   .product-main-image::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
   .product-main-image.has-image::after{display:none}
-  .product-info{display:flex;flex-direction:column;gap:20px;min-height:642px;flex:1}
+  .product-info{display:flex;flex-direction:column;gap:24px;min-height:680px;flex:1;margin-left:16px;background:var(--card);border-radius:18px;padding:32px}
   .product-info-content{display:flex;flex-direction:column;gap:16px}
   .product-title{font-family:Georgia,serif;font-size:42px;font-weight:400;line-height:1.3;margin:0}
   .product-description-text{color:#6B6B6B;font-size:16px;line-height:1.8}
   .category-heading{color:#2B2B2B;font-family:Georgia,serif;font-size:28px;font-weight:400;margin:0}
   .product-category-pill{display:inline-block;padding:6px 16px;background:rgba(36,110,55,.1);color:#246e37;border-radius:8px;font-size:13px;letter-spacing:.3px}
+  .product-info-content .product-category-pill{align-self:flex-start;margin-bottom:4px}  
   .product-price-label{color:#6B6B6B;margin-bottom:8px;font-size:14px;letter-spacing:.5px;text-transform:uppercase}
   .product-price-amount{color:#2B2B2B;font-family:Georgia,serif;font-size:32px;font-weight:400}
   .product-divider{width:100%;height:1px;background:#E6E6E6;margin:16px 0}
@@ -79,13 +81,14 @@
   .back-link{display:flex;align-items:center;gap:8px;color:#6B6B6B;margin-bottom:32px;text-decoration:none;font-size:15px;transition:color .3s ease}
   .back-link:hover{color:#246e37}
   .back-link svg{width:16px;height:16px}
-  .callback-button{width:100%;padding:16px 24px;background:#246e37;color:#fff;border-radius:8px;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:500;border:none;margin-top:0}
+  .callback-button{width:100%;max-width:360px;padding:18px 32px;background:#246e37;color:#fff;border-radius:10px;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:500;border:none;margin-top:0}
   .callback-button:hover{background:#1e5a2d}
   .callback-button svg{width:18px;height:18px}
   .similar-header{color:#2B2B2B;margin-bottom:8px;font-family:Georgia,serif;font-size:32px;font-weight:400}
-  .similar-accent{width:80px;height:2px;background:#246e37;margin-bottom:24px}
-  @media (max-width:1200px){ .product-detail{flex-direction:column;align-items:center} .product-info{width:100%;min-height:auto} .callback-button{margin-top:16px;width:100%} }
-  @media (max-width:680px){ .product-row{justify-content:flex-start} .product-tile{margin:0} .product-main-image{width:100%;max-width:481.5px;height:auto} .product-main-image img{height:auto} }
+  .similar-accent{width:80px;height:2px;background:#246e37;margin:14px 0 24px}
+  .product-support-note{color:#6B6B6B;font-size:14px;line-height:1.7;max-width:520px}
+  @media (max-width:1200px){ .product-detail{flex-direction:column;align-items:center} .product-info{width:100%;min-height:auto;margin-left:0} .callback-button{margin-top:16px;width:100%;max-width:none} }
+  @media (max-width:680px){ .product-row{justify-content:flex-start} .product-tile{margin:0} .product-main-image{width:100%;max-width:520px;height:auto} .product-main-image img{height:auto} }
   .card{background:var(--card);border-radius:16px;padding:16px}
   .media{height:180px;border-radius:14px;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
   .media::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
@@ -427,6 +430,10 @@
     const nameRaw = product.name || product.title || `Памятник ${id}`;
     const name = escapeHtml(nameRaw);
     const image = productImage(product);
+    const rawDescription = product.description ? String(product.description).replace(/\s+/g,' ').trim() : '';
+    const description = rawDescription
+      ? escapeHtml(rawDescription)
+      : 'Описание появится позже.';
     const dataId = escapeAttribute(id);
     const link = productLink(id);
     const aria = escapeAttribute(`Подробнее о ${nameRaw}`);
@@ -443,6 +450,7 @@
         <div class="product-tile-body">
           <div class="product-name">${name}</div>
           <div class="product-price">${priceText(product)}</div>
+          <div class="product-tile-description">${description}</div>
         </div>
         <a class="product-tile-more" href="${link}" aria-label="${aria}">Подробнее →</a>
       </article>
@@ -628,10 +636,10 @@
             </div>
             <div class="product-info">
               <div class="product-info-content">
-                <h2 class="product-title">${name}</h2>
                 <span class="product-category-pill">${categoryName}</span>
+                <h2 class="product-title">${name}</h2>
                 <div>
-                  <div class="product-price-label">Цена товара</div>
+                  <div class="product-price-label">Цена</div>
                   <div class="product-price-amount">${price}</div>
                 </div>
                 <div class="product-divider"></div>
@@ -646,6 +654,7 @@
                 </svg>
                 <span>Заказать звонок</span>
               </button>
+              <div class="product-support-note">Наши специалисты помогут подобрать оптимальный вариант памятника, проконсультируют по материалам и срокам изготовления. Звоните или оставьте заявку на обратный звонок.</div>
             </div>
           </div>
         </div>
@@ -680,6 +689,7 @@
     else if(base==='product'){ html = viewProduct(param||''); }
     else { html = viewHome(); }
     app.innerHTML = html;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setActiveNav(base||'');
     wirePageInteractions();
   }
