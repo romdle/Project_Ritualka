@@ -8,6 +8,19 @@
   :root{ --accent:#246e37; --dark:#1E1E1E; --bg:#F6F6F6; --card:#ECECEC; --text:#2B2B2B; --maxw:1200px; }
   html,body{height:100%}
   body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+  .hero-section{position:relative;background:linear-gradient(135deg,#1f2937,#111827);overflow:hidden}
+  .hero-section::before{content:"";position:absolute;inset:0;background-image:var(--hero-bg-image,none);background-size:cover;background-position:center;opacity:.58;mix-blend-mode:screen;filter:saturate(120%)}
+  .hero-section::after{content:"";position:absolute;inset:0;background:rgba(80,110,200,.35);mix-blend-mode:multiply}
+  .hero-inner{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 32px;padding-top:128px;padding-bottom:128px;display:flex;flex-wrap:wrap;gap:48px;align-items:center}
+  .hero-content{flex:1 1 420px;max-width:640px}
+  .hero-title{color:#fff;margin:0 0 24px;font-family:Georgia,serif;font-size:48px;font-weight:400;line-height:1.3}
+  .hero-text{color:#d1d5db;margin:0 0 32px;font-size:18px;line-height:1.8}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:16px}
+  .hero-button{display:inline-flex;align-items:center;justify-content:center;background:#246e37;color:#fff;text-decoration:none;border-radius:999px;padding:14px 38px;font-size:16px;font-weight:500;letter-spacing:.2px;transition:background .3s ease,transform .3s ease;min-width:220px;box-shadow:0 12px 24px rgba(36,110,55,.25)}
+  .hero-button:hover{background:#1e5a2d;transform:translateY(-2px)}
+  .hero-media{flex:1 1 360px;max-width:520px;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+  .hero-media .media{height:360px;width:100%}
+  .hero-media-note{color:rgba(255,255,255,.7);font-size:13px}
   .container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
   /* Header */
   header{background:var(--dark)}
@@ -48,7 +61,7 @@
   .gap-2{gap:0.5rem}
   .font-medium{font-weight:500}
   .product-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:flex-start}
-  .product-row.product-row--home{margin-top:28px}
+  .product-row.product-row--home{margin-top:28px;margin-bottom:40px}
   .product-row--catalog{justify-content:flex-start}
   .product-tile{flex:1 1 calc((100% - 72px)/4);max-width:calc((100% - 72px)/4);min-width:240px;min-height:540px;background:var(--card);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;box-sizing:border-box;transition:box-shadow .3s ease,transform .3s ease}
   .product-tile:hover{box-shadow:0 16px 36px rgba(0,0,0,.08);transform:translateY(-4px)}
@@ -57,26 +70,26 @@
   .product-image-link:hover img{transform:scale(1.05)}
   .product-image-placeholder{width:100%;height:100%;position:relative}
   .product-image-placeholder::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
-  .product-tile-body{display:flex;flex-direction:column;gap:10px;margin-top:14px;flex:1}
+  .product-tile-body{display:flex;flex-direction:column;gap:12px;margin-top:14px;flex:1}
   .product-name{color:#2B2B2B;font-family:Georgia,serif;font-size:18px;line-height:1.6;font-weight:400}
   .product-tile-description{color:#6B6B6B;font-size:14px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;min-height:calc(1.6em * 2)}
-  .product-price{color:#2B2B2B;font-size:15px;margin-top:auto;padding-top:12px;font-weight:500}
+  .product-price{color:#2B2B2B;font-size:16px;font-weight:500;margin:12px 0;text-align:left}
   .product-tile-more{display:inline-block;margin-top:14px;font-size:14px;letter-spacing:.2px;color:#246e37;text-decoration:none;align-self:flex-start}
   .product-tile-more:hover{text-decoration:underline}
-  .product-detail{display:flex;gap:36px;align-items:stretch}
+  .product-detail{display:flex;gap:28px;align-items:flex-start}
   .product-main-image{width:520px;height:680px;border-radius:18px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
   .product-main-image img{width:100%;height:100%;object-fit:cover}
   .product-main-image::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
   .product-main-image.has-image::after{display:none}
-  .product-info{display:flex;flex-direction:column;justify-content:space-between;gap:32px;min-height:680px;flex:1;margin-left:16px;border-radius:18px;padding:32px 32px 24px;background:transparent}
-  .product-info-content{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:clamp(18px,4vh,36px)}
+  .product-info{display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:680px;flex:1;margin-left:0;border-radius:18px;padding:36px 36px 32px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);box-shadow:0 22px 54px rgba(15,23,42,.12)}
+  .product-info-content{flex:1;display:flex;flex-direction:column;gap:24px}
   .product-title{font-family:Georgia,serif;font-size:42px;font-weight:400;line-height:1.3;margin:0}
   .product-description-text{color:#6B6B6B;font-size:16px;line-height:1.8}
   .category-heading{color:#2B2B2B;font-family:Georgia,serif;font-size:28px;font-weight:400;margin:0}
   .product-category-pill{display:inline-block;padding:6px 16px;background:rgba(36,110,55,.1);color:#246e37;border-radius:8px;font-size:13px;letter-spacing:.3px}
   .product-info-content .product-category-pill{align-self:flex-start;margin-bottom:4px}  
-  .product-price-label{color:#6B6B6B;margin-bottom:8px;font-size:14px;letter-spacing:.5px;text-transform:uppercase}
-  .product-price-amount{color:#2B2B2B;font-family:Georgia,serif;font-size:32px;font-weight:400}
+  .product-price-label{color:#6B6B6B;margin:0;font-size:14px;letter-spacing:.5px;text-transform:uppercase}
+  .product-price-amount{color:#2B2B2B;font-family:Georgia,serif;font-size:34px;font-weight:400;margin-top:8px}
   .product-divider{width:100%;height:1px;background:#E6E6E6;margin:16px 0}
   .description-heading{color:#2B2B2B;margin-bottom:16px;font-family:Georgia,serif;font-size:20px;font-weight:400}
   .back-link{display:flex;align-items:center;gap:8px;color:#6B6B6B;margin-bottom:32px;text-decoration:none;font-size:15px;transition:color .3s ease}
@@ -95,6 +108,17 @@
   .media.has-image::after{display:none}
   .media img{width:100%;height:100%;object-fit:cover;display:block}
   .muted{opacity:.7}
+  .materials-section{padding-top:64px;padding-bottom:64px}
+  .materials-header{text-align:center;max-width:720px;margin:0 auto 48px}
+  .materials-title{color:#2B2B2B;margin:0 0 16px;font-family:Georgia,serif;font-size:38px;font-weight:400;line-height:1.3}
+  .materials-accent{width:96px;height:2px;background:#246e37;margin:0 auto 24px}
+  .materials-description{color:#6B6B6B;margin:0 auto;font-size:16px;line-height:1.7;max-width:640px}
+  .materials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;max-width:1024px;margin:0 auto}
+  .material-card{background:var(--card);border-radius:18px;padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px}
+  .material-image{width:100%;aspect-ratio:1/1;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);display:flex;align-items:center;justify-content:center;color:#6B6B6B;font-size:12px;letter-spacing:.3em;text-transform:uppercase}
+  .material-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .material-title{color:#2B2B2B;margin:0;font-family:Georgia,serif;font-size:18px;font-weight:400}
+  .material-text{color:#6B6B6B;margin:0;font-size:14px;line-height:1.6}
   .section-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .btn-view-all{border:1px solid var(--accent);color:var(--accent);border-radius:10px;padding:8px 16px;font-size:14px;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
   .btn-view-all:hover{background:rgba(36,110,55,.08)}
@@ -112,8 +136,23 @@
   .link{color:var(--text);text-decoration:none;border-bottom:1px solid transparent}
   .link:hover{border-color:var(--text)}
   /* Responsive */
-  @media (max-width:960px){ .grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))} }
-  @media (max-width:680px){ .header-inner{height:88px} .grid.cols-2,.grid.cols-3{grid-template-columns:1fr} h1{font-size:30px} }
+  @media (max-width:960px){
+    .grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .hero-inner{padding-top:104px;padding-bottom:104px;gap:32px}
+    .hero-media{max-width:440px;margin:0 auto}
+  }
+  @media (max-width:680px){
+    .header-inner{height:88px}
+    .grid.cols-2,.grid.cols-3{grid-template-columns:1fr}
+    h1{font-size:30px}
+    .hero-inner{padding:72px 24px}
+    .hero-title{font-size:36px}
+    .hero-text{font-size:16px;margin-bottom:28px}
+    .hero-button{width:100%;min-width:0}
+    .hero-media{display:none}
+    .product-detail{flex-direction:column}
+    .product-info{min-height:auto;width:100%;padding:28px 24px;box-shadow:none}
+  }
   /* Modal */
   .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:24px;z-index:1000}
   .modal{background:#fff;border-radius:16px;max-width:520px;width:100%;padding:20px}
@@ -304,7 +343,7 @@
     }
     const num = Number(value);
     if(Number.isFinite(num)){
-      return 'Цена: ' + new Intl.NumberFormat('ru-RU').format(num) + ' ₽';
+      return new Intl.NumberFormat('ru-RU').format(num) + ' ₽';
     }
     const textValue = String(value).trim();
     if(!textValue){
@@ -465,8 +504,8 @@
         </a>
         <div class="product-tile-body">
           <div class="product-name">${name}</div>
-          <div class="product-tile-description">${description}</div>
           <div class="product-price">${priceText(product)}</div>
+          <div class="product-tile-description">${description}</div>
         </div>
         <a class="product-tile-more" href="${link}" aria-label="${aria}">Подробнее →</a>
       </article>
@@ -476,41 +515,40 @@
   // ---------------- Views ----------------
   function viewHome(){
     return `
-      <section class="section">
-        <div class="container">
-          <div class="grid cols-2" style="align-items:center">
-            <div>
-              <h1>Мы создаём памятники с заботой и уважением</h1>
-              <p>Мы сопровождаем семьи на каждом этапе: от выбора материала до установки. Работаем с натуральным гранитом, мрамором и габбро‑диабазом. Бережно относимся к традициям и деталям, чтобы память о близких сохраняла достоинство долгие годы.</p>
-              <div class="space-v-16"></div>
-              <div class="row">
-                <a class="btn-filled" id="cta-home" href="#/catalog">Перейти в каталог</a>
-              </div>
+      <section class="hero-section" style="--hero-bg-image:url('../static/images/main.jpg');">
+        <!-- Замените URL_ДЛЯ_ФОНА на ссылку на нужное фоновое изображение -->
+        <div class="hero-inner">
+          <div class="hero-content">
+            <h1 class="hero-title">Мы создаём памятники с заботой и уважением</h1>
+            <p class="hero-text">Мы сопровождаем семьи на каждом этапе: от выбора материала до установки. Работаем с натуральным гранитом, мрамором и габбро‑диабазом. Бережно относимся к традициям и деталям, чтобы память о близких сохраняла достоинство долгие годы.</p>
+            <div class="hero-actions">
+              <a class="hero-button" id="cta-home" href="#/catalog">Перейти в каталог</a>
             </div>
-            <div>
-              ${media()}
-              <div class="space-v-8 muted" style="font-size:12px">Фотография мастерской — замените на собственное изображение</div>
-            </div>
+          </div>
           </div>
         </div>
       </section>
-      <section class="section">
+      <section class="materials-section">
         <div class="container">
-          <h2>Материалы, из которых мы работаем</h2>
-          <div class="grid cols-3 space-v-16">
+          <div class="materials-header">
+            <h2 class="materials-title">Материалы, из которых мы работаем</h2>
+            <div class="materials-accent"></div>
+            <p class="materials-description">Используем только натуральный камень высочайшего качества, проверенный временем.</p>
+          </div>
+          <div class="materials-grid">
+            <!-- Замените #материал1, #материал2 и #материал3 на реальные пути к изображениям материалов -->
             ${[
-              ["Гранит чёрный","Плотный, долговечный, глубокий блеск"],
-              ["Мрамор белый","Классическая текстура, благородный оттенок"],
-              ["Габбро-диабаз","Стойкость к атмосферным воздействиям"],
-              ["Гранит серый","Нейтральный, универсальный рисунок"],
-              ["Гранит красный","Акцентный, выразительный цвет"],
-              ["Мрамор кремовый","Тёплый тон, мягкая фактура"],
-            ].map(([name,note])=>`
-              <div class="card">
-                ${media(160)}
-                <div class="space-v-8" style="font-weight:500">${name}</div>
-                <div class="muted" style="font-size:14px">${note}</div>
-              </div>
+              ["Карельский Габбро-Диабаз","Самый распространенный камень для памятников","../static//images/material_black.png"],
+              ["Премиальные виды гранита","Блю Перл(Норвегия), Шокша(Карелия), Хибинит","../static//images/material_blue.png"],
+              ["Разнообразные виды камня","Большая палитра цветов для Ваших памятников. Дымовский, Возрождение, Ала-Носкуа, Игл Рэд, Балтик Грин и многие другие","../static//images/material_brown.png"],
+            ].map(([name,note,marker])=>`
+              <article class="material-card">
+                <div class="material-image">
+                  <img src="${escapeAttribute(marker)}" alt="${escapeAttribute(name)}" loading="lazy" onerror="this.style.display='none'">
+                </div>
+                <div class="material-title">${name}</div>
+                <p class="material-text">${note}</p>
+              </article>
             `).join('')}
           </div>
         </div>
@@ -650,14 +688,11 @@
             <div class="product-main-image${image ? ' has-image' : ''}">
               ${image ? `<img src="${safeImage}" alt="${safeAlt}" loading="lazy">` : ''}
             </div>
-            <div class="product-info">
+              <div class="product-info">
               <div class="product-info-content">
                 <span class="product-category-pill">${categoryName}</span>
                 <h2 class="product-title">${name}</h2>
-                <div>
-                  <div class="product-price-label">Цена</div>
-                  <div class="product-price-amount">${price}</div>
-                </div>
+                <div class="product-price-amount">${price}</div>
                 <div class="product-divider"></div>
                 <div>
                   <div class="description-heading">Описание</div>
