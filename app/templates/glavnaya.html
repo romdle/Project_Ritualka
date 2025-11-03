@@ -47,33 +47,45 @@
   .justify-center{justify-content:center}
   .gap-2{gap:0.5rem}
   .font-medium{font-weight:500}
-  .product-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
+  .product-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:flex-start}
   .product-row--catalog{justify-content:flex-start}
-  .product-tile{width:235px;height:534px;background:var(--card);border-radius:20px;padding:20px 18px;display:flex;flex-direction:column;box-sizing:border-box}
-  .product-image-link{display:block;width:100%;height:320px;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8)}
+  .product-tile{width:252px;min-height:540px;background:var(--card);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;box-sizing:border-box;transition:box-shadow .3s ease,transform .3s ease}
+  .product-tile:hover{box-shadow:0 16px 36px rgba(0,0,0,.08);transform:translateY(-4px)}
+  .product-image-link{display:block;width:100%;height:330px;border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
   .product-image-link img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
   .product-image-link:hover img{transform:scale(1.05)}
   .product-image-placeholder{width:100%;height:100%;position:relative}
   .product-image-placeholder::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
-  .product-tile-body{display:flex;flex-direction:column;gap:12px;margin-top:18px;flex:1}
-  .product-name{font-weight:500;font-size:16px;line-height:1.4}
-  .product-category{font-size:14px}
-  .product-price{font-size:15px;font-weight:500;margin-top:auto}
+  .product-tile-body{display:flex;flex-direction:column;gap:12px;margin-top:16px;flex:1}
+  .product-name{color:#2B2B2B;font-family:Georgia,serif;font-size:18px;line-height:1.6;font-weight:400}
+  .product-price{color:#2B2B2B;font-size:15px;margin-top:8px}
   .product-tile-more{margin-top:20px;font-size:14px;color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;align-self:flex-start}
   .product-tile-more:hover{border-color:var(--accent)}
   .product-detail{display:flex;gap:36px;align-items:flex-start}
-  .product-main-image{width:481.5px;height:642px;border-radius:20px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8)}
+  .product-main-image{width:481.5px;height:642px;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
   .product-main-image img{width:100%;height:100%;object-fit:cover}
   .product-main-image::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
   .product-main-image.has-image::after{display:none}
   .product-info{display:flex;flex-direction:column;gap:20px;min-height:642px;flex:1}
   .product-info-content{display:flex;flex-direction:column;gap:16px}
-  .callback-button{margin-top:auto;font-size:16px;font-weight:500}
   .product-title{font-family:Georgia,serif;font-size:42px;font-weight:400;line-height:1.3;margin:0}
   .product-description-text{color:#6B6B6B;font-size:16px;line-height:1.8}
-  @media (max-width:1200px){ .product-detail{flex-direction:column;align-items:center} .product-info{width:100%;min-height:auto} .callback-button{margin-top:24px;width:100%} }
-  @media (max-width:680px){ .product-row{justify-content:flex-start} .product-tile{margin:0 auto} .product-main-image{width:100%;max-width:481.5px;height:auto} .product-main-image img{height:auto} }
-  /* Cards & media */
+  .category-heading{color:#2B2B2B;font-family:Georgia,serif;font-size:28px;font-weight:400;margin:0}
+  .product-category-pill{display:inline-block;padding:6px 16px;background:rgba(36,110,55,.1);color:#246e37;border-radius:8px;font-size:13px;letter-spacing:.3px}
+  .product-price-label{color:#6B6B6B;margin-bottom:8px;font-size:14px;letter-spacing:.5px;text-transform:uppercase}
+  .product-price-amount{color:#2B2B2B;font-family:Georgia,serif;font-size:32px;font-weight:400}
+  .product-divider{width:100%;height:1px;background:#E6E6E6;margin:16px 0}
+  .description-heading{color:#2B2B2B;margin-bottom:16px;font-family:Georgia,serif;font-size:20px;font-weight:400}
+  .back-link{display:flex;align-items:center;gap:8px;color:#6B6B6B;margin-bottom:32px;text-decoration:none;font-size:15px;transition:color .3s ease}
+  .back-link:hover{color:#246e37}
+  .back-link svg{width:16px;height:16px}
+  .callback-button{width:100%;padding:16px 24px;background:#246e37;color:#fff;border-radius:8px;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:500;border:none;margin-top:0}
+  .callback-button:hover{background:#1e5a2d}
+  .callback-button svg{width:18px;height:18px}
+  .similar-header{color:#2B2B2B;margin-bottom:8px;font-family:Georgia,serif;font-size:32px;font-weight:400}
+  .similar-accent{width:80px;height:2px;background:#246e37;margin-bottom:24px}
+  @media (max-width:1200px){ .product-detail{flex-direction:column;align-items:center} .product-info{width:100%;min-height:auto} .callback-button{margin-top:16px;width:100%} }
+  @media (max-width:680px){ .product-row{justify-content:flex-start} .product-tile{margin:0} .product-main-image{width:100%;max-width:481.5px;height:auto} .product-main-image img{height:auto} }
   .card{background:var(--card);border-radius:16px;padding:16px}
   .media{height:180px;border-radius:14px;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
   .media::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
@@ -202,10 +214,10 @@
   };
 
   const CATEGORY_TITLES = {
-    'Стандартный': 'Стандартные',
-    'Семейный': 'Семейные',
-    'Эксклюзивный': 'Эксклюзивные',
-    'Детский': 'Детские',
+    'Стандартный': 'Стандартные памятники',
+    'Семейный': 'Семейные памятники',
+    'Эксклюзивный': 'Эксклюзивные памятники',
+    'Детский': 'Детские памятники',
   };
 
   const CATEGORY_ORDER = ['Стандартный', 'Семейный', 'Эксклюзивный', 'Детский'];
@@ -285,6 +297,11 @@
     return 'Цена: ' + escapeHtml(textValue);
   }
 
+    function priceValue(product){
+    const full = priceText(product);
+    return full.replace(/^Цена:\s*/i, '').trim();
+  }
+
   function formatTextBlock(text){
     if(text === null || text === undefined) return '';
     return escapeHtml(String(text)).replace(/\r?\n/g,'<br>');
@@ -304,11 +321,15 @@
   function similarList(product){
     if(!product) return [];
     const currentId = String(product.id);
-    const targetCategory = (product.category ?? '').toLowerCase();
+    const targetCategory = (product.category ?? '').trim().toLowerCase();
     const sameCategory = state.products
-      .filter(p => String(p.id) !== currentId && (p.category ?? '').toLowerCase() === targetCategory)
+      .filter(p => String(p.id) !== currentId && (p.category ?? '').trim().toLowerCase() === targetCategory)
       .slice(0, 3);
     if(sameCategory.length) return sameCategory;
+    const standardCategory = state.products
+      .filter(p => String(p.id) !== currentId && (p.category ?? '').trim().toLowerCase() === 'стандартный')
+      .slice(0, 3);
+    if(standardCategory.length) return standardCategory;
     return state.products.filter(p => String(p.id) !== currentId).slice(0, 3);
   }
 
@@ -389,7 +410,7 @@
       return `
             <div class="space-v-16">
               <div class="section-header">
-                <h2>${heading}</h2>
+                <h2 class="category-heading">${heading}</h2>
                 <a class="btn-view-all" href="#/catalog" aria-label="${aria}">Смотреть все</a>
               </div>
               <div class="product-row">
@@ -405,8 +426,6 @@
     const id = String(product.id);
     const nameRaw = product.name || product.title || `Памятник ${id}`;
     const name = escapeHtml(nameRaw);
-    const categoryName = displayCategoryName(product.category);
-    const categoryText = escapeHtml('Категория: ' + categoryName);
     const image = productImage(product);
     const dataId = escapeAttribute(id);
     const link = productLink(id);
@@ -423,7 +442,6 @@
         </a>
         <div class="product-tile-body">
           <div class="product-name">${name}</div>
-          <div class="product-category muted">${categoryText}</div>
           <div class="product-price">${priceText(product)}</div>
         </div>
         <a class="product-tile-more" href="${link}" aria-label="${aria}">Подробнее →</a>
@@ -585,17 +603,25 @@
     const nameRaw = product.name || product.title || `Памятник ${idValue}`;
     const name = escapeHtml(nameRaw);
     const categoryName = escapeHtml(displayCategoryName(product.category));
-    const price = priceText(product);
+    const price = priceValue(product) || 'по запросу';
     const description = product.description
       ? `<div class="product-description-text">${formatTextBlock(product.description)}</div>`
-      : `<div class="muted">Описание появится позже.</div>`;
+      : `<div class="product-description-text" style="opacity:.7;">Описание появится позже.</div>`;
     const image = productImage(product);
     const safeImage = escapeAttribute(image);
     const safeAlt = escapeHtml(nameRaw);
     const callbackPrefill = escapeAttribute(`Интересует ${nameRaw}`);
+    const similarItems = similarList(product);
+    const similarCards = similarItems.length
+      ? `<div class="product-row">${similarItems.map(productCard).join('')}</div>`
+      : `<div class="status-card" style="width:100%;">Пока нет похожих памятников.</div>`;
     return `
       <section class="section">
         <div class="container">
+            <a class="back-link" href="#/catalog">
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11.707 4.293a1 1 0 0 1 0 1.414L8.414 9H17a1 1 0 1 1 0 2H8.414l3.293 3.293a1 1 0 0 1-1.414 1.414l-5-5a1 1 0 0 1 0-1.414l5-5a1 1 0 0 1 1.414 0Z"/></svg>
+            <span>Назад к каталогу</span>
+          </a>
           <div class="product-detail">
             <div class="product-main-image${image ? ' has-image' : ''}">
               ${image ? `<img src="${safeImage}" alt="${safeAlt}" loading="lazy">` : ''}
@@ -603,13 +629,30 @@
             <div class="product-info">
               <div class="product-info-content">
                 <h2 class="product-title">${name}</h2>
-                <div class="muted">Категория: ${categoryName}</div>
-                <div style="font-size:18px">${price}</div>
-                ${description}
+                <span class="product-category-pill">${categoryName}</span>
+                <div>
+                  <div class="product-price-label">Цена товара</div>
+                  <div class="product-price-amount">${price}</div>
+                </div>
+                <div class="product-divider"></div>
+                <div>
+                  <div class="description-heading">Описание</div>
+                  ${description}
+                </div>
               </div>
-              <button class="w-full px-8 py-4 bg-[#246e37] text-white rounded-md transition-all hover:bg-[#1e5a2d] flex items-center justify-center gap-2 callback-button" data-action="callback" data-prefill="${callbackPrefill}">Заказать звонок</button>
+              <button class="callback-button" data-action="callback" data-prefill="${callbackPrefill}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5.5 3.75h4l1.5 3.75-2.25 1.5a11 11 0 0 0 5.75 5.75l1.5-2.25 3.75 1.5v4a1.5 1.5 0 0 1-1.625 1.5 17.5 17.5 0 0 1-15.125-15.125A1.5 1.5 0 0 1 5.5 3.75Z" />
+                </svg>
+                <span>Заказать звонок</span>
+              </button>
             </div>
           </div>
+        </div>
+        <div class="container" style="margin-top:56px;">
+          <div class="similar-header">Похожие памятники</div>
+          <div class="similar-accent"></div>
+          ${similarCards}
         </div>
       </section>
     `;
