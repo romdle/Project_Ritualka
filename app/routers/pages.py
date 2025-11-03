@@ -16,12 +16,32 @@ router = APIRouter()
 async def get_data(request: Request):
     return templates.TemplateResponse("glavnaya.html", {"request": request})
 
+
+@router.get("/catalog", response_class=HTMLResponse)
+async def catalog_page(request: Request):
+    return templates.TemplateResponse("glavnaya.html", {"request": request})
+
+
+@router.get("/about", response_class=HTMLResponse)
+async def about_page(request: Request):
+    return templates.TemplateResponse("glavnaya.html", {"request": request})
+
+
+@router.get("/contacts", response_class=HTMLResponse)
+async def contacts_page(request: Request):
+    return templates.TemplateResponse("glavnaya.html", {"request": request})
+
+
+@router.get("/product/{path_id}", response_class=HTMLResponse)
+async def product_page(path_id: str, request: Request):
+    return templates.TemplateResponse("glavnaya.html", {"request": request})
+
 @router.get("/category/{name}")             
 async def category(name: str):
     return f"Категория: {name}"
 
 
-@router.get("/products")
+@router.get("/api/products")
 async def list_products(
     db: sqlite3.Connection = Depends(get_db),
 ):
@@ -29,7 +49,7 @@ async def list_products(
     return {"items": products}
 
 
-@router.get("/product/{product_id}")
+@router.get("/api/product/{product_id}")
 async def product(
     product_id: int,
     db: sqlite3.Connection = Depends(get_db),
@@ -38,11 +58,3 @@ async def product(
     if product_row is None:
         raise HTTPException(status_code=404, detail="Product not found")
     return dict(product_row)
-
-@router.get("/info", response_class=HTMLResponse)
-async def company(request: Request):
-    return templates.TemplateResponse("info.html", {"request": request})
-
-@router.get("/contacts", response_class=HTMLResponse)
-async def contacts(request: Request):
-    return templates.TemplateResponse("contacts.html", {"request": request})
