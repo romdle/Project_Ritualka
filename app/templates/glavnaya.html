@@ -36,6 +36,30 @@
   .header-phone svg{width:18px;height:18px;display:block}
   .header-call-button{padding:10px 20px;border:1px solid #246e37;background:transparent;color:#fff;border-radius:8px;font-size:14px;line-height:1.5;font-family:inherit;cursor:pointer;transition:all .3s ease}
   .header-call-button:hover{background:rgba(36,110,55,.1)}
+  .menu-button{display:none;align-items:center;justify-content:center;padding:10px;border:none;background:transparent;color:#fff;cursor:pointer;border-radius:10px;transition:background .3s ease}
+  .menu-button:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
+  .menu-button:hover{background:rgba(255,255,255,.08)}
+  .menu-button-box{display:flex;flex-direction:column;gap:6px}
+  .menu-button-bar{width:26px;height:2px;background:#fff;border-radius:999px;transition:transform .3s ease,opacity .3s ease}
+  .menu-button.is-active .menu-button-bar:nth-child(1){transform:translateY(8px) rotate(45deg)}
+  .menu-button.is-active .menu-button-bar:nth-child(2){opacity:0}
+  .menu-button.is-active .menu-button-bar:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+  .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .mobile-menu{position:fixed;inset:0;background:rgba(30,30,30,.92);backdrop-filter:blur(6px);transform:translateY(-100%);opacity:0;transition:transform .35s ease,opacity .35s ease;z-index:1400;display:flex;flex-direction:column;pointer-events:none;visibility:hidden;padding-top:calc(100px + env(safe-area-inset-top,0))}
+  .mobile-menu.is-open{transform:translateY(0);opacity:1;pointer-events:auto;visibility:visible}
+  .mobile-menu__inner{padding:32px 24px 48px;display:flex;flex-direction:column;gap:24px;flex:1;overflow-y:auto}
+  .mobile-menu__nav{display:flex;flex-direction:column;gap:12px}
+  .mobile-menu__nav a{color:#fff;text-decoration:none;font-size:18px;display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+  .mobile-menu__nav a:last-child{border-bottom:none}
+  .mobile-menu__nav a svg{width:16px;height:16px;opacity:.6}
+  .mobile-menu__contacts{display:flex;flex-direction:column;gap:10px;color:#fff}
+  .mobile-menu__contacts a{color:#fff;text-decoration:none;font-size:16px;opacity:.92}
+  .mobile-menu__contacts a:hover{opacity:1}
+  .mobile-menu__footer-note{color:rgba(255,255,255,.6);font-size:12px;line-height:1.6}
+  .mobile-menu__close{position:absolute;top:22px;right:22px;background:rgba(255,255,255,.08);border:none;color:#fff;border-radius:999px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;transition:background .3s ease}
+  .mobile-menu__close:hover{background:rgba(255,255,255,.16)}
+  .mobile-menu__close:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
+  body.menu-open{overflow:hidden}
   .btn-outline{border:1px solid var(--accent);background:transparent;color:#fff;border-radius:12px;padding:10px 16px;cursor:pointer}
   .btn-outline.dark-text{color:var(--text)}
   .btn-filled{background:var(--dark);color:#fff;border-radius:12px;padding:12px 18px;text-decoration:none;display:inline-block}
@@ -165,26 +189,17 @@
   }
   @media (max-width:960px){
     .grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .hero-inner{padding-top:104px;padding-bottom:104px;gap:32px}
-    .hero-media{max-width:440px;margin:0 auto}
     .product-row{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .product-row--catalog{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
   @media (max-width:680px){
-    .header-inner{height:88px}
     .grid.cols-2,.grid.cols-3{grid-template-columns:1fr}
     h1{font-size:30px}
     .hero-inner{padding:72px 24px}
-    .hero-title{font-size:36px}
-    .hero-text{font-size:16px;margin-bottom:28px}
     .hero-button{width:100%;min-width:0}
-    .hero-media{display:none}
     .product-detail{flex-direction:column}
     .product-info{min-height:auto;width:100%;padding:28px 24px;box-shadow:none}
-    .product-row{grid-template-columns:1fr}
     .product-row--catalog{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .product-tile{aspect-ratio:auto;min-height:0;padding:24px 20px 24px}
-    .product-image-link{width:calc(100% + 40px);margin:-24px -20px 16px}
+    .product-tile{aspect-ratio:auto;min-height:0}
     .product-carousel-track{--carousel-visible:1}
   }
   @media (max-width:540px){
@@ -318,19 +333,7 @@
   }
 
   /* Изображение товара на странице */
-  @media (max-width: 960px) {
-      .product-main-image {
-          width: 100%; /* Ширина на весь экран */
-          height: 60vh; /* Высота 60% от экрана */
-          border-radius: 0 0 12px 12px; /* Закругленные углы снизу */
-          overflow: hidden;
-      }
-      .product-main-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover; /* Чтобы изображение заполнило контейнер */
-      }
-  }
+
   /* Изображение товара на странице с закруглением сверху */
   @media (max-width: 960px) {
     .product-main-image {
@@ -380,72 +383,8 @@
     .brand-logo {
         height: 40px; /* Логотип остаётся того же размера */
     }
-
-    /* Кнопка для мобильного меню */
-    .menu-button {
-        display: block;
-        background: var(--dark);
-        color: white;
-        padding: 12px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 30px;
-    }
-
-    /* Скрыть обычную навигацию на мобильных устройствах */
-    .header-inner nav {
-        display: none;
-    }
-
-    /* Мобильное меню */
-    .mobile-menu-panel {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        background-color: #333;
-        width: 80%;
-        height: 100%;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 20px;
-        transition: right 0.3s ease;
-    }
-
-    .mobile-menu-panel.active {
-        right: 0;
-    }
-
-    /* Кнопка закрытия */
-    .mobile-menu-panel .close-button {
-        font-size: 30px;
-        color: white;
-        cursor: pointer;
-        margin-bottom: 20px;
-    }
-
-    .mobile-menu-panel .close-button:hover {
-        color: red;
-    }
-
-    /* Ссылки меню */
-    .mobile-menu-panel a {
-        color: white;
-        text-decoration: none;
-        margin: 15px 0;
-        font-size: 20px;
-        transition: color 0.3s;
-    }
-
-    .mobile-menu-panel a:hover {
-        color: #f1f1f1;
-    }
   }
 
-
-
-  
 /* Mobile Footer */
   @media (max-width: 960px) {
     footer {
@@ -460,80 +399,7 @@
         font-size: 12px;
     }
   }
-  /* Стили для мобильного меню */
-  @media (max-width: 960px) {
-      /* Панель мобильного меню */
-      .mobile-menu-panel {
-          position: fixed;
-          top: 0;
-          right: -100%;
-          background-color: #333;
-          width: 80%;
-          height: 100%;
-          z-index: 1000;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          padding: 20px;
-          transition: right 0.3s ease;
-      }
 
-      .mobile-menu-panel.active {
-          right: 0; /* Показываем меню */
-      }
-
-      /* Стили для кнопки закрытия */
-      .mobile-menu-panel .close-button {
-          font-size: 30px;
-          color: white;
-          cursor: pointer;
-          margin-bottom: 20px;
-      }
-
-      .mobile-menu-panel .close-button:hover {
-          color: red;
-      }
-
-      /* Стили для ссылок в меню */
-      .mobile-menu-panel a {
-          color: white;
-          text-decoration: none;
-          margin: 15px 0;
-          font-size: 20px;
-          transition: color 0.3s;
-      }
-
-      .mobile-menu-panel a:hover {
-          color: #f1f1f1;
-      }
-
-      /* Кнопка гамбургера */
-      .menu-button {
-          display: block;
-          background: var(--dark);
-          color: white;
-          padding: 12px;
-          border-radius: 50%;
-          cursor: pointer;
-          font-size: 30px;
-      }
-
-      /* Скрыть обычную навигацию на мобильных устройствах */
-      .header-inner nav {
-          display: none;
-      }
-
-      .header-inner .menu-button {
-          display: block;
-      }
-  }
-
-
-
-
-
-
-  
   /* Стили для мобильного меню */
   @media (max-width: 960px) {
     /* Панель мобильного меню */
@@ -612,6 +478,88 @@
           display: none;
       }
   }
+  /* Стили для мобильного хедера */
+@media (max-width: 960px) {
+    .header-inner {
+        height: 80px; /* Увеличиваем высоту хедера для мобильных */
+        padding: 10px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(51, 51, 51, 0.9); /* Прозрачный фон хедера */
+    }
+
+    .brand-logo {
+        height: 40px; /* Логотип остаётся того же размера */
+    }
+
+    /* Кнопка для мобильного меню (круглая и без растяжки) */
+    .menu-button {
+        display: block;
+        background: var(--dark);
+        color: white;
+        padding: 12px;
+        border-radius: 50%; /* Круглая форма */
+        cursor: pointer;
+        font-size: 30px;
+        border: none;
+        outline: none;
+    }
+
+    /* Скрыть обычную навигацию на мобильных устройствах */
+    .header-inner nav {
+        display: none;
+    }
+
+    /* Мобильное меню */
+    .mobile-menu-panel {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        background-color: rgba(51, 51, 51, 0.9); /* Прозрачный фон */
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 20px;
+        transition: right 0.3s ease;
+    }
+
+    .mobile-menu-panel.active {
+        right: 0; /* Показываем меню */
+    }
+
+    /* Кнопка закрытия */
+    .mobile-menu-panel .close-button {
+        font-size: 30px;
+        color: white;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    .mobile-menu-panel .close-button:hover {
+        color: red;
+    }
+
+    /* Ссылки меню */
+    .mobile-menu-panel a {
+        color: white;
+        text-decoration: none;
+        margin: 15px 0;
+        font-size: 20px;
+        transition: color 0.3s;
+    }
+
+    .mobile-menu-panel a:hover {
+        color: #f1f1f1;
+    }
+  }
+
+  @media (min-width: 769px){
+    .mobile-menu{display:none}
+  }
 
 
   </style>
@@ -635,21 +583,45 @@
                 <span>+7 (495) 123-45-67</span>
             </a>
             <button class="header-call-button" type="button" data-action="callback">Заказать звонок</button>
-            <!-- Add mobile menu button -->
-            <button class="menu-button" id="menu-toggle-button">
-                &#9776; <!-- Hamburger icon -->
+            <button class="menu-button" id="menu-toggle-button" type="button" aria-expanded="false" aria-controls="mobile-menu">
+                <span class="visually-hidden">Открыть меню</span>
+                <span class="menu-button-box" aria-hidden="true">
+                    <span class="menu-button-bar"></span>
+                    <span class="menu-button-bar"></span>
+                    <span class="menu-button-bar"></span>
+                </span>
             </button>
         </div>
     </div>
   </header>
 
   <!-- Mobile Menu Panel -->
-  <div class="mobile-menu-panel" id="mobile-menu-panel">
-      <div class="close-button" id="close-menu-button">&times;</div>
-      <a href="/catalog">Каталог</a>
-      <a href="/about">О компании</a>
-      <a href="/contacts">Контакты</a>
-      <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <button class="mobile-menu__close" type="button" data-mobile-menu-close aria-label="Закрыть меню">&times;</button>
+      <div class="mobile-menu__inner">
+          <nav class="mobile-menu__nav" aria-label="Мобильная навигация">
+              <a href="/catalog" data-link="catalog">Каталог
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M9 6l6 6-6 6" />
+                  </svg>
+              </a>
+              <a href="/about" data-link="about">О компании
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M9 6l6 6-6 6" />
+                  </svg>
+              </a>
+              <a href="/contacts" data-link="contacts">Контакты
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M9 6l6 6-6 6" />
+                  </svg>
+              </a>
+          </nav>
+          <div class="mobile-menu__contacts">
+              <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+              <a href="mailto:info@студия-гранита.рф">info@студия-гранита.рф</a>
+          </div>
+          <p class="mobile-menu__footer-note">Мы на связи ежедневно и готовы помочь с подбором памятника.</p>
+      </div>
   </div>
 
   <main id="app" role="main"></main>
@@ -1218,18 +1190,35 @@
   });
   // Toggle mobile menu visibility
   const menuToggleButton = document.getElementById('menu-toggle-button');
-  const mobileMenuPanel = document.getElementById('mobile-menu-panel');
-  const closeMenuButton = document.getElementById('close-menu-button');
-    
-    // Open menu
-  menuToggleButton.addEventListener('click', () => {
-      mobileMenuPanel.classList.toggle('active');
-  });
+  const mobileMenu = document.getElementById('mobile-menu');
+  if(menuToggleButton && mobileMenu){
+    const closeButtons = $all('[data-mobile-menu-close]', mobileMenu);
+    const menuLinks = $all('a[href]', mobileMenu);
+    const overlayClickHandler = (event) => {
+      if(event.target === mobileMenu){
+        setMobileMenu(false);
+      }
+    };
 
-    // Close menu
-  closeMenuButton.addEventListener('click', () => {
-      mobileMenuPanel.classList.remove('active');
-  });
+    function setMobileMenu(open){
+      const shouldOpen = open !== undefined ? open : !mobileMenu.classList.contains('is-open');
+      mobileMenu.classList.toggle('is-open', shouldOpen);
+      document.body.classList.toggle('menu-open', shouldOpen);
+      menuToggleButton.classList.toggle('is-active', shouldOpen);
+      menuToggleButton.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+      mobileMenu.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
+    }
+
+    menuToggleButton.addEventListener('click', () => setMobileMenu());
+    closeButtons.forEach(button => button.addEventListener('click', () => setMobileMenu(false)));
+    menuLinks.forEach(link => link.addEventListener('click', () => setMobileMenu(false)));
+    mobileMenu.addEventListener('click', overlayClickHandler);
+    document.addEventListener('keydown', (event) => {
+      if(event.key === 'Escape' && mobileMenu.classList.contains('is-open')){
+        setMobileMenu(false);
+      }
+    });
+  }
 
 
   // ---------------- Views ----------------
