@@ -30,6 +30,12 @@
   nav a{color:#fff;opacity:.9;text-decoration:none;padding:8px 12px;display:inline-block}
   nav a:hover{opacity:1}
   nav a.active{box-shadow:inset 0 -2px 0 0 var(--accent)}
+  .header-actions{display:flex;align-items:center;gap:18px}
+  .header-phone{display:flex;align-items:center;gap:10px;color:#fff;opacity:.9;text-decoration:none;font-size:16px;transition:opacity .3s ease}
+  .header-phone:hover{opacity:1}
+  .header-phone svg{width:18px;height:18px;display:block}
+  .header-call-button{padding:10px 20px;border:1px solid #246e37;background:transparent;color:#fff;border-radius:8px;font-size:14px;line-height:1.5;font-family:inherit;cursor:pointer;transition:all .3s ease}
+  .header-call-button:hover{background:rgba(36,110,55,.1)}
   .btn-outline{border:1px solid var(--accent);background:transparent;color:#fff;border-radius:12px;padding:10px 16px;cursor:pointer}
   .btn-outline.dark-text{color:var(--text)}
   .btn-filled{background:var(--dark);color:#fff;border-radius:12px;padding:12px 18px;text-decoration:none;display:inline-block}
@@ -61,12 +67,12 @@
   .gap-2{gap:0.5rem}
   .font-medium{font-weight:500}
   .product-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-  .product-row.product-row--home{margin-top:28px;margin-bottom:40px}
-  .product-row--catalog{justify-content:flex-start}
-  .product-tile{background:var(--card);border-radius:18px;display:flex;flex-direction:column;align-items:center;overflow:hidden;box-sizing:border-box;transition:box-shadow .3s ease,transform .3s ease;width:100%;min-width:0;padding:24px 20px;gap:14px;aspect-ratio:3/4;min-height:320px;text-align:center}
+  .product-row.product-row--home{margin-top:34px;margin-bottom:48px}
+  .product-row--catalog{justify-content:flex-start;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;justify-items:center}
+  .product-tile{background:var(--card);border-radius:18px;display:flex;flex-direction:column;align-items:center;overflow:hidden;box-sizing:border-box;transition:box-shadow .3s ease,transform .3s ease;width:100%;min-width:0;max-width:320px;margin:0 auto;padding:28px 24px 26px;gap:16px;min-height:320px;text-align:center}
   .product-tile:hover{box-shadow:0 16px 36px rgba(0,0,0,.08);transform:translateY(-4px)}
-  .product-image-link{width:100%;aspect-ratio:1/1;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8)}
-  .product-image-link img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+  .product-image-link{width:calc(100% + 48px);aspect-ratio:1/1;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;margin:-28px -24px 18px;background:#fff;box-shadow:0 18px 42px rgba(17,24,39,.18)}
+  .product-image-link img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease;display:block}
   .product-image-link:hover img{transform:scale(1.05)}
   .product-image-placeholder{width:100%;height:100%;position:relative}
   .product-image-placeholder::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
@@ -76,6 +82,9 @@
   .product-tile-more{display:inline-flex;align-items:center;justify-content:center;margin-top:auto;font-size:14px;letter-spacing:.2px;color:#fff;text-decoration:none;background:var(--accent);border-radius:999px;padding:10px 22px;min-width:0;transition:background .3s ease,transform .3s ease}
   .product-tile-more:hover{background:#1e5a2d;transform:translateY(-2px)}
   .product-detail{display:flex;gap:28px;align-items:flex-start}
+  .home-category-block{padding:0 0 56px}
+  .home-category-block + .home-category-block{margin-top:32px}
+  .home-category-header{margin-bottom:32px}
   .product-main-image{width:520px;height:680px;border-radius:18px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
   .product-main-image img{width:100%;height:100%;object-fit:cover}
   .product-main-image::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
@@ -100,6 +109,13 @@
   .similar-header{color:#2B2B2B;margin-bottom:8px;font-family:Georgia,serif;font-size:32px;font-weight:400}
   .similar-accent{width:80px;height:2px;background:#246e37;margin:14px 0 24px}
   .product-support-note{color:#6B6B6B;font-size:14px;line-height:1.7;max-width:520px;text-align:center;margin:16px auto 0}
+  .catalog-section{padding-top:56px;padding-bottom:64px}
+  .catalog-title{color:#2B2B2B;font-family:Georgia,serif;font-size:36px;font-weight:400;line-height:1.4;margin:0 0 12px}
+  .catalog-description{color:#6B6B6B;font-size:16px;line-height:1.7;max-width:640px;margin:0 0 32px}
+  .catalog-category-nav{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px}
+  .catalog-category-button{display:inline-flex;align-items:center;justify-content:center;padding:10px 22px;border-radius:999px;border:1px solid rgba(36,110,55,.4);background:rgba(255,255,255,.9);color:#2B2B2B;font-size:14px;line-height:1.4;text-decoration:none;transition:all .3s ease}
+  .catalog-category-button:hover{border-color:#246e37;color:#246e37;box-shadow:0 10px 22px rgba(36,110,55,.15)}
+  .catalog-category-button.is-active{background:#246e37;color:#fff;border-color:#246e37;box-shadow:0 12px 28px rgba(36,110,55,.25)}  
   .card{background:var(--card);border-radius:16px;padding:16px}
   .media{height:180px;border-radius:14px;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
   .media::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
@@ -136,7 +152,7 @@
   /* Responsive */
   .product-carousel{display:flex;align-items:center;gap:16px;position:relative}
   .product-carousel-viewport{flex:1;overflow:hidden}
-  .product-carousel-track{--carousel-gap:24px;--carousel-visible:3;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--carousel-visible) - 1)*var(--carousel-gap))/var(--carousel-visible));gap:var(--carousel-gap);transition:transform .4s ease}
+  .product-carousel-track{--carousel-gap:24px;--carousel-visible:3;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--carousel-visible) - 1)*var(--carousel-gap))/var(--carousel-visible));gap:var(--carousel-gap);transition:transform .4s ease;justify-items:center}
   .product-carousel-track .product-tile{width:100%}
   .carousel-arrow{background:var(--card);border:1px solid rgba(0,0,0,.08);border-radius:999px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;transition:background .3s ease,transform .3s ease,opacity .3s ease}
   .carousel-arrow svg{width:20px;height:20px}
@@ -145,12 +161,14 @@
   .product-carousel:not(.is-scrollable) .carousel-arrow{visibility:hidden}
   @media (max-width:1200px){
     .product-carousel-track{--carousel-visible:2}
+    .product-row--catalog{grid-template-columns:repeat(3,minmax(0,1fr))}
   }
   @media (max-width:960px){
     .grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
     .hero-inner{padding-top:104px;padding-bottom:104px;gap:32px}
     .hero-media{max-width:440px;margin:0 auto}
     .product-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .product-row--catalog{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
   @media (max-width:680px){
     .header-inner{height:88px}
@@ -164,8 +182,13 @@
     .product-detail{flex-direction:column}
     .product-info{min-height:auto;width:100%;padding:28px 24px;box-shadow:none}
     .product-row{grid-template-columns:1fr}
-    .product-tile{aspect-ratio:auto;min-height:0;padding:20px 18px}
+    .product-row--catalog{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .product-tile{aspect-ratio:auto;min-height:0;padding:24px 20px 24px}
+    .product-image-link{width:calc(100% + 40px);margin:-24px -20px 16px}
     .product-carousel-track{--carousel-visible:1}
+  }
+  @media (max-width:540px){
+    .product-row--catalog{grid-template-columns:1fr}
   }
   /* Modal */
   .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:24px;z-index:1000}
@@ -182,25 +205,452 @@
   /* Map placeholder */
   #ymap{height:360px;border-radius:12px;background:repeating-conic-gradient(from 0deg, #f1f1f1 0deg 20deg, #e7e7e7 20deg 40deg)}
   .map-note{font-size:12px;opacity:.7;margin-top:8px}
+  @media (max-width: 1200px) {
+      /* Adjust hero content for medium screens */
+      .hero-inner {
+          padding-top: 100px; 
+          padding-bottom: 100px;
+      }
+      .hero-title {
+          font-size: 36px;
+      }
+      .hero-text {
+          font-size: 16px;
+      }
+      .hero-actions .hero-button {
+          width: 100%;
+          min-width: 0;
+      }
+  }
+
+  @media (max-width: 960px) {
+      /* Adjust hero section and grid for smaller devices */
+      .hero-inner {
+          padding-top: 90px;
+          padding-bottom: 90px;
+      }
+      .hero-media {
+          display: none; /* Hide image on small screens */
+      }
+      .hero-title {
+          font-size: 32px;
+      }
+      .hero-text {
+          font-size: 14px;
+      }
+      .hero-actions .hero-button {
+          width: 100%;
+          min-width: 0;
+      }
+  }
+
+  @media (max-width: 680px) {
+      /* Header adjustments */
+      .header-inner {
+          height: 70px;
+      }
+      .brand-logo {
+          height: 48px;
+      }
+      nav a {
+          font-size: 14px;
+          padding: 6px 8px;
+      }
+      .header-phone {
+          font-size: 14px;
+      }
+      /* Hero section adjustments */
+      .hero-title {
+          font-size: 28px;
+      }
+      .hero-text {
+          font-size: 14px;
+          margin-bottom: 20px;
+      }
+      .hero-actions .hero-button {
+          padding: 12px 24px;
+      }
+
+      /* Product grid adjustments */
+      .product-row {
+          grid-template-columns: 1fr;
+      }
+
+      /* Product tile adjustments */
+      .product-tile {
+          padding: 16px 12px;
+      }
+      .product-image-link {
+          width: 100%;
+          margin: -12px -12px 10px;
+      }
+  }
+
+  @media (max-width: 540px) {
+      /* Further reduce font size and padding on very small screens */
+      .product-tile {
+          padding: 12px 8px;
+      }
+      .hero-title {
+          font-size: 24px;
+      }
+      .hero-text {
+          font-size: 12px;
+      }
+      .hero-actions .hero-button {
+          padding: 10px 20px;
+      }
+  }
+  @media (max-width: 960px) {
+    /* Обновление сетки для каталога */
+    .product-row--catalog {
+        grid-template-columns: repeat(2, 1fr);  /* 2 карточки в ряд */
+        gap: 24px;  /* Увеличение расстояния между карточками */
+    }
+  }
+    /* Изменения для изображений товаров в каталоге */
+  @media (max-width: 960px) {
+      .product-image-link img {
+          width: 100%; /* Изображение заполняет весь контейнер */
+          height: auto; /* Сохраняем соотношение сторон */
+          object-fit: cover;
+      }
+  }
+
+  /* Изображение товара на странице */
+  @media (max-width: 960px) {
+      .product-main-image {
+          width: 100%; /* Ширина на весь экран */
+          height: 60vh; /* Высота 60% от экрана */
+          border-radius: 0 0 12px 12px; /* Закругленные углы снизу */
+          overflow: hidden;
+      }
+      .product-main-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover; /* Чтобы изображение заполнило контейнер */
+      }
+  }
+  /* Изображение товара на странице с закруглением сверху */
+  @media (max-width: 960px) {
+    .product-main-image {
+        width: 100%; /* Ширина на весь экран */
+        height: 60vh; /* Высота 60% от экрана */
+        border-radius: 12px 12px 0 0; /* Закругленные углы сверху */
+        overflow: hidden;
+    }
+    .product-main-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Чтобы изображение заполнило контейнер */
+    }
+
+    /* Контейнер с информацией о товаре */
+    .product-info {
+        width: 100%; /* Заполняем весь экран */
+        max-width: 100%; /* Без ограничений */
+        padding: 0 16px; /* Отступы для контента */
+        box-sizing: border-box;
+        margin: 0 auto; /* Центрируем */
+    }
+
+    /* Центрируем информацию о товаре */
+    .product-info-content {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Изменения для кнопки "Заказать звонок" */
+    .callback-button {
+        width: 100%; /* Кнопка на всю ширину */
+        max-width: 400px; /* Ограничение по максимальной ширине */
+        margin: 20px auto; /* Центрируем кнопку */
+        display: block;
+    }
+  }
+  @media (max-width: 960px) {
+    .header-inner {
+        height: 80px; /* Увеличиваем высоту хедера для мобильных */
+        padding: 10px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand-logo {
+        height: 40px; /* Логотип остаётся того же размера */
+    }
+
+    /* Кнопка для мобильного меню */
+    .menu-button {
+        display: block;
+        background: var(--dark);
+        color: white;
+        padding: 12px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 30px;
+    }
+
+    /* Скрыть обычную навигацию на мобильных устройствах */
+    .header-inner nav {
+        display: none;
+    }
+
+    /* Мобильное меню */
+    .mobile-menu-panel {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        background-color: #333;
+        width: 80%;
+        height: 100%;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        transition: right 0.3s ease;
+    }
+
+    .mobile-menu-panel.active {
+        right: 0;
+    }
+
+    /* Кнопка закрытия */
+    .mobile-menu-panel .close-button {
+        font-size: 30px;
+        color: white;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    .mobile-menu-panel .close-button:hover {
+        color: red;
+    }
+
+    /* Ссылки меню */
+    .mobile-menu-panel a {
+        color: white;
+        text-decoration: none;
+        margin: 15px 0;
+        font-size: 20px;
+        transition: color 0.3s;
+    }
+
+    .mobile-menu-panel a:hover {
+        color: #f1f1f1;
+    }
+  }
+
+
+
+  
+/* Mobile Footer */
+  @media (max-width: 960px) {
+    footer {
+        font-size: 12px; /* Reduce text size in footer */
+    }
+
+    footer .container {
+        padding: 10px 0;
+    }
+
+    footer a {
+        font-size: 12px;
+    }
+  }
+  /* Стили для мобильного меню */
+  @media (max-width: 960px) {
+      /* Панель мобильного меню */
+      .mobile-menu-panel {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          background-color: #333;
+          width: 80%;
+          height: 100%;
+          z-index: 1000;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 20px;
+          transition: right 0.3s ease;
+      }
+
+      .mobile-menu-panel.active {
+          right: 0; /* Показываем меню */
+      }
+
+      /* Стили для кнопки закрытия */
+      .mobile-menu-panel .close-button {
+          font-size: 30px;
+          color: white;
+          cursor: pointer;
+          margin-bottom: 20px;
+      }
+
+      .mobile-menu-panel .close-button:hover {
+          color: red;
+      }
+
+      /* Стили для ссылок в меню */
+      .mobile-menu-panel a {
+          color: white;
+          text-decoration: none;
+          margin: 15px 0;
+          font-size: 20px;
+          transition: color 0.3s;
+      }
+
+      .mobile-menu-panel a:hover {
+          color: #f1f1f1;
+      }
+
+      /* Кнопка гамбургера */
+      .menu-button {
+          display: block;
+          background: var(--dark);
+          color: white;
+          padding: 12px;
+          border-radius: 50%;
+          cursor: pointer;
+          font-size: 30px;
+      }
+
+      /* Скрыть обычную навигацию на мобильных устройствах */
+      .header-inner nav {
+          display: none;
+      }
+
+      .header-inner .menu-button {
+          display: block;
+      }
+  }
+
+
+
+
+
+
+  
+  /* Стили для мобильного меню */
+  @media (max-width: 960px) {
+    /* Панель мобильного меню */
+    .mobile-menu-panel {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        background-color: #333;
+        width: 80%;
+        height: 100%;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        transition: right 0.3s ease;
+    }
+
+    .mobile-menu-panel.active {
+        right: 0; /* Показываем меню */
+    }
+
+    /* Стили для кнопки закрытия */
+    .mobile-menu-panel .close-button {
+        font-size: 30px;
+        color: white;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    .mobile-menu-panel .close-button:hover {
+        color: red;
+    }
+
+    /* Стили для ссылок в меню */
+    .mobile-menu-panel a {
+        color: white;
+        text-decoration: none;
+        margin: 15px 0;
+        font-size: 20px;
+        transition: color 0.3s;
+    }
+
+    .mobile-menu-panel a:hover {
+        color: #f1f1f1;
+    }
+
+    /* Кнопка гамбургера */
+    .menu-button {
+        display: block;
+        background: var(--dark);
+        color: white;
+        padding: 12px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 30px;
+    }
+
+    /* Скрыть обычную навигацию на мобильных устройствах */
+    .header-inner nav {
+        display: none;
+    }
+
+    .header-inner .menu-button {
+        display: block;
+    }
+  }
+
+  /* Скрыть мобильное меню на десктопе */
+  @media (min-width: 961px) {
+      .mobile-menu-panel {
+          display: none;
+      }
+
+      .header-inner .menu-button {
+          display: none;
+      }
+  }
+
+
   </style>
 </head>
 <body>
   <header>
     <div class="container header-inner">
-      <a href="/" class="brand" data-link="home" aria-label="На главную">
-        <!-- TODO: заменить PUT_LOGO_PATH_HERE на фактический путь к логотипу -->
-        <img src="../static/images/logo.png" alt="Студия гранита" class="brand-logo" />
-      </a>
-      <nav class="row" aria-label="Главная навигация">
-        <a href="/catalog" data-link="catalog">Каталог</a>
-        <a href="/about" data-link="about">О компании</a>
-        <a href="/contacts" data-link="contacts">Контакты</a>
-      </nav>
-      <div class="row">
-        <a href="tel:+74951234567" style="color:#fff;opacity:.9;text-decoration:none">+7 (495) 123-45-67</a>
-      </div>
+        <a href="/" class="brand" data-link="home" aria-label="На главную">
+            <img src="../static/images/logo2.png" alt="Студия гранита" class="brand-logo" />
+        </a>
+        <nav class="row" aria-label="Главная навигация">
+            <a href="/catalog" data-link="catalog">Каталог</a>
+            <a href="/about" data-link="about">О компании</a>
+            <a href="/contacts" data-link="contacts">Контакты</a>
+        </nav>
+        <div class="header-actions">
+            <a class="header-phone" href="tel:+74951234567">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5.5 3h2.8c.4 0 .8.3.9.7l.8 3.1c.1.4 0 .9-.3 1.2l-1.7 1.8c1.4 2.6 3.5 4.7 6.1 6.1l1.8-1.7c.3-.3.8-.4 1.2-.3l3.1.8c.4.1.7.5.7.9v2.8c0 .5-.4.9-.9 1-1 .1-2 .1-3 0-6.4-.6-11.4-5.6-12-12-.1-1-.1-2 0-3 .1-.5.5-.9 1-.9Z" />
+                </svg>
+                <span>+7 (495) 123-45-67</span>
+            </a>
+            <button class="header-call-button" type="button" data-action="callback">Заказать звонок</button>
+            <!-- Add mobile menu button -->
+            <button class="menu-button" id="menu-toggle-button">
+                &#9776; <!-- Hamburger icon -->
+            </button>
+        </div>
     </div>
   </header>
+
+  <!-- Mobile Menu Panel -->
+  <div class="mobile-menu-panel" id="mobile-menu-panel">
+      <div class="close-button" id="close-menu-button">&times;</div>
+      <a href="/catalog">Каталог</a>
+      <a href="/about">О компании</a>
+      <a href="/contacts">Контакты</a>
+      <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+  </div>
 
   <main id="app" role="main"></main>
 
@@ -270,26 +720,27 @@
   };
   const activeCarousels = new Set();
   const CATEGORY_TITLES = {
-    'Стандартный': 'Стандартный',
-    'Стандартные памятники': 'Стандартный',
-    'Семейный': 'Семейный',
-    'Семейные памятники': 'Семейный',
-    'Эксклюзивный': 'Эксклюзивный',
-    'Эксклюзивные памятники': 'Эксклюзивный',
-    'Детский': 'Детский',
-    'Детские памятники': 'Детский',
+    'Стандартный': 'Стандартные памятники',
+    'Семейный': 'Семейные памятники',
+    'Эксклюзивный': 'Эксклюзивные памятники',
+    'Детский': 'Детские памятники',
   };
 
   const CATEGORY_ORDER = [
     'Стандартный',
-    'Стандартные памятники',
     'Семейный',
-    'Семейные памятники',
     'Эксклюзивный',
-    'Эксклюзивные памятники',
     'Детский',
-    'Детские памятники',
   ];
+
+  const CATEGORY_PRESETS = [
+    { slug: 'standartnye', label: 'Стандартные', names: ['Стандартный', 'Стандартные памятники'] },
+    { slug: 'semeinye', label: 'Семейные', names: ['Семейный', 'Семейные памятники'] },
+    { slug: 'eksklyuzivnye', label: 'Эксклюзивные', names: ['Эксклюзивный', 'Эксклюзивные памятники'] },
+    { slug: 'detskie', label: 'Детские', names: ['Детский', 'Детские памятники'] },
+  ];
+
+  const DEFAULT_CATALOG_CATEGORY = 'standartnye';
 
   // ---------------- Helpers ----------------
   function $(sel, root=document){ return root.querySelector(sel); }
@@ -347,6 +798,35 @@
     const raw = (category ?? '').trim();
     if(!raw) return 'Без категории';
     return CATEGORY_TITLES[raw] || raw;
+  }
+
+  function findCategoryPresetByName(name){
+    const normalized = (name ?? '').trim().toLowerCase();
+    if(!normalized) return null;
+    return CATEGORY_PRESETS.find(preset => preset.names.some(candidate => candidate.toLowerCase() === normalized)) || null;
+  }
+
+  function findCategoryPresetBySlug(slug){
+    const normalized = (slug ?? '').trim().toLowerCase();
+    if(!normalized) return null;
+    return CATEGORY_PRESETS.find(preset => preset.slug === normalized) || null;
+  }
+
+  function categorySlug(category){
+    const preset = findCategoryPresetByName(category);
+    if(preset) return preset.slug;
+    const label = displayCategoryName(category);
+    const normalized = label.trim().toLowerCase();
+    if(!normalized) return 'uncategorized';
+    return normalized
+      .replace(/[^\p{Letter}\p{Number}]+/gu, '-')
+      .replace(/^-+|-+$/g, '') || 'uncategorized';
+  }
+
+  function categoryLabel(category){
+    const preset = findCategoryPresetByName(category);
+    if(preset) return preset.label;
+    return displayCategoryName(category);
   }
 
   function productLink(id){
@@ -463,6 +943,88 @@
     return entries;
   }
 
+  function catalogCategoryGroups(){
+    const groups = new Map();
+    state.products.forEach(product => {
+      const slug = categorySlug(product.category);
+      const label = categoryLabel(product.category);
+      if(!groups.has(slug)){
+        groups.set(slug, { slug, label, items: [], sources: new Set() });
+      }
+      const group = groups.get(slug);
+      group.items.push(product);
+      const source = (product.category ?? '').trim();
+      if(source){
+        group.sources.add(source);
+      }
+    });
+    const list = Array.from(groups.values());
+    const presetIndex = (slug) => {
+      const preset = findCategoryPresetBySlug(slug);
+      if(!preset) return -1;
+      return CATEGORY_PRESETS.indexOf(preset);
+    };
+    const fallbackIndex = (group) => {
+      const [firstSource] = group.sources ? Array.from(group.sources) : [];
+      const fallback = (group.items[0]?.category ?? firstSource ?? '').trim();
+      const idx = CATEGORY_ORDER.indexOf(fallback);
+      if(idx !== -1) return idx;
+      return CATEGORY_ORDER.length;
+    };
+    list.sort((a, b) => {
+      const aPreset = presetIndex(a.slug);
+      const bPreset = presetIndex(b.slug);
+      const aScore = aPreset === -1 ? CATEGORY_PRESETS.length : aPreset;
+      const bScore = bPreset === -1 ? CATEGORY_PRESETS.length : bPreset;
+      if(aScore !== bScore) return aScore - bScore;
+      if(aPreset !== bPreset) return aPreset - bPreset;
+      const fallbackDiff = fallbackIndex(a) - fallbackIndex(b);
+      if(fallbackDiff !== 0) return fallbackDiff;
+      return a.label.localeCompare(b.label, 'ru');
+    });
+    return list;
+  }
+
+  function renderCatalogCategoryNav(categories, activeSlug){
+    if(!categories || !categories.length) return '';
+    const active = (activeSlug ?? '').trim().toLowerCase();
+    const items = categories.map(category => {
+      const isActive = category.slug === active;
+      const href = '/catalog?category=' + encodeURIComponent(category.slug);
+      const label = escapeHtml(category.label);
+      const ariaCurrent = isActive ? ' aria-current="page"' : '';
+      const classes = 'catalog-category-button' + (isActive ? ' is-active' : '');
+      return `<a class="${classes}" href="${escapeAttribute(href)}"${ariaCurrent}>${label}</a>`;
+    }).join('');
+    return `<nav class="catalog-category-nav" aria-label="Категории памятников">${items}</nav>`;
+  }
+
+  function resolveCatalogActive(categories, query){
+    if(!categories || !categories.length){
+      return { slug: '', group: null };
+    }
+    const raw = (query?.get?.('category') ?? '').trim().toLowerCase();
+    if(raw){
+      const matched = categories.find(category => category.slug === raw);
+      if(matched){
+        return { slug: matched.slug, group: matched };
+      }
+      const preset = findCategoryPresetBySlug(raw);
+      if(preset){
+        const presetGroup = categories.find(category => category.slug === preset.slug);
+        if(presetGroup){
+          return { slug: presetGroup.slug, group: presetGroup };
+        }
+      }
+    }
+    const defaultGroup = categories.find(category => category.slug === DEFAULT_CATALOG_CATEGORY);
+    if(defaultGroup){
+      return { slug: defaultGroup.slug, group: defaultGroup };
+    }
+    const fallback = categories[0];
+    return { slug: fallback?.slug ?? '', group: fallback ?? null };
+  }
+
   function renderHomeCategories(){
     if(state.loading){
       return renderStatus('Загружаем каталог...');
@@ -485,13 +1047,13 @@
         })
       : `<div class="status-card" style="width:100%;">В этой категории пока нет товаров.</div>`;
     return `
-          <div class="space-v-16">
+          <section class="home-category-block">
             <div class="section-header home-category-header">
               <h2 class="category-heading">${heading}</h2>
               <a class="btn-view-all" href="/catalog" aria-label="${aria}">Смотреть все</a>
             </div>
             ${cards}
-          </div>
+          </section>
         `;
     }).join('');
   }
@@ -654,6 +1216,20 @@
       }
     });
   });
+  // Toggle mobile menu visibility
+  const menuToggleButton = document.getElementById('menu-toggle-button');
+  const mobileMenuPanel = document.getElementById('mobile-menu-panel');
+  const closeMenuButton = document.getElementById('close-menu-button');
+    
+    // Open menu
+  menuToggleButton.addEventListener('click', () => {
+      mobileMenuPanel.classList.toggle('active');
+  });
+
+    // Close menu
+  closeMenuButton.addEventListener('click', () => {
+      mobileMenuPanel.classList.remove('active');
+  });
 
 
   // ---------------- Views ----------------
@@ -710,22 +1286,36 @@
   }
 
 
-  function viewCatalog(){
-    let content = '';
+  function viewCatalog(context={}){
+    const query = context?.query instanceof URLSearchParams ? context.query : new URLSearchParams();
+    let nav = '';
+    let body = '';
     if(state.loading){
-      content = renderStatus('Загружаем каталог...');
+      body = renderStatus('Загружаем каталог...');
     }else if(state.error){
-      content = renderStatus(state.error, true);
+      body = renderStatus(state.error, true);
     }else if(!state.products.length){
-      content = renderStatus('Каталог пока пуст. Возвращайтесь позже.');
+      body = renderStatus('Каталог пока пуст. Возвращайтесь позже.');
     }else{
-      content = `<div class="product-row product-row--catalog">${state.products.map(productCard).join('')}</div>`;
+      const categories = catalogCategoryGroups();
+      if(!categories.length){
+        body = renderStatus('Каталог пока пуст. Возвращайтесь позже.');
+      }else{
+        const { slug, group } = resolveCatalogActive(categories, query);
+        nav = renderCatalogCategoryNav(categories, slug);
+        const items = group?.items ?? [];
+        body = items.length
+          ? `<div class="product-row product-row--catalog">${items.map(productCard).join('')}</div>`
+          : `<div class="status-card">В этой категории пока нет товаров.</div>`;
+      }
     }
     return `
-      <section class="section">
+      <section class="section catalog-section">
         <div class="container">
-          <h2>Каталог памятников</h2>
-          ${content}
+          <h1 class="catalog-title">Каталог памятников</h1>
+          <p class="catalog-description">Мы создаём памятники с заботой и уважением к памяти ваших близких. Каждое изделие выполнено из качественных материалов и отражает вечную память.</p>
+          ${nav}
+          ${body}
         </div>
       </section>
     `;
@@ -896,23 +1486,25 @@
 
   function parseLocation(){
     const path = normalizePath(location.pathname);
+    const query = new URLSearchParams(location.search || '');
     if(path === '/'){
-      return { base: '', param: undefined };
+      return { base: '', param: undefined, query };
     }
     const segments = path.slice(1).split('/');
     const base = segments[0] || '';
     const param = segments[1];
-    return { base, param };
+    return { base, param, query };
   }
 
   function render(){
-    const { base, param } = parseLocation();
+    const route = parseLocation();
+    const { base, param, query } = route;
     carouselSequence = 0;
     document.title = 'студия-гранита.рф — ' + titleFor(base);
     const app = $('#app');
     let html = '';
     if(base===''){ html = viewHome(); }
-    else if(base==='catalog'){ html = viewCatalog(); }
+    else if(base==='catalog'){ html = viewCatalog({ query }); }
     else if(base==='about'){ html = viewAbout(); }
     else if(base==='contacts'){ html = viewContacts(); }
     else if(base==='product'){ html = viewProduct(param||''); }
