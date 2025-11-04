@@ -23,8 +23,8 @@
   .hero-media-note{color:rgba(255,255,255,.7);font-size:13px}
   .container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
   /* Header */
-  header{background:var(--dark)}
-  .header-inner{height:100px;display:flex;align-items:center;justify-content:space-between}
+  header{background:var(--dark);position:relative;z-index:1200;--header-height:100px;}
+  .header-inner{height:var(--header-height);display:flex;align-items:center;justify-content:space-between}
   .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
   .brand-logo{display:block;height:64px;width:auto}
   nav a{color:#fff;opacity:.9;text-decoration:none;padding:8px 12px;display:inline-block}
@@ -36,18 +36,18 @@
   .header-phone svg{width:18px;height:18px;display:block}
   .header-call-button{padding:10px 20px;border:1px solid #246e37;background:transparent;color:#fff;border-radius:8px;font-size:14px;line-height:1.5;font-family:inherit;cursor:pointer;transition:all .3s ease}
   .header-call-button:hover{background:rgba(36,110,55,.1)}
-  .menu-button{display:none;align-items:center;justify-content:center;padding:10px;border:none;background:transparent;color:#fff;cursor:pointer;border-radius:10px;transition:background .3s ease}
-  .menu-button:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
-  .menu-button:hover{background:rgba(255,255,255,.08)}
-  .menu-button-box{display:flex;flex-direction:column;gap:6px}
-  .menu-button-bar{width:26px;height:2px;background:#fff;border-radius:999px;transition:transform .3s ease,opacity .3s ease}
+  .menu-button{display:none;align-items:center;justify-content:center;padding:8px 4px;border:none;background:transparent;color:#fff;cursor:pointer;border-radius:0;transition:color .3s ease;min-height:44px;min-width:44px}
+  .menu-button:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:3px}
+  .menu-button:hover{color:rgba(255,255,255,.85)}
+  .menu-button-box{display:flex;flex-direction:column;gap:5px}
+  .menu-button-bar{width:30px;height:3px;background:#fff;border-radius:999px;transition:transform .3s ease,opacity .3s ease}
   .menu-button.is-active .menu-button-bar:nth-child(1){transform:translateY(8px) rotate(45deg)}
   .menu-button.is-active .menu-button-bar:nth-child(2){opacity:0}
   .menu-button.is-active .menu-button-bar:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
   .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-  .mobile-menu{position:fixed;inset:0;background:rgba(30,30,30,.92);backdrop-filter:blur(6px);transform:translateY(-100%);opacity:0;transition:transform .35s ease,opacity .35s ease;z-index:1400;display:flex;flex-direction:column;pointer-events:none;visibility:hidden;padding-top:calc(100px + env(safe-area-inset-top,0))}
-  .mobile-menu.is-open{transform:translateY(0);opacity:1;pointer-events:auto;visibility:visible}
-  .mobile-menu__inner{padding:32px 24px 48px;display:flex;flex-direction:column;gap:24px;flex:1;overflow-y:auto}
+  .mobile-menu{position:absolute;top:calc(var(--header-height) + env(safe-area-inset-top,0));left:0;right:0;background:rgba(30,30,30,.96);box-shadow:0 18px 36px rgba(0,0,0,.2);opacity:0;transition:opacity .3s ease,max-height .3s ease;z-index:1300;display:flex;flex-direction:column;pointer-events:none;visibility:hidden;max-height:0;overflow:hidden;border-bottom-left-radius:20px;border-bottom-right-radius:20px;--menu-height:0px}
+  .mobile-menu.is-open{opacity:1;pointer-events:auto;visibility:visible;max-height:var(--menu-height)}
+  .mobile-menu__inner{padding:20px 24px;display:flex;flex-direction:column;gap:24px;max-width:var(--maxw);margin:0 auto;width:100%}
   .mobile-menu__nav{display:flex;flex-direction:column;gap:12px}
   .mobile-menu__nav a{color:#fff;text-decoration:none;font-size:18px;display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
   .mobile-menu__nav a:last-child{border-bottom:none}
@@ -56,8 +56,8 @@
   .mobile-menu__contacts a{color:#fff;text-decoration:none;font-size:16px;opacity:.92}
   .mobile-menu__contacts a:hover{opacity:1}
   .mobile-menu__footer-note{color:rgba(255,255,255,.6);font-size:12px;line-height:1.6}
-  .mobile-menu__close{position:absolute;top:22px;right:22px;background:rgba(255,255,255,.08);border:none;color:#fff;border-radius:999px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;transition:background .3s ease}
-  .mobile-menu__close:hover{background:rgba(255,255,255,.16)}
+  .mobile-menu__close{position:absolute;top:16px;right:20px;background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:999px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;transition:background .3s ease}
+  .mobile-menu__close:hover{background:rgba(255,255,255,.2)}
   .mobile-menu__close:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
   body.menu-open{overflow:hidden}
   .btn-outline{border:1px solid var(--accent);background:transparent;color:#fff;border-radius:12px;padding:10px 16px;cursor:pointer}
@@ -183,6 +183,8 @@
   .carousel-arrow:hover{background:#fff;transform:translateY(-2px)}
   .carousel-arrow:disabled{opacity:.4;cursor:default;transform:none}
   .product-carousel:not(.is-scrollable) .carousel-arrow{visibility:hidden}
+  .product-carousel.is-touch .product-carousel-track{transition:none}
+  .product-carousel.is-touch .carousel-arrow{display:none}
   @media (max-width:1200px){
     .product-carousel-track{--carousel-visible:2}
     .product-row--catalog{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -197,10 +199,15 @@
     .hero-inner{padding:72px 24px}
     .hero-button{width:100%;min-width:0}
     .product-detail{flex-direction:column}
-    .product-info{min-height:auto;width:100%;padding:28px 24px;box-shadow:none}
+    .product-info{min-height:auto;width:100%;padding:24px;box-shadow:none}
     .product-row--catalog{grid-template-columns:repeat(2,minmax(0,1fr))}
     .product-tile{aspect-ratio:auto;min-height:0}
     .product-carousel-track{--carousel-visible:1}
+    .product-carousel{gap:0}
+    .product-carousel-viewport{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -24px;padding:0 24px 16px;scroll-padding-left:24px}
+    .product-carousel-track{display:flex;gap:16px;width:max-content}
+    .product-carousel-track .product-tile{flex:0 0 clamp(260px,82vw,320px);scroll-snap-align:start}
+    .product-carousel-track::-webkit-scrollbar{display:none}
   }
   @media (max-width:540px){
     .product-row--catalog{grid-template-columns:1fr}
@@ -257,22 +264,35 @@
           width: 100%;
           min-width: 0;
       }
+      header{--header-height:72px;}
+      .header-inner{
+          height: var(--header-height);
+          padding: 0 20px;
+          gap: 12px;
+      }
+      .header-actions{gap:12px;}
+      .header-phone,
+      .header-call-button{
+          display: none;
+      }
+      .header-inner nav{
+          display: none;
+      }
+      .menu-button{
+          display:flex;
+      }
   }
 
   @media (max-width: 680px) {
       /* Header adjustments */
+      header {
+          --header-height: 68px;
+      }
       .header-inner {
-          height: 70px;
+          height: var(--header-height);
       }
       .brand-logo {
-          height: 48px;
-      }
-      nav a {
-          font-size: 14px;
-          padding: 6px 8px;
-      }
-      .header-phone {
-          font-size: 14px;
+          height: 44px;
       }
       /* Hero section adjustments */
       .hero-title {
@@ -319,7 +339,7 @@
   @media (max-width: 960px) {
     /* Обновление сетки для каталога */
     .product-row--catalog {
-        grid-template-columns: repeat(2, 1fr);  /* 2 карточки в ряд */
+        grid-template-columns: repeat(1, 1fr);  /* 2 карточки в ряд */
         gap: 24px;  /* Увеличение расстояния между карточками */
     }
   }
@@ -327,7 +347,7 @@
   @media (max-width: 960px) {
       .product-image-link img {
           width: 100%; /* Изображение заполняет весь контейнер */
-          height: auto; /* Сохраняем соотношение сторон */
+          height: 100%; /* Сохраняем соотношение сторон */
           object-fit: cover;
       }
   }
@@ -352,7 +372,7 @@
     .product-info {
         width: 100%; /* Заполняем весь экран */
         max-width: 100%; /* Без ограничений */
-        padding: 0 16px; /* Отступы для контента */
+        padding: 24px; /* Отступы для контента */
         box-sizing: border-box;
         margin: 0 auto; /* Центрируем */
     }
@@ -371,193 +391,28 @@
         display: block;
     }
   }
-  @media (max-width: 960px) {
-    .header-inner {
-        height: 80px; /* Увеличиваем высоту хедера для мобильных */
-        padding: 10px 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .brand-logo {
-        height: 40px; /* Логотип остаётся того же размера */
-    }
-  }
-
 /* Mobile Footer */
-  @media (max-width: 960px) {
+  @media (max-width: 680px) {
     footer {
-        font-size: 12px; /* Reduce text size in footer */
-    }
-
-    footer .container {
-        padding: 10px 0;
+        font-size: 12px;
+        color: rgba(255,255,255,0.88);
     }
 
     footer a {
         font-size: 12px;
+        color: rgba(255,255,255,0.88);
+    }
+
+    footer .container {
+        padding: 16px 20px;
+    }
+
+    .footer-bottom {
+        padding: 16px 20px;
     }
   }
 
-  /* Стили для мобильного меню */
-  @media (max-width: 960px) {
-    /* Панель мобильного меню */
-    .mobile-menu-panel {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        background-color: #333;
-        width: 80%;
-        height: 100%;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 20px;
-        transition: right 0.3s ease;
-    }
-
-    .mobile-menu-panel.active {
-        right: 0; /* Показываем меню */
-    }
-
-    /* Стили для кнопки закрытия */
-    .mobile-menu-panel .close-button {
-        font-size: 30px;
-        color: white;
-        cursor: pointer;
-        margin-bottom: 20px;
-    }
-
-    .mobile-menu-panel .close-button:hover {
-        color: red;
-    }
-
-    /* Стили для ссылок в меню */
-    .mobile-menu-panel a {
-        color: white;
-        text-decoration: none;
-        margin: 15px 0;
-        font-size: 20px;
-        transition: color 0.3s;
-    }
-
-    .mobile-menu-panel a:hover {
-        color: #f1f1f1;
-    }
-
-    /* Кнопка гамбургера */
-    .menu-button {
-        display: block;
-        background: var(--dark);
-        color: white;
-        padding: 12px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 30px;
-    }
-
-    /* Скрыть обычную навигацию на мобильных устройствах */
-    .header-inner nav {
-        display: none;
-    }
-
-    .header-inner .menu-button {
-        display: block;
-    }
-  }
-
-  /* Скрыть мобильное меню на десктопе */
-  @media (min-width: 961px) {
-      .mobile-menu-panel {
-          display: none;
-      }
-
-      .header-inner .menu-button {
-          display: none;
-      }
-  }
-  /* Стили для мобильного хедера */
-@media (max-width: 960px) {
-    .header-inner {
-        height: 80px; /* Увеличиваем высоту хедера для мобильных */
-        padding: 10px 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: rgba(51, 51, 51, 0.9); /* Прозрачный фон хедера */
-    }
-
-    .brand-logo {
-        height: 40px; /* Логотип остаётся того же размера */
-    }
-
-    /* Кнопка для мобильного меню (круглая и без растяжки) */
-    .menu-button {
-        display: block;
-        background: var(--dark);
-        color: white;
-        padding: 12px;
-        border-radius: 50%; /* Круглая форма */
-        cursor: pointer;
-        font-size: 30px;
-        border: none;
-        outline: none;
-    }
-
-    /* Скрыть обычную навигацию на мобильных устройствах */
-    .header-inner nav {
-        display: none;
-    }
-
-    /* Мобильное меню */
-    .mobile-menu-panel {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        background-color: rgba(51, 51, 51, 0.9); /* Прозрачный фон */
-        width: 100%;
-        height: 100%;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        padding: 20px;
-        transition: right 0.3s ease;
-    }
-
-    .mobile-menu-panel.active {
-        right: 0; /* Показываем меню */
-    }
-
-    /* Кнопка закрытия */
-    .mobile-menu-panel .close-button {
-        font-size: 30px;
-        color: white;
-        cursor: pointer;
-        margin-bottom: 20px;
-    }
-
-    .mobile-menu-panel .close-button:hover {
-        color: red;
-    }
-
-    /* Ссылки меню */
-    .mobile-menu-panel a {
-        color: white;
-        text-decoration: none;
-        margin: 15px 0;
-        font-size: 20px;
-        transition: color 0.3s;
-    }
-
-    .mobile-menu-panel a:hover {
-        color: #f1f1f1;
-    }
-  }
-
-  @media (min-width: 769px){
+  @media (min-width: 961px){
     .mobile-menu{display:none}
   }
 
@@ -1105,7 +960,26 @@
     const prevBtn = carousel.querySelector('[data-carousel-prev]');
     const nextBtn = carousel.querySelector('[data-carousel-next]');
     let index = 0;
+    const touchMedia = window.matchMedia('(max-width: 680px)');
+    let touchMode = touchMedia.matches;
 
+    function syncTouchMode(){
+      const next = touchMedia.matches;
+      if(next !== touchMode){
+        touchMode = next;
+      }
+      carousel.classList.toggle('is-touch', touchMode);
+      if(touchMode){
+        track.style.transform = '';
+        viewport.scrollLeft = 0;
+        index = 0;
+      }
+    }
+
+    function measureOverflow(){
+      return track.scrollWidth - viewport.clientWidth > 1;
+    }
+    
     function totalItems(){
       return track.children.length;
     }
@@ -1129,22 +1003,28 @@
     }
 
     function updateButtons(maxIndex, hasOverflow){
-      carousel.classList.toggle('is-scrollable', hasOverflow);
+      const hideButtons = touchMode;
+      const effectiveOverflow = hideButtons ? measureOverflow() : hasOverflow;
+      carousel.classList.toggle('is-scrollable', !hideButtons && effectiveOverflow);
       if(prevBtn){
-        const disabled = index <= 0;
+        const disabled = hideButtons || index <= 0;
         prevBtn.disabled = disabled;
         prevBtn.setAttribute('aria-disabled', disabled ? 'true' : 'false');
-        prevBtn.style.visibility = hasOverflow ? 'visible' : 'hidden';
+        prevBtn.style.visibility = (!hideButtons && effectiveOverflow) ? 'visible' : 'hidden';
       }
       if(nextBtn){
-        const disabled = index >= maxIndex;
+        const disabled = hideButtons || index >= maxIndex;
         nextBtn.disabled = disabled;
         nextBtn.setAttribute('aria-disabled', disabled ? 'true' : 'false');
-        nextBtn.style.visibility = hasOverflow ? 'visible' : 'hidden';
+        nextBtn.style.visibility = (!hideButtons && effectiveOverflow) ? 'visible' : 'hidden';
       }
     }
 
     function applyTransform(){
+      if(touchMode){
+        track.style.transform = '';
+        return;
+      }
       const card = track.querySelector('.product-tile');
       if(!card){
         track.style.transform = 'translateX(0)';
@@ -1155,6 +1035,11 @@
     }
 
     function slideTo(target){
+      syncTouchMode();
+      if(touchMode){
+        updateButtons(0, measureOverflow());
+        return;
+      }
       const visibleCount = computeVisible();
       const maxIndex = Math.max(0, totalItems() - visibleCount);
       index = Math.max(0, Math.min(target, maxIndex));
@@ -1173,6 +1058,17 @@
       nextBtn.addEventListener('click', ()=> slideBy(1));
     }
 
+    const handleMediaChange = () => {
+      syncTouchMode();
+      slideTo(index);
+    };
+    if(typeof touchMedia.addEventListener === 'function'){
+      touchMedia.addEventListener('change', handleMediaChange);
+    }else if(typeof touchMedia.addListener === 'function'){
+      touchMedia.addListener(handleMediaChange);
+    }
+
+    syncTouchMode();
     slideTo(0);
 
     return {
@@ -1200,13 +1096,36 @@
       }
     };
 
+        function computeMenuHeight(){
+      const inner = mobileMenu.querySelector('.mobile-menu__inner');
+      return inner ? inner.scrollHeight : 0;
+    }
+
+    function applyMenuHeight(){
+      if(mobileMenu.classList.contains('is-open')){
+        const height = computeMenuHeight();
+        if(height){
+          mobileMenu.style.setProperty('--menu-height', `${height}px`);
+        }
+      }
+    }
+
     function setMobileMenu(open){
       const shouldOpen = open !== undefined ? open : !mobileMenu.classList.contains('is-open');
+      if(shouldOpen){
+        const height = computeMenuHeight();
+        if(height){
+          mobileMenu.style.setProperty('--menu-height', `${height}px`);
+        }
+      }
       mobileMenu.classList.toggle('is-open', shouldOpen);
       document.body.classList.toggle('menu-open', shouldOpen);
       menuToggleButton.classList.toggle('is-active', shouldOpen);
       menuToggleButton.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
       mobileMenu.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
+      if(shouldOpen){
+        requestAnimationFrame(applyMenuHeight);
+      }
     }
 
     menuToggleButton.addEventListener('click', () => setMobileMenu());
@@ -1218,6 +1137,7 @@
         setMobileMenu(false);
       }
     });
+    window.addEventListener('resize', applyMenuHeight);
   }
 
 
