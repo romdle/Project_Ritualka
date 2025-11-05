@@ -1,14 +1,1126 @@
-import sqlite3
+# <!DOCTYPE html>
+# <html lang="ru">
+# <head>
+#   <meta charset="UTF-8" />
+#   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+#   <title>студия-гранита.рф — Главная</title>
+#   <style>
+#   :root{ --accent:#246e37; --dark:#1E1E1E; --bg:#F6F6F6; --card:#ECECEC; --text:#2B2B2B; --maxw:1200px; }
+#   html,body{height:100%}
+#   body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+#   .hero-section{position:relative;background:linear-gradient(135deg,#1f2937,#111827);overflow:hidden}
+#   .hero-section::before{content:"";position:absolute;inset:0;background-image:var(--hero-bg-image,none);background-size:cover;background-position:center;opacity:.58;mix-blend-mode:screen;filter:saturate(120%)}
+#   .hero-section::after{content:"";position:absolute;inset:0;background:rgba(80,110,200,.65);mix-blend-mode:multiply}
+#   .hero-inner{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 32px;padding-top:128px;padding-bottom:128px;display:flex;flex-wrap:wrap;gap:48px;align-items:center}
+#   .hero-content{flex:1 1 420px;max-width:640px; margin:0}
+#   .hero-title{color:#fff;margin:0 0 24px;font-family:Georgia,serif;font-size:48px;font-weight:400;line-height:1.3}
+#   .hero-text{color:#d1d5db;margin:0 0 32px;font-size:18px;line-height:1.8}
+#   .hero-actions{display:flex;flex-wrap:wrap;gap:16px}
+#   .hero-button{display:inline-flex;align-items:center;justify-content:center;background:#246e37;color:#fff;text-decoration:none;border-radius:999px;padding:14px 38px;font-size:16px;font-weight:500;letter-spacing:.2px;transition:background .3s ease,transform .3s ease;min-width:220px;box-shadow:0 12px 24px rgba(36,110,55,.25)}
+#   .hero-button:hover{background:#1e5a2d;transform:translateY(-2px)}
+#   .hero-media{flex:1 1 360px;max-width:520px;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+#   .hero-media .media{height:360px;width:100%}
+#   .hero-media-note{color:rgba(255,255,255,.7);font-size:13px}
+#   .container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+#   /* Header */
+#   header{background:var(--dark)}
+#   .header-inner{height:100px;display:flex;align-items:center;justify-content:space-between}
+#   .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
+#   .brand-logo{display:block;height:64px;width:auto}
+#   nav a{color:#fff;opacity:.9;text-decoration:none;padding:8px 12px;display:inline-block}
+#   nav a:hover{opacity:1}
+#   nav a.active{box-shadow:inset 0 -2px 0 0 var(--accent)}
+#   .btn-outline{border:1px solid var(--accent);background:transparent;color:#fff;border-radius:12px;padding:10px 16px;cursor:pointer}
+#   .btn-outline.dark-text{color:var(--text)}
+#   .btn-filled{background:var(--dark);color:#fff;border-radius:12px;padding:12px 18px;text-decoration:none;display:inline-block}
+#   /* Sections */
+#   .section{padding:48px 0;border-bottom:1px solid #E5E5E5}
+#   h1{font-size:40px;line-height:1.2;margin:0 0 16px}
+#   h2{font-size:28px;margin:0 0 16px}
+#   p{line-height:1.7;margin:0}
+#   /* Layout */
+#   .grid{display:grid;gap:24px}
+#   .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+#   .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+#   .row{display:flex;gap:16px;align-items:center}
+#   .row-wrap{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+#   .mx-auto{margin-left:auto;margin-right:auto}
+#   .w-24{width:6rem}
+#   .h-0\.5{height:2px}
+#   .w-full{width:100%}
+#   .px-8{padding-left:2rem;padding-right:2rem}
+#   .py-4{padding-top:1rem;padding-bottom:1rem}
+#   .bg-\[\#246e37\]{background-color:#246e37}
+#   .hover\:bg-\[\#1e5a2d\]:hover{background-color:#1e5a2d}
+#   .text-white{color:#fff}
+#   .rounded-md{border-radius:0.375rem}
+#   .transition-all{transition:all .3s ease}
+#   .flex{display:flex}
+#   .items-center{align-items:center}
+#   .justify-center{justify-content:center}
+#   .gap-2{gap:0.5rem}
+#   .font-medium{font-weight:500}
+#   .product-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+#   .product-row.product-row--home{margin-top:28px;margin-bottom:40px}
+#   .product-row--catalog{justify-content:flex-start}
+#   .product-tile{background:var(--card);border-radius:18px;display:flex;flex-direction:column;align-items:center;overflow:hidden;box-sizing:border-box;transition:box-shadow .3s ease,transform .3s ease;width:100%;min-width:0;padding:24px 20px;gap:14px;aspect-ratio:3/4;min-height:320px;text-align:center}
+#   .product-tile:hover{box-shadow:0 16px 36px rgba(0,0,0,.08);transform:translateY(-4px)}
+#   .product-image-link{width:100%;aspect-ratio:1/1;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8)}
+#   .product-image-link img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+#   .product-image-link:hover img{transform:scale(1.05)}
+#   .product-image-placeholder{width:100%;height:100%;position:relative}
+#   .product-image-placeholder::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
+#   .product-card-content{display:flex;flex-direction:column;gap:8px;align-items:center;width:100%}
+#   .product-name{color:#2B2B2B;font-family:Georgia,serif;font-size:18px;line-height:1.5;font-weight:400;margin:0}
+#   .product-price{color:#2B2B2B;font-size:17px;font-weight:500;margin:0}
+#   .product-tile-more{display:inline-flex;align-items:center;justify-content:center;margin-top:auto;font-size:14px;letter-spacing:.2px;color:#fff;text-decoration:none;background:var(--accent);border-radius:999px;padding:10px 22px;min-width:0;transition:background .3s ease,transform .3s ease}
+#   .product-tile-more:hover{background:#1e5a2d;transform:translateY(-2px)}
+#   .product-detail{display:flex;gap:28px;align-items:flex-start}
+#   .product-main-image{width:520px;height:680px;border-radius:18px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
+#   .product-main-image img{width:100%;height:100%;object-fit:cover}
+#   .product-main-image::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
+#   .product-main-image.has-image::after{display:none}
+#   .product-info{display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:540px;flex:1;margin-left:0;border-radius:18px;padding:36px 36px 32px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);box-shadow:0 22px 54px rgba(15,23,42,.12)}
+#   .product-info-content{flex:1;display:flex;flex-direction:column;gap:24px}
+#   .product-title{font-family:Georgia,serif;font-size:42px;font-weight:400;line-height:1.3;margin:0}
+#   .product-description-text{color:#6B6B6B;font-size:16px;line-height:1.8}
+#   .category-heading{color:#2B2B2B;font-family:Georgia,serif;font-size:28px;font-weight:400;margin:0}
+#   .product-category-pill{display:inline-block;padding:6px 16px;background:rgba(36,110,55,.1);color:#246e37;border-radius:8px;font-size:13px;letter-spacing:.3px}
+#   .product-info-content .product-category-pill{align-self:flex-start;margin-bottom:4px}  
+#   .product-price-label{color:#6B6B6B;margin:0;font-size:14px;letter-spacing:.5px;text-transform:uppercase}
+#   .product-price-amount{color:#2B2B2B;font-family:Georgia,serif;font-size:34px;font-weight:400;margin-top:8px}
+#   .product-divider{width:100%;height:1px;background:#E6E6E6;margin:16px 0}
+#   .description-heading{color:#2B2B2B;margin-bottom:16px;font-family:Georgia,serif;font-size:20px;font-weight:400}
+#   .back-link{display:flex;align-items:center;gap:8px;color:#6B6B6B;margin-bottom:32px;text-decoration:none;font-size:15px;transition:color .3s ease}
+#   .back-link:hover{color:#246e37}
+#   .back-link svg{width:16px;height:16px}
+#   .callback-button{width:100%;max-width:none;padding:18px 32px;background:#246e37;color:#fff;border-radius:10px;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:500;border:none;margin-top:0}
+#   .callback-button:hover{background:#1e5a2d}
+#   .callback-button svg{width:18px;height:18px}
+#   .similar-header{color:#2B2B2B;margin-bottom:8px;font-family:Georgia,serif;font-size:32px;font-weight:400}
+#   .similar-accent{width:80px;height:2px;background:#246e37;margin:14px 0 24px}
+#   .product-support-note{color:#6B6B6B;font-size:14px;line-height:1.7;max-width:520px;text-align:center;margin:16px auto 0}
+#   .card{background:var(--card);border-radius:16px;padding:16px}
+#   .media{height:180px;border-radius:14px;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#   .media::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
+#   .media.has-image::after{display:none}
+#   .media img{width:100%;height:100%;object-fit:cover;display:block}
+#   .muted{opacity:.7}
+#   .materials-section{padding-top:64px;padding-bottom:64px}
+#   .materials-header{text-align:center;max-width:720px;margin:0 auto 48px}
+#   .materials-title{color:#2B2B2B;margin:0 0 16px;font-family:Georgia,serif;font-size:38px;font-weight:400;line-height:1.3}
+#   .materials-accent{width:96px;height:2px;background:#246e37;margin:0 auto 24px}
+#   .materials-description{color:#6B6B6B;margin:0 auto;font-size:16px;line-height:1.7;max-width:640px}
+#   .materials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;max-width:1024px;margin:0 auto}
+#   .material-card{background:var(--card);border-radius:18px;padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px}
+#   .material-image{width:100%;aspect-ratio:1/1;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);display:flex;align-items:center;justify-content:center;color:#6B6B6B;font-size:12px;letter-spacing:.3em;text-transform:uppercase}
+#   .material-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#   .material-title{color:#2B2B2B;margin:0;font-family:Georgia,serif;font-size:18px;font-weight:400}
+#   .material-text{color:#6B6B6B;margin:0;font-size:14px;line-height:1.6}
+#   .section-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+#   .btn-view-all{border:1px solid var(--accent);color:var(--accent);border-radius:10px;padding:8px 16px;font-size:14px;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+#   .btn-view-all:hover{background:rgba(36,110,55,.08)}
+#   .status-card{background:var(--card);border-radius:16px;padding:20px;font-size:16px}
+#   .status-card.error{border:1px solid #e57373;background:#fdecea;color:#8a1c1c}
+#   .product-description{line-height:1.7;font-size:16px}
+#   /* Footer */
+#   footer{background:var(--dark);color:#fff}
+#   footer a{color:#fff}
+#   .footer-top{padding:40px 0}
+#   .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:rgba(255,255,255,.7);font-size:12px}
+#   /* Utilities */
+#   .space-v-16{margin-top:16px}
+#   .space-v-8{margin-top:8px}
+#   .link{color:var(--text);text-decoration:none;border-bottom:1px solid transparent}
+#   .link:hover{border-color:var(--text)}
+#   /* Responsive */
+#   .product-carousel{display:flex;align-items:center;gap:16px;position:relative}
+#   .product-carousel-viewport{flex:1;overflow:hidden}
+#   .product-carousel-track{--carousel-gap:24px;--carousel-visible:3;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--carousel-visible) - 1)*var(--carousel-gap))/var(--carousel-visible));gap:var(--carousel-gap);transition:transform .4s ease}
+#   .product-carousel-track .product-tile{width:100%}
+#   .carousel-arrow{background:var(--card);border:1px solid rgba(0,0,0,.08);border-radius:999px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;transition:background .3s ease,transform .3s ease,opacity .3s ease}
+#   .carousel-arrow svg{width:20px;height:20px}
+#   .carousel-arrow:hover{background:#fff;transform:translateY(-2px)}
+#   .carousel-arrow:disabled{opacity:.4;cursor:default;transform:none}
+#   .product-carousel:not(.is-scrollable) .carousel-arrow{visibility:hidden}
+#   @media (max-width:1200px){
+#     .product-carousel-track{--carousel-visible:2}
+#   }
+#   @media (max-width:960px){
+#     .grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+#     .hero-inner{padding-top:104px;padding-bottom:104px;gap:32px}
+#     .hero-media{max-width:440px;margin:0 auto}
+#     .product-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+#   }
+#   @media (max-width:680px){
+#     .header-inner{height:88px}
+#     .grid.cols-2,.grid.cols-3{grid-template-columns:1fr}
+#     h1{font-size:30px}
+#     .hero-inner{padding:72px 24px}
+#     .hero-title{font-size:36px}
+#     .hero-text{font-size:16px;margin-bottom:28px}
+#     .hero-button{width:100%;min-width:0}
+#     .hero-media{display:none}
+#     .product-detail{flex-direction:column}
+#     .product-info{min-height:auto;width:100%;padding:28px 24px;box-shadow:none}
+#     .product-row{grid-template-columns:1fr}
+#     .product-tile{aspect-ratio:auto;min-height:0;padding:20px 18px}
+#     .product-carousel-track{--carousel-visible:1}
+#   }
+#   /* Modal */
+#   .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:24px;z-index:1000}
+#   .modal{background:#fff;border-radius:16px;max-width:520px;width:100%;padding:20px}
+#   .modal h3{margin:0 0 12px;font-size:22px}
+#   .form-row{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+#   .form-row input, .form-row textarea{padding:12px;border-radius:10px;border:1px solid #ddd;font-size:16px}
+#   .form-actions{display:flex;gap:12px;align-items:center;margin-top:16px}
+#   .error{color:#b00020;font-size:13px;display:none}
+#   .success{display:none;padding:10px;border-radius:10px;background:#e7f7ea;border:1px solid #cdebd4;color:#1f6f3b;font-size:14px;margin-top:8px}
+#   .btn{cursor:pointer;padding:12px 16px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:#fff}
+#   .btn.secondary{background:transparent;color:var(--text)}
+#   .hidden{display:none !important}
+#   /* Map placeholder */
+#   #ymap{height:360px;border-radius:12px;background:repeating-conic-gradient(from 0deg, #f1f1f1 0deg 20deg, #e7e7e7 20deg 40deg)}
+#   .map-note{font-size:12px;opacity:.7;margin-top:8px}
+#   </style>
+# </head>
+# <body>
+#   <header>
+#     <div class="container header-inner">
+#       <a href="/" class="brand" data-link="home" aria-label="На главную">
+#         <!-- TODO: заменить PUT_LOGO_PATH_HERE на фактический путь к логотипу -->
+#         <img src="../static/images/logo.png" alt="Студия гранита" class="brand-logo" />
+#       </a>
+#       <nav class="row" aria-label="Главная навигация">
+#         <a href="/catalog" data-link="catalog">Каталог</a>
+#         <a href="/about" data-link="about">О компании</a>
+#         <a href="/contacts" data-link="contacts">Контакты</a>
+#       </nav>
+#       <div class="row">
+#         <a href="tel:+74951234567" style="color:#fff;opacity:.9;text-decoration:none">+7 (495) 123-45-67</a>
+#       </div>
+#     </div>
+#   </header>
 
-# Подключаемся к базе данных
-conn = sqlite3.connect('database.db')
-cursor = conn.cursor()
+#   <main id="app" role="main"></main>
 
-# Добавляем новую колонку
-cursor.execute('ALTER TABLE database ADD COLUMN image_path TEXT')
+#   <footer>
+#     <div class="container footer-top">
+#       <div class="grid cols-3">
+#         <div>
+#           <div style="font-weight:600">студия-гранита.рф</div>
+#           <div class="space-v-8" style="opacity:.7;font-size:14px">Изготовление и установка памятников. Работаем с 20XX года.</div>
+#         </div>
+#         <div>
+#           <div style="font-weight:600" class="space-v-8">Навигация</div>
+#           <div class="row-wrap">
+#             <a href="/catalog">Каталог</a>
+#             <a href="/about">О компании</a>
+#             <a href="/contacts">Контакты</a>
+#           </div>
+#         </div>
+#         <div>
+#           <div style="font-weight:600" class="space-v-8">Контакты</div>
+#           <div class="row-wrap">
+#             <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+#             <a href="mailto:info@студия-гранита.рф">info@студия-гранита.рф</a>
+#           </div>
+#         </div>
+#       </div>
+#     </div>
+#     <div class="footer-bottom">
+#       <div class="container">© <span id="year"></span> студия-гранита.рф. Все права защищены.</div>
+#     </div>
+#   </footer>
 
-# Сохраняем изменения
-conn.commit()
+#   <!-- Unified Callback Modal -->
+#   <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+#     <div class="modal" role="document" aria-labelledby="modal-title">
+#       <h3 id="modal-title">Заказать звонок</h3>
+#       <div id="success" class="success">Спасибо! Заявка отправлена. Мы свяжемся с вами в ближайшее время.</div>
+#       <form id="callback-form" novalidate>
+#         <div class="form-row">
+#           <label for="name">Имя*</label>
+#           <input id="name" name="name" type="text" placeholder="Ваше имя" autocomplete="name" required>
+#           <div id="err-name" class="error">Введите имя (минимум 2 символа)</div>
+#         </div>
+#         <div class="form-row">
+#           <label for="phone">Телефон*</label>
+#           <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="+7 (___) ___-__-__" required>
+#           <div id="err-phone" class="error">Введите корректный телефон в формате +7 (XXX) XXX-XX-XX</div>
+#         </div>
+#         <div class="form-row">
+#           <label for="comment">Комментарий</label>
+#           <textarea id="comment" name="comment" rows="3" placeholder="Комментарий (опционально)"></textarea>
+#         </div>
+#         <div class="form-actions">
+#           <button type="submit" class="btn" id="submit-btn">Отправить</button>
+#           <button type="button" class="btn secondary" id="close-btn">Закрыть</button>
+#         </div>
+#       </form>
+#     </div>
+#   </div>
 
-# Закрываем соединение
-conn.close()
+#   <script>
+#     // ---------------- State ----------------
+#   const state = {
+#     products: [],
+#     loading: true,
+#     error: null,
+#   };
+#   const activeCarousels = new Set();
+#   const CATEGORY_TITLES = {
+#     'Стандартный': 'Стандартный',
+#     'Стандартные памятники': 'Стандартный',
+#     'Семейный': 'Семейный',
+#     'Семейные памятники': 'Семейный',
+#     'Эксклюзивный': 'Эксклюзивный',
+#     'Эксклюзивные памятники': 'Эксклюзивный',
+#     'Детский': 'Детский',
+#     'Детские памятники': 'Детский',
+#   };
+
+#   const CATEGORY_ORDER = [
+#     'Стандартный',
+#     'Стандартные памятники',
+#     'Семейный',
+#     'Семейные памятники',
+#     'Эксклюзивный',
+#     'Эксклюзивные памятники',
+#     'Детский',
+#     'Детские памятники',
+#   ];
+
+#   // ---------------- Helpers ----------------
+#   function $(sel, root=document){ return root.querySelector(sel); }
+#   function $all(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
+  
+#   function setState(partial){
+#     Object.assign(state, partial);
+#     render();
+#   }
+
+#   function setActiveNav(base){
+#     $all('nav a[data-link]').forEach(a=>{
+#       const link = (a.dataset.link || '').trim();
+#       const isActive = base ? link === base : link === 'home';
+#       a.classList.toggle('active', isActive);
+#     });
+#   }
+#   function titleFor(base){
+#     const map = { '':'Главная', catalog:'Каталог', about:'О компании', contacts:'Контакты', product:'Памятник' };
+#     return map[base] || 'Главная';
+#   }
+  
+#   function escapeHtml(value){
+#     if(value === null || value === undefined) return '';
+#     return String(value)
+#       .replace(/&/g,'&amp;')
+#       .replace(/</g,'&lt;')
+#       .replace(/>/g,'&gt;')
+#       .replace(/"/g,'&quot;')
+#       .replace(/'/g,'&#39;');
+#   }
+
+#   function escapeAttribute(value){
+#     return escapeHtml(value).replace(/\r/g,'').replace(/\n/g,'&#10;');
+#   }
+#   function resolveImagePath(path){
+#     if(!path) return '';
+#     const raw = String(path).trim();
+#     if(!raw) return '';
+#     if(/^https?:\/\//i.test(raw)) return raw;
+#     if(raw.startsWith('/')) return raw;
+#     const normalized = raw.replace(/^\.\/?/, '').replace(/^\/+/, '');
+#     if(normalized.startsWith('static/')){
+#       return '/' + normalized.replace(/^\/+/, '');
+#     }
+#     return '/static/' + normalized;
+#   }
+
+#   function productImage(product){
+#     const image = product?.img_path ?? product?.image_path ?? '';
+#     return resolveImagePath(image);
+#   }
+
+#   function displayCategoryName(category){
+#     const raw = (category ?? '').trim();
+#     if(!raw) return 'Без категории';
+#     return CATEGORY_TITLES[raw] || raw;
+#   }
+
+#   function productLink(id){
+#     return '/product/' + encodeURIComponent(String(id));
+#   }
+
+#   function priceText(product){
+#     if(!product) return 'по запросу';
+#     const value = product.price;
+#     if(value === null || value === undefined || value === ''){
+#       return 'по запросу';
+#     }
+#     const num = Number(value);
+#     if(Number.isFinite(num)){
+#       return new Intl.NumberFormat('ru-RU').format(num) + ' ₽';
+#     }
+#     const textValue = String(value).trim();
+#     if(!textValue){
+#       return 'Цена: по запросу';
+#     }
+#     if(/^по запросу$/i.test(textValue)){
+#       return 'по запросу';
+#     }
+#     return 'от ' + escapeHtml(textValue);
+#   }
+
+#   function priceValue(product){
+#     const full = priceText(product);
+#     return full.replace(/^от\s*/i, '').trim();
+#   }
+
+#   function formatTextBlock(text){
+#     if(text === null || text === undefined) return '';
+#     return escapeHtml(String(text)).replace(/\r?\n/g,'<br>');
+#   }
+
+#   function snippet(text, limit=90){
+#     if(text === null || text === undefined) return '';
+#     const str = String(text).trim();
+#     if(str.length <= limit) return str;
+#     return str.slice(0, limit - 1) + '…';
+#   }
+
+#   function getProductById(id){
+#     return state.products.find(p => String(p.id) === String(id));
+#   }
+
+#   function similarList(product){
+#     if(!product) return [];
+#     const currentId = String(product.id);
+#     const targetCategory = (product.category ?? '').trim().toLowerCase();
+#     const sameCategory = state.products
+#       .filter(p => String(p.id) !== currentId && (p.category ?? '').trim().toLowerCase() === targetCategory);
+#     if(sameCategory.length) return sameCategory;
+#     const standardCategory = state.products
+#       .filter(p => String(p.id) !== currentId && (p.category ?? '').trim().toLowerCase() === 'стандартный');
+#     if(standardCategory.length) return standardCategory;
+#     return state.products.filter(p => String(p.id) !== currentId);
+#   }
+
+#   function media(height, imageUrl='', altText=''){
+#     const style = height ? ` style="height:${height}px"` : '';
+#     if(imageUrl){
+#       const safeUrl = escapeAttribute(imageUrl);
+#       const safeAlt = escapeHtml(altText || 'Изображение памятника');
+#       return `<div class="media has-image"${style}><img src="${safeUrl}" alt="${safeAlt}" loading="lazy"></div>`;
+#     }
+#     return `<div class="media"${style}></div>`;
+#   }
+
+#   function normalizeProduct(raw){
+#     if(!raw || typeof raw !== 'object') return {};
+#     return {
+#       id: raw.id,
+#       name: raw.name ?? raw.title ?? '',
+#       price: raw.price,
+#       description: raw.description ?? '',
+#       img_path: raw.img_path ?? raw.image_path ?? '',
+#       category: raw.category ?? '',
+#     };
+#   }
+
+#   function renderStatus(message, isError=false){
+#     const safe = escapeHtml(message);
+#     const extra = isError ? ' error' : '';
+#     return `<div class="status-card${extra}">${safe}</div>`;
+#   }
+
+#   function orderedCategories(){
+#     const groups = new Map();
+#     state.products.forEach(product => {
+#       const raw = (product.category ?? '').trim();
+#       const key = raw || 'Без категории';
+#       if(!groups.has(key)){
+#         groups.set(key, []);
+#       }
+#       groups.get(key).push(product);
+#     });
+#     const entries = Array.from(groups.entries()).map(([key, items]) => ({
+#       key,
+#       display: displayCategoryName(key),
+#       items,
+#     }));
+#     const index = (name) => {
+#       const raw = (name ?? '').trim();
+#       const idx = CATEGORY_ORDER.indexOf(raw);
+#       return idx === -1 ? CATEGORY_ORDER.length : idx;
+#     };
+#     entries.sort((a, b) => {
+#       const orderDiff = index(a.key) - index(b.key);
+#       if(orderDiff !== 0) return orderDiff;
+#       return a.display.localeCompare(b.display, 'ru');
+#     });
+#     return entries;
+#   }
+
+#   function renderHomeCategories(){
+#     if(state.loading){
+#       return renderStatus('Загружаем каталог...');
+#     }
+#     if(state.error){
+#       return renderStatus(state.error, true);
+#     }
+#     const categories = orderedCategories();
+#     if(!categories.length){
+#       return renderStatus('Каталог пока пуст. Возвращайтесь позже.');
+#     }
+#     return categories.map(category => {
+#       const heading = escapeHtml(category.display);
+#       const aria = escapeAttribute(`Открыть каталог категории ${category.display}`);
+#     const cards = category.items.length
+#       ? productCarousel(category.items, {
+#           label: `Категория ${category.display}`,
+#           prev: `Предыдущие памятники категории ${category.display}`,
+#           next: `Следующие памятники категории ${category.display}`,
+#         })
+#       : `<div class="status-card" style="width:100%;">В этой категории пока нет товаров.</div>`;
+#     return `
+#           <div class="space-v-16">
+#             <div class="section-header home-category-header">
+#               <h2 class="category-heading">${heading}</h2>
+#               <a class="btn-view-all" href="/catalog" aria-label="${aria}">Смотреть все</a>
+#             </div>
+#             ${cards}
+#           </div>
+#         `;
+#     }).join('');
+#   }
+#   function productCard(product){
+#     if(!product) return '';
+#       const id = String(product.id);
+#       const nameRaw = product.name || product.title || `Памятник ${id}`;
+#       const name = escapeHtml(nameRaw);
+#       const image = productImage(product);
+#       const dataId = escapeAttribute(id);
+#       const link = productLink(id);
+#       const aria = escapeAttribute(`Подробнее о ${nameRaw}`);
+#       const safeImage = escapeAttribute(image);
+#       const safeAlt = escapeHtml(nameRaw);
+#       const price = priceText(product);
+#     const imageContent = image
+#     ? `<img src="${safeImage}" alt="${safeAlt}" loading="lazy">`
+#     : `<div class="product-image-placeholder" aria-hidden="true"></div>`;
+#     return `
+#     <article class="product-tile" data-testid="product-card-${dataId}">
+#       <a class="product-image-link${image ? ' has-image' : ''}" href="${link}" aria-label="${aria}">
+#         ${imageContent}
+#       </a>
+#       <div class="product-card-content">
+#         <div class="product-name">${name}</div>
+#         <div class="product-price">${price}</div>
+#       </div>
+#       <a class="product-tile-more" href="${link}" aria-label="${aria}">Подробнее</a>
+#       </article>
+#     `;
+#   }
+
+#   let carouselSequence = 0;
+
+#   function productCarousel(items, labels={}){
+#     if(!items || !items.length) return '';
+#     const id = `carousel-${++carouselSequence}`;
+#     const prevLabel = escapeAttribute(labels.prev || 'Предыдущие товары');
+#     const nextLabel = escapeAttribute(labels.next || 'Следующие товары');
+#     const regionLabel = escapeAttribute(labels.label || 'Лента товаров');
+#     return `
+#       <div class="product-carousel" data-carousel aria-label="${regionLabel}" role="region" data-carousel-id="${id}">
+#         <button class="carousel-arrow" type="button" data-carousel-prev aria-label="${prevLabel}">
+#           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+#             <path d="M14.5 5.5 9 11l5.5 5.5" />
+#           </svg>
+#         </button>
+#           <div class="product-carousel-viewport" data-carousel-viewport>
+#             <div class="product-carousel-track" data-carousel-track>
+#             ${items.map(productCard).join('')}
+#           </div>
+#         </div>
+#         <button class="carousel-arrow" type="button" data-carousel-next aria-label="${nextLabel}">
+#           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+#             <path d="m9.5 5.5 5.5 5.5-5.5 5.5" />
+#           </svg>
+#         </button>
+#       </div>
+#     `;
+#   }
+
+#   function setupCarousels(){
+#     activeCarousels.clear();
+#     $all('[data-carousel]').forEach(carousel => {
+#       const instance = initializeCarousel(carousel);
+#       if(instance){
+#         activeCarousels.add(instance);
+#         instance.refresh();
+#       }
+#     });
+#   }
+
+#   function initializeCarousel(carousel){
+#     const viewport = carousel.querySelector('[data-carousel-viewport]');
+#     const track = carousel.querySelector('[data-carousel-track]');
+#     if(!viewport || !track) return null;
+#     const prevBtn = carousel.querySelector('[data-carousel-prev]');
+#     const nextBtn = carousel.querySelector('[data-carousel-next]');
+#     let index = 0;
+
+#     function totalItems(){
+#       return track.children.length;
+#     }
+
+#     function gapSize(){
+#       const styles = getComputedStyle(track);
+#       const value = styles.columnGap || styles.gap || '0';
+#       const parsed = parseFloat(value);
+#       return Number.isFinite(parsed) ? parsed : 0;
+#     }
+
+#     function computeVisible(){
+#       const card = track.querySelector('.product-tile');
+#       if(!card) return 1;
+#       const cardWidth = card.getBoundingClientRect().width;
+#       if(cardWidth <= 0) return 1;
+#       const viewportWidth = viewport.getBoundingClientRect().width;
+#       const gap = gapSize();
+#       const approx = Math.floor((viewportWidth + gap) / (cardWidth + gap));
+#       return Math.max(1, Math.min(totalItems(), approx || 1));
+#     }
+
+#     function updateButtons(maxIndex, hasOverflow){
+#       carousel.classList.toggle('is-scrollable', hasOverflow);
+#       if(prevBtn){
+#         const disabled = index <= 0;
+#         prevBtn.disabled = disabled;
+#         prevBtn.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+#         prevBtn.style.visibility = hasOverflow ? 'visible' : 'hidden';
+#       }
+#       if(nextBtn){
+#         const disabled = index >= maxIndex;
+#         nextBtn.disabled = disabled;
+#         nextBtn.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+#         nextBtn.style.visibility = hasOverflow ? 'visible' : 'hidden';
+#       }
+#     }
+
+#     function applyTransform(){
+#       const card = track.querySelector('.product-tile');
+#       if(!card){
+#         track.style.transform = 'translateX(0)';
+#         return;
+#       }
+#       const offset = index * (card.getBoundingClientRect().width + gapSize());
+#       track.style.transform = `translateX(${-offset}px)`;
+#     }
+
+#     function slideTo(target){
+#       const visibleCount = computeVisible();
+#       const maxIndex = Math.max(0, totalItems() - visibleCount);
+#       index = Math.max(0, Math.min(target, maxIndex));
+#       applyTransform();
+#       updateButtons(maxIndex, totalItems() > visibleCount);
+#     }
+
+#     function slideBy(delta){
+#       slideTo(index + delta);
+#     }
+
+#     if(prevBtn){
+#       prevBtn.addEventListener('click', ()=> slideBy(-1));
+#     }
+#     if(nextBtn){
+#       nextBtn.addEventListener('click', ()=> slideBy(1));
+#     }
+
+#     slideTo(0);
+
+#     return {
+#       refresh(){ slideTo(index); },
+#       handleResize(){ slideTo(index); },
+#     };
+#   }
+
+#   window.addEventListener('resize', ()=>{
+#     activeCarousels.forEach(instance => {
+#       if(instance && typeof instance.handleResize === 'function'){
+#         instance.handleResize();
+#       }
+#     });
+#   });
+
+
+#   // ---------------- Views ----------------
+#   function viewHome(){
+#     return `
+#       <section class="hero-section" style="--hero-bg-image:url('../static/images/main.jpg');">
+#         <!-- Замените URL_ДЛЯ_ФОНА на ссылку на нужное фоновое изображение -->
+#         <div class="hero-inner">
+#           <div class="hero-content">
+#             <h1 class="hero-title">Мы создаём памятники с заботой и уважением</h1>
+#             <p class="hero-text">Мы сопровождаем семьи на каждом этапе: от выбора материала до установки. Работаем с натуральным гранитом, мрамором и габбро‑диабазом. Бережно относимся к традициям и деталям, чтобы память о близких сохраняла достоинство долгие годы.</p>
+#             <div class="hero-actions">
+#               <a class="hero-button" id="cta-home" href="/catalog">Перейти в каталог</a>
+#             </div>
+#           </div>
+#           </div>
+#         </div>
+#       </section>
+#       <section class="materials-section">
+#         <div class="container">
+#           <div class="materials-header">
+#             <h2 class="materials-title">Материалы, из которых мы работаем</h2>
+#             <div class="materials-accent"></div>
+#             <p class="materials-description">Используем только натуральный камень высочайшего качества, проверенный временем.</p>
+#           </div>
+#           <div class="materials-grid">
+#             <!-- Замените #материал1, #материал2 и #материал3 на реальные пути к изображениям материалов -->
+#             ${[
+#               ["Карельский Габбро-Диабаз","Самый распространенный камень для памятников","../static//images/material_black.png"],
+#               ["Премиальные виды гранита","Блю Перл(Норвегия), Шокша(Карелия), Хибинит","../static//images/material_blue.png"],
+#               ["Разнообразные виды камня","Большая палитра цветов для Ваших памятников. Дымовский, Возрождение, Ала-Носкуа, Игл Рэд, Балтик Грин и многие другие","../static//images/material_brown.png"],
+#             ].map(([name,note,marker])=>`
+#               <article class="material-card">
+#                 <div class="material-image">
+#                   <img src="${escapeAttribute(marker)}" alt="${escapeAttribute(name)}" loading="lazy" onerror="this.style.display='none'">
+#                 </div>
+#                 <div class="material-title">${name}</div>
+#                 <p class="material-text">${note}</p>
+#               </article>
+#             `).join('')}
+#           </div>
+#         </div>
+#       </section>
+#       <div class="container" style="text-align:center;padding:32px 0 12px;">
+#         <div style="font-family: Georgia, serif; font-size: 38px; font-weight: 400; line-height: 1.3;">Наши работы</div>
+#         <div class="w-24 h-0.5 bg-[#246e37] mx-auto" style="margin-top:12px;"></div>
+#       </div>
+#       <section class="section" id="catalog-preview">
+#         <div class="container">
+#           ${renderHomeCategories()}
+#         </div>
+#       </section>
+#     `;
+#   }
+
+
+#   function viewCatalog(){
+#     let content = '';
+#     if(state.loading){
+#       content = renderStatus('Загружаем каталог...');
+#     }else if(state.error){
+#       content = renderStatus(state.error, true);
+#     }else if(!state.products.length){
+#       content = renderStatus('Каталог пока пуст. Возвращайтесь позже.');
+#     }else{
+#       content = `<div class="product-row product-row--catalog">${state.products.map(productCard).join('')}</div>`;
+#     }
+#     return `
+#       <section class="section">
+#         <div class="container">
+#           <h2>Каталог памятников</h2>
+#           ${content}
+#         </div>
+#       </section>
+#     `;
+#   }
+
+#   function viewAbout(){
+#     return `
+#       <section class="section">
+#         <div class="container">
+#           <div class="grid cols-2" style="align-items:center">
+#             <div>
+#               <h2>О компании</h2>
+#               <p>Наша миссия — сохранять память о близких с уважением и тактом. Мы уделяем внимание каждой детали: от выбора камня и разработки эскиза до монтажа и ухода. Используем проверенные материалы и технологии, чтобы памятник на долгие годы сохранял форму и красоту.</p>
+#               <div class="space-v-16"></div>
+#               <p class="muted">Мы открыты к диалогу, бережно работаем с пожеланиями семьи и придерживаемся сроков.</p>
+#             </div>
+#             <div>${media()}</div>
+#           </div>
+#         </div>
+#       </section>
+#     `;
+#   }
+
+#   function viewContacts(){
+#     return `
+#       <section class="section">
+#         <div class="container">
+#           <h2>Свяжитесь с нами</h2>
+#           <div class="space-v-16"></div>
+#           <div class="card">
+#             <div class="row-wrap" style="font-size:16px">
+#               <div><strong>Телефон:</strong> <a class="link" href="tel:+74951234567">+7 (495) 123‑45‑67</a></div>
+#               <div><strong>E‑mail:</strong> <a class="link" href="mailto:info@студия-гранита.рф">info@студия‑гранита.рф</a></div>
+#               <div><strong>Адрес:</strong> г. Москва, ул. Примерная, 12</div>
+#               <div><strong>Часы:</strong> Пн–Сб 10:00–18:00</div>
+#             </div>
+#             <div class="space-v-16"></div>
+#             <button class="btn-outline dark-text" style="border-color:var(--accent)" data-action="callback">Заказать звонок</button>
+#           </div>
+#           <div class="space-v-16"></div>
+#           <div class="card">
+#             <div id="ymap" aria-label="Карта (плейсхолдер)"></div>
+#             <div class="map-note">Интерактивная карта временно отключена. Используется плейсхолдер для прохождения автотестов (#ymap).</div>
+#           </div>
+#         </div>
+#       </section>
+#     `;
+#   }
+#   function viewProduct(id){
+#     if(state.loading){
+#       return `
+#         <section class="section">
+#           <div class="container">
+#             ${renderStatus('Загружаем данные о товаре...')}
+#           </div>
+#         </section>
+#       `;
+#     }
+#     if(state.error){
+#       return `
+#         <section class="section">
+#           <div class="container">
+#             ${renderStatus(state.error, true)}
+#           </div>
+#         </section>
+#       `;
+#     }
+#     const product = getProductById(id);
+#     if(!product){
+#       return `
+#         <section class="section">
+#           <div class="container">
+#             ${renderStatus('Товар не найден или был удалён.')}
+#             <div class="space-v-16"></div>
+#             <a class="btn-view-all" href="/catalog">Вернуться в каталог</a>
+#           </div>
+#         </section>
+#       `;
+#     }
+#     const idValue = String(product.id);
+#     const nameRaw = product.name || product.title || `Памятник ${idValue}`;
+#     const name = escapeHtml(nameRaw);
+#     const categoryName = escapeHtml(displayCategoryName(product.category));
+#     const price = priceValue(product) || 'по запросу';
+#     const description = product.description
+#       ? `<div class="product-description-text">${formatTextBlock(product.description)}</div>`
+#       : `<div class="product-description-text" style="opacity:.7;">Описание появится позже.</div>`;
+#     const image = productImage(product);
+#     const safeImage = escapeAttribute(image);
+#     const safeAlt = escapeHtml(nameRaw);
+#     const callbackPrefill = escapeAttribute(`Интересует ${nameRaw}`);
+#     const similarItems = similarList(product);
+#     const similarCards = similarItems.length
+#       ? productCarousel(similarItems, {
+#           label: 'Похожие памятники',
+#           prev: 'Предыдущие похожие памятники',
+#           next: 'Следующие похожие памятники',
+#         })
+#       : `<div class="status-card" style="width:100%;">Пока нет похожих памятников.</div>`;
+#     return `
+#       <section class="section">
+#         <div class="container">
+#             <a class="back-link" href="/catalog">
+#             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11.707 4.293a1 1 0 0 1 0 1.414L8.414 9H17a1 1 0 1 1 0 2H8.414l3.293 3.293a1 1 0 0 1-1.414 1.414l-5-5a1 1 0 0 1 0-1.414l5-5a1 1 0 0 1 1.414 0Z"/></svg>
+#             <span>Назад к каталогу</span>
+#           </a>
+#           <div class="product-detail">
+#             <div class="product-main-image${image ? ' has-image' : ''}">
+#               ${image ? `<img src="${safeImage}" alt="${safeAlt}" loading="lazy">` : ''}
+#             </div>
+#               <div class="product-info">
+#               <div class="product-info-content">
+#                 <span class="product-category-pill">${categoryName}</span>
+#                 <h2 class="product-title">${name}</h2>
+#                 <div class="product-price-amount">${price}</div>
+#                 <div class="product-divider"></div>
+#                 <div>
+#                   <div class="description-heading">Описание</div>
+#                   ${description}
+#                 </div>
+#               </div>
+#               <button class="callback-button" data-action="callback" data-prefill="${callbackPrefill}">
+#                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+#                   <path d="M5.5 3.75h4l1.5 3.75-2.25 1.5a11 11 0 0 0 5.75 5.75l1.5-2.25 3.75 1.5v4a1.5 1.5 0 0 1-1.625 1.5 17.5 17.5 0 0 1-15.125-15.125A1.5 1.5 0 0 1 5.5 3.75Z" />
+#                 </svg>
+#                 <span>Заказать звонок</span>
+#               </button>
+#               <div class="product-support-note">Наши специалисты помогут подобрать оптимальный вариант памятника, проконсультируют по материалам и срокам изготовления. Звоните или оставьте заявку на обратный звонок.</div>
+#             </div>
+#           </div>
+#         </div>
+#         <div class="container" style="margin-top:56px;">
+#           <div class="similar-header">Похожие памятники</div>
+#           <div class="similar-accent"></div>
+#           ${similarCards}
+#         </div>
+#       </section>
+#     `;
+#   }
+
+
+
+#   // ---------------- Router ----------------
+#   function normalizePath(path){
+#     if(path === null || path === undefined) return '/';
+#     let target = String(path).trim();
+#     if(!target) return '/';
+#     if(target.startsWith('http')){
+#       try{
+#         const url = new URL(target, location.origin);
+#         target = url.pathname + url.search;
+#       }catch{
+#         target = '/';
+#       }
+#     }
+#     if(target.startsWith('#')){
+#       target = target.replace(/^#/, '');
+#     }
+#     if(!target.startsWith('/')){
+#       target = '/' + target.replace(/^\/+/, '');
+#     }
+#     if(target.length>1 && target.endsWith('/')){
+#       target = target.replace(/\/+$/, '');
+#       if(!target) target = '/';
+#     }
+#     return target || '/';
+#   }
+
+#   function parseLocation(){
+#     const path = normalizePath(location.pathname);
+#     if(path === '/'){
+#       return { base: '', param: undefined };
+#     }
+#     const segments = path.slice(1).split('/');
+#     const base = segments[0] || '';
+#     const param = segments[1];
+#     return { base, param };
+#   }
+
+#   function render(){
+#     const { base, param } = parseLocation();
+#     carouselSequence = 0;
+#     document.title = 'студия-гранита.рф — ' + titleFor(base);
+#     const app = $('#app');
+#     let html = '';
+#     if(base===''){ html = viewHome(); }
+#     else if(base==='catalog'){ html = viewCatalog(); }
+#     else if(base==='about'){ html = viewAbout(); }
+#     else if(base==='contacts'){ html = viewContacts(); }
+#     else if(base==='product'){ html = viewProduct(param||''); }
+#     else { html = viewHome(); }
+#     app.innerHTML = html;
+#     window.scrollTo({ top: 0, behavior: 'smooth' });
+#     setActiveNav(base||'');
+#     wirePageInteractions();
+#   }
+
+#   window.addEventListener('popstate', render);
+
+#   function navigate(path, options={}){
+#     const { replace=false } = options;
+#     const normalized = normalizePath(path);
+#     const hasQuery = normalized.includes('?');
+#     const currentSearch = location.search;
+#     const target = hasQuery ? normalized : normalized + currentSearch;
+#     const current = location.pathname + location.search;
+#     if(replace){
+#       history.replaceState({}, '', target);
+#     }else if(current !== target){
+#       history.pushState({}, '', target);
+#     }
+#     render();
+#   }
+
+#   document.addEventListener('click', (event)=>{
+#     const anchor = event.target.closest('a');
+#     if(!anchor) return;
+#     const href = anchor.getAttribute('href');
+#     if(!href) return;
+#     if(anchor.target && anchor.target !== '_self') return;
+#     if(anchor.hasAttribute('download')) return;
+#     if(anchor.dataset.routerIgnore === 'true') return;
+#     if(href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
+#     if(href.startsWith('#')) return;
+#     if(/^https?:\/\//i.test(href)){
+#       try{
+#         const url = new URL(href, location.origin);
+#         if(url.origin !== location.origin) return;
+#         event.preventDefault();
+#         navigate(url.pathname + url.search);
+#         return;
+#       }catch{
+#         return;
+#       }
+#     }
+#     if(href.startsWith('/')){
+#       event.preventDefault();
+#       navigate(href);
+#     }
+#   });
+
+
+#   document.addEventListener('DOMContentLoaded', ()=>{
+#     $('#year').textContent = String(new Date().getFullYear());
+#     render();
+#     loadProducts();
+#     maybeRunTests();
+#   });
+#   // ---------------- Data loading ----------------
+#   async function loadProducts(){
+#     setState({ loading: true, error: null });
+#     try{
+#       const response = await fetch('/api/products');
+#       if(!response.ok){
+#         throw new Error('Не удалось получить список товаров');
+#       }
+#       const payload = await response.json();
+#       const items = Array.isArray(payload?.items) ? payload.items : [];
+#       const normalized = items.map(normalizeProduct);
+#       setState({ products: normalized, loading: false, error: null });
+#     }catch(error){
+#       console.error('Ошибка загрузки каталога', error);
+#       setState({ products: [], loading: false, error: 'Не удалось загрузить каталог. Попробуйте обновить страницу позже.' });
+#     }
+#   }
+
+#   // ---------------- Interactions ----------------
+#   function wirePageInteractions(){
+#     // Modal open triggers
+#     $all('[data-action="callback"]').forEach(btn=>{
+#       btn.addEventListener('click', ()=>{
+#         const pre = btn.getAttribute('data-prefill') || '';
+#         const text = pre ? ('Интересует памятник ' + pre.replace(/^Интересует\s*/,'')) : '';
+#         openModal(text);
+#       });
+#     });
+#     setupCarousels();
+#   }
+
+#   function openModal(prefillComment=''){
+#     const bd = $('#modal-backdrop');
+#     $('#success').style.display = 'none';
+#     $('#callback-form').reset();
+#     if(prefillComment) $('#comment').value = prefillComment;
+#     bd.style.display = 'flex';
+#     bd.setAttribute('aria-hidden','false');
+#     $('#name').focus();
+#   }
+#   function closeModal(){
+#     const bd = $('#modal-backdrop');
+#     bd.style.display = 'none';
+#     bd.setAttribute('aria-hidden','true');
+#   }
+
+#   function normalizeDigits(v){ return v.replace(/\D/g,''); }
+#   function formatPhone(d){
+#     if(!d) return '';
+#     if(d[0]==='8') d='7'+d.slice(1);
+#     if(d[0]!=='7') d='7'+d;
+#     d = d.slice(0,11);
+#     let out = '+7 ';
+#     if(d.length>1){ out += '(' + d.slice(1,4); if(d.length>=4) out += ') '; }
+#     if(d.length>=7){ out += d.slice(4,7) + '-' + d.slice(7,9) + '-' + d.slice(9,11); }
+#     else if(d.length>4){ out += d.slice(4); }
+#     return out.trim();
+#   }
+
+#   $('#close-btn').addEventListener('click', closeModal);
+#   $('#modal-backdrop').addEventListener('click', (e)=>{
+#     if(e.target.id==='modal-backdrop') closeModal();
+#   });
+
+#   // Phone masking
+#   const phoneEl = $('#phone');
+#   phoneEl.addEventListener('input', ()=>{
+#     const digits = normalizeDigits(phoneEl.value);
+#     phoneEl.value = formatPhone(digits);
+#   });
+#   phoneEl.addEventListener('focus', ()=>{
+#     if(!phoneEl.value) phoneEl.value = '+7 (';
+#   });
+
+#   // Form validation + success
+#   $('#callback-form').addEventListener('submit', (e)=>{
+#     e.preventDefault();
+#     const name = $('#name').value.trim();
+#     const digits = normalizeDigits($('#phone').value);
+#     let ok = true;
+#     if(name.length<2){ ok=false; $('#err-name').style.display='block'; } else { $('#err-name').style.display='none'; }
+#     if(!(digits.length===11 && digits[0]==='7')){ ok=false; $('#err-phone').style.display='block'; } else { $('#err-phone').style.display='none'; }
+#     if(!ok) return;
+#     // Simulate submit
+#     const btn = $('#submit-btn'); btn.disabled = true; btn.textContent = 'Отправка...';
+#     setTimeout(()=>{
+#       btn.disabled = false; btn.textContent = 'Отправить';
+#       $('#success').style.display = 'block';
+#       setTimeout(()=>{ closeModal(); }, 1200);
+#     }, 700);
+#   });
+
+#   // ---------------- Tests (run with ?test=1) ----------------
+#   function expect(cond, msg){ if(!cond) throw new Error(msg); }
+#   function textIncludes(sel, substr){ const el = document.querySelector(sel); return !!el && !!el.textContent && el.textContent.includes(substr); }
+#   function count(sel){ return document.querySelectorAll(sel).length; }
+#   let testsScheduled = false;
+#   function maybeRunTests(){
+#     const params = new URLSearchParams(location.search);
+#     if(params.get('test')==='1' && !testsScheduled){
+#       testsScheduled = true;
+#       const waitForData = () => {
+#         if(state.loading){
+#           setTimeout(waitForData, 100);
+#           return;
+#         }
+#         setTimeout(runTests, 50);
+#       };
+#       waitForData();
+#     }
+#   }
+
+#   function runTests(){
+#     const prev = location.pathname + location.search;
+#     console.group('%cUI tests','color:gray');
+#     try{
+#       navigate('/', { replace: true });
+#       expect(textIncludes('h1','Мы создаём памятники'), 'Home: заголовок не найден');
+#       expect(count('#cta-home')===1, 'Home: основной CTA должен быть один');
+
+#       navigate('/catalog');
+#       if(state.products.length){
+#         expect(count('[data-testid^="product-card-"]')===state.products.length, 'Catalog: кол-во карточек не совпало');
+#         const firstProduct = state.products[0];
+#         navigate(`/product/${encodeURIComponent(firstProduct.id)}`);
+#         expect(textIncludes('h2', firstProduct.name || firstProduct.title || ''), 'Product: заголовок не совпал');
+#         expect(count('.product-price-amount')>=1, 'Product: цена не отображается');
+#         expect(count('.product-main-image')>=1, 'Product: изображения не отображаются');
+#       }else{
+#         expect(count('[data-testid^="product-card-"]')===0, 'Catalog: каталог должен быть пустым');
+#       }
+
+#       navigate('/about');
+#       expect(textIncludes('h2','О компании'), 'About: заголовок не найден');
+
+#       navigate('/contacts');
+#       expect(document.getElementById('ymap')!==null, 'Contacts: контейнер карты отсутствует');
+#       expect(textIncludes('.card','Заказать звонок'), 'Contacts: кнопка не найдена');
+
+#       console.log('%c✔ Все тесты пройдены','color:green');
+#     }catch(e){
+#       console.error('✘ Тест упал:', e.message);
+#     }finally{
+#       navigate(prev, { replace: true });
+#       console.groupEnd();
+#     }
+#   }
+#   </script>
+# </body>
+# </html>

@@ -9,7 +9,7 @@
   :root{ --accent:#246e37; --dark:#1E1E1E; --bg:#F6F6F6; --card:#ffffff; --text:#2B2B2B; --maxw:1200px; }
   html,body{height:100%}
   body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
-  .hero-section{position:relative;background:linear-gradient(135deg,#1f2937,#111827);overflow:hidden}
+  .hero-section{position:relative;background:linear-gradient(135deg,#131313,#000000);overflow:hidden}
   .hero-section::before{content:"";position:absolute;inset:0;background-image:var(--hero-bg-image,none);background-size:cover;background-position:center;opacity:.58;mix-blend-mode:screen;filter:saturate(120%)}
   .hero-section::after{content:"";position:absolute;inset:0;background:rgba(80,110,200,.65);mix-blend-mode:multiply}
   .hero-inner{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 32px;padding-top:128px;padding-bottom:128px;display:flex;flex-wrap:wrap;gap:48px;align-items:center}
@@ -28,7 +28,7 @@
   header::before{content:"";position:absolute;top:calc(-1 * env(safe-area-inset-top,0));left:0;right:0;height:env(safe-area-inset-top,0);background:var(--dark);pointer-events:none}
   .header-inner{height:var(--header-height);display:flex;align-items:center;justify-content:space-between}
   .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
-  .brand-logo{display:block;height:64px;width:auto}
+  .brand-logo{display:block;height:75px;width:auto}
   nav a{color:#fff;opacity:.9;text-decoration:none;padding:8px 12px;display:inline-block}
   nav a:hover{opacity:1}
   nav a.active{box-shadow:inset 0 -2px 0 0 var(--accent)}
@@ -66,7 +66,7 @@
   .btn-outline.dark-text{color:var(--text)}
   .btn-filled{background:var(--dark);color:#fff;border-radius:12px;padding:12px 18px;text-decoration:none;display:inline-block}
   /* Sections */
-  .section{padding:48px 0;border-bottom:1px solid #E5E5E5}
+  .section{padding:24px 0;border-bottom:1px solid #E5E5E5}
   h1{font-size:40px;line-height:1.2;margin:0 0 16px}
   h2{font-size:28px;margin:0 0 16px}
   p{line-height:1.7;margin:0}
@@ -98,14 +98,18 @@
   .product-tile{background:var(--card);border-radius:18px;display:flex;flex-direction:column;align-items:center;overflow:hidden;box-sizing:border-box;transition:box-shadow .3s ease,transform .3s ease;width:100%;min-width:0;max-width:320px;margin:0 auto;padding:24px 20px 22px;gap:14px;min-height:280px;text-align:center;position:relative;cursor:pointer;outline:none}
   .product-tile:hover{box-shadow:0 16px 32px rgba(0,0,0,.08);transform:translateY(-4px)}
   .product-tile:focus-visible{box-shadow:0 0 0 3px rgba(36,110,55,.35)}
-  .product-image-link{width:calc(100% + 40px);aspect-ratio:1/1;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;margin:-24px -20px 16px;background:#fff;box-shadow:0 18px 42px rgba(17,24,39,.18)}
+  .product-image-link{width:calc(100% + 40px);aspect-ratio:1/1;border-radius: 0;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;margin:-24px -20px 16px;background:#fff;box-shadow:0 18px 42px rgba(17,24,39,.18)}
   .product-image-link img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease;display:block}
   .product-tile:hover .product-image-link img,.product-tile:focus-visible .product-image-link img{transform:scale(1.05)}
   .product-image-placeholder{width:100%;height:100%;position:relative}
   .product-image-placeholder::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
   .product-card-content{display:flex;flex-direction:column;gap:8px;align-items:center;width:100%}
   .product-name{color:#2B2B2B;font-family:Georgia,serif;font-size:18px;line-height:1.5;font-weight:400;margin: 0}
-  .product-price{color:#2B2B2B;font-size:17px;font-weight:500;margin:0}
+  /* Сделать обязательно: базовая стилизация цены с акцентом на значение */
+  .product-price{color:#2B2B2B;font-size:17px;font-weight:500;margin:0;display:flex;align-items:baseline;gap:6px}
+  /* Сделать обязательно: стили для префикса и значения цены */
+  .product-price-prefix{font-size:.82em;color:#7a7a7a;font-weight:500}
+  .product-price-number{color:#2B2B2B;font: weight 500px;;letter-spacing:.2px; font-family:Roboto}
   .product-tile-more{display:inline-flex;align-items:center;justify-content:center;margin-top:auto;font-size:15px;letter-spacing:.2px;color:#fff;text-decoration:none;background:var(--accent);border-radius:18px;padding:12px 26px;min-width:0;transition:background .3s ease,transform .3s ease;border:none;font-family:inherit;cursor:pointer;width:100%;max-width:240px}
   .product-tile-more:hover{background:#1e5a2d;transform:translateY(-2px)}
   .product-tile-more:focus-visible{outline:2px solid rgba(36,110,55,.35);outline-offset:2px}
@@ -114,10 +118,11 @@
   .home-category-block + .home-category-block{margin-top:32px}
   .home-category-header{margin-bottom:32px}
   .product-main-image{width:520px;height:680px;border-radius:18px;overflow:hidden;position:relative;background:linear-gradient(135deg,#d9d9d9,#c8c8c8);border:1px solid rgba(0,0,0,.05)}
-  .product-main-image img{width:100%;height:100%;object-fit:cover}
+  /* Сделать обязательно: курсор для увеличения изображения товара */
+  .product-main-image img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
   .product-main-image::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
   .product-main-image.has-image::after{display:none}
-  .product-info{display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:540px;flex:1;margin-left:0;border-radius:18px;padding:36px 36px 32px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);box-shadow:0 22px 54px rgba(15,23,42,.12)}
+  .product-info{display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:613px;flex:1;margin-left:0;border-radius:18px;padding:36px 36px 32px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);box-shadow:0 22px 54px rgba(15,23,42,.12)}
   .product-info-content{flex:1;display:flex;flex-direction:column;gap:24px}
   .product-title{font-family:Georgia,serif;font-size:42px;font-weight:400;line-height:1.3;margin:0}
   .product-description-text{color:#6B6B6B;font-size:16px;line-height:1.8}
@@ -125,10 +130,11 @@
   .product-category-pill{display:inline-block;padding:6px 16px;background:rgba(36,110,55,.1);color:#246e37;border-radius:8px;font-size:13px;letter-spacing:.3px}
   .product-info-content .product-category-pill{align-self:flex-start;margin-bottom:4px}  
   .product-price-label{color:#6B6B6B;margin:0;font-size:14px;letter-spacing:.5px;text-transform:uppercase}
-  .product-price-amount{color:#2B2B2B;font-family:Georgia,serif;font-size:34px;font-weight:400;margin-top:8px}
+  /* Сделать обязательно: оформление цены на странице товара */
+  .product-price-amount{color:#2B2B2B;font-family:Georgia,serif;font-size:34px;font-weight:400;margin-top:8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
   .product-divider{width:100%;height:1px;background:#E6E6E6;margin:16px 0}
   .description-heading{color:#2B2B2B;margin-bottom:16px;font-family:Georgia,serif;font-size:20px;font-weight:400}
-  .back-link{display:flex;align-items:center;gap:8px;color:#6B6B6B;margin-bottom:32px;text-decoration:none;font-size:15px;transition:color .3s ease}
+  .back-link{display:flex;align-items:center;gap:8px;color:#6B6B6B;margin-bottom:24px;text-decoration:none;font-size:15px;transition:color .3s ease}
   .back-link:hover{color:#246e37}
   .back-link svg{width:16px;height:16px}
   .callback-button{width:100%;max-width:none;padding:18px 32px;background:#246e37;color:#fff;border-radius:10px;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:500;border:none;margin-top:0}
@@ -137,7 +143,7 @@
   .similar-header{color:#2B2B2B;margin-bottom:8px;font-family:Georgia,serif;font-size:32px;font-weight:400}
   .similar-accent{width:80px;height:2px;background:#246e37;margin:14px 0 24px}
   .product-support-note{color:#6B6B6B;font-size:14px;line-height:1.7;max-width:520px;text-align:center;margin:16px auto 0}
-  .catalog-section{padding-top:56px;padding-bottom:64px}
+  .catalog-section{padding-top:56x;padding-bottom:64px}
   .catalog-title{color:#2B2B2B;font-family:Georgia,serif;font-size:36px;font-weight:400;line-height:1.4;margin:0 0 12px}
   .catalog-description{color:#6B6B6B;font-size:16px;line-height:1.7;max-width:640px;margin:0 0 32px}
   .catalog-category-nav{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px}
@@ -231,6 +237,10 @@
   .product-carousel-viewport{flex:1;overflow:hidden}
   .product-carousel-track{--carousel-gap:24px;--carousel-visible:3;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--carousel-visible) - 1)*var(--carousel-gap))/var(--carousel-visible));gap:var(--carousel-gap);transition:transform .4s ease;justify-items:center}
   .product-carousel-track .product-tile{width:100%}
+  /* Сделать обязательно: оверлей для увеличенного изображения товара */
+  .product-image-overlay{position:fixed;inset:0;background:rgba(17,17,17,.76);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:1400;padding:32px}
+  .product-image-overlay.is-visible{opacity:1;pointer-events:auto}
+  .product-image-overlay img{max-width:min(90vw,980px);max-height:90vh;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.35);object-fit:contain;background:#fff}
   .carousel-arrow{background:var(--card);border:1px solid rgba(0,0,0,.08);border-radius:999px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;transition:background .3s ease,transform .3s ease,opacity .3s ease}
   .carousel-arrow svg{width:20px;height:20px}
   .carousel-arrow:hover{background:#fff;transform:translateY(-2px)}
@@ -412,40 +422,18 @@
 
   /* Изображение товара на странице с закруглением сверху */
   @media (max-width: 960px) {
-    .product-main-image {
-        width: 100%; /* Ширина на весь экран */
-        height: 50vh; /* Высота 60% от экрана */
-        border-radius: 7px; /* Закругленные углы сверху */
-        overflow: hidden;
-    }
-    .product-main-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Чтобы изображение заполнило контейнер */
-    }
-
-    /* Контейнер с информацией о товаре */
-    .product-info {
-        width: 100%; /* Заполняем весь экран */
-        max-width: 100%; /* Без ограничений */
-        padding: 24px; /* Отступы для контента */
-        box-sizing: border-box;
-        margin: 0 auto; /* Центрируем */
-    }
-
-    /* Центрируем информацию о товаре */
-    .product-info-content {
-        width: 100%;
-        text-align: center;
-    }
-
-    /* Изменения для кнопки "Заказать звонок" */
-    .callback-button {
-        width: 100%; /* Кнопка на всю ширину */
-        max-width: 400px; /* Ограничение по максимальной ширине */
-        margin: 20px auto; /* Центрируем кнопку */
-        display: block;
-    }
+    /* Сделать обязательно: обновлённая мобильная раскладка страницы товара */
+    .back-link{margin-bottom:20px;font-size:16px;gap:10px}
+    .product-detail{gap:28px}
+    .product-main-image{width:100%;height:min(64vh,420px);border-radius:16px;overflow:hidden}
+    .product-main-image img{width:100%;height:100%;object-fit:cover}
+    .product-info{width:100%;max-width:100%;padding:24px;box-sizing:border-box;margin:0}
+    .product-info-content{width:100%;text-align:left;align-items:flex-start;gap:20px}
+    .product-title{font-size:25px;line-height:1.1}
+    .product-price-amount{font-size:36px}
+    .product-price-prefix{font-size:.72em}
+    .product-support-note{text-align:left}
+    .callback-button{width:100%;max-width:none;margin:24px 0 0;display:flex}
   }
 /* Mobile Footer */
   @media (max-width: 680px) {
@@ -532,6 +520,11 @@
   </div>
 
   <main id="app" role="main"></main>
+
+    <!-- Сделать обязательно: оверлей увеличенного изображения товара -->
+  <div class="product-image-overlay" data-product-image-overlay hidden>
+    <img data-product-image-overlay-image alt="" loading="lazy" />
+  </div>
 
   <footer>
     <div class="container footer-top">
@@ -712,29 +705,37 @@
     return '/product/' + encodeURIComponent(String(id));
   }
 
-  function priceText(product){
-    if(!product) return 'по запросу';
+  /* Сделать обязательно: подготовка частей цены для отображения */
+  function priceParts(product){
+    const fallback = { prefix: '', value: 'по запросу', safeValue: escapeHtml('по запросу') };
+    if(!product) return fallback;
     const value = product.price;
     if(value === null || value === undefined || value === ''){
-      return 'по запросу';
+      return fallback;
     }
     const num = Number(value);
     if(Number.isFinite(num)){
-      return new Intl.NumberFormat('ru-RU').format(num) + ' ₽';
+      const display = new Intl.NumberFormat('ru-RU').format(num) + ' ₽';
+      return { prefix: 'от', value: display, safeValue: escapeHtml(display) };
     }
     const textValue = String(value).trim();
     if(!textValue){
-      return 'Цена: по запросу';
+      return fallback;
     }
     if(/^по запросу$/i.test(textValue)){
-      return 'по запросу';
+      return fallback;
     }
-    return 'от ' + escapeHtml(textValue);
+    const display = textValue;
+    return { prefix: 'от', value: display, safeValue: escapeHtml(display) };
+  }
+
+  function priceText(product){
+    const { prefix, value } = priceParts(product);
+    return prefix ? `${prefix} ${value}` : value;
   }
 
   function priceValue(product){
-    const full = priceText(product);
-    return full.replace(/^от\s*/i, '').trim();
+    return priceParts(product).value;
   }
 
   function formatTextBlock(text){
@@ -947,7 +948,12 @@
       const aria = escapeAttribute(`Подробнее о ${nameRaw}`);
       const safeImage = escapeAttribute(image);
       const safeAlt = escapeHtml(nameRaw);
-      const price = priceText(product);
+      /* Сделать обязательно: сборка цены для карточки товара */
+      const priceInfo = priceParts(product);
+      const pricePrefix = priceInfo.prefix ? escapeHtml(priceInfo.prefix) : '';
+      const priceMarkup = priceInfo.prefix
+        ? `<div class="product-price"><span class="product-price-prefix">${pricePrefix}</span><span class="product-price-number">${priceInfo.safeValue}</span></div>`
+        : `<div class="product-price">${priceInfo.safeValue}</div>`;
     const imageContent = image
     ? `<img src="${safeImage}" alt="${safeAlt}" loading="lazy">`
     : `<div class="product-image-placeholder" aria-hidden="true"></div>`;
@@ -960,7 +966,7 @@
         </div>
         <div class="product-card-content">
           <div class="product-name">${name}</div>
-          <div class="product-price">${price}</div>
+          ${priceMarkup}
         </div>
         <button class="product-tile-more" type="button" data-action="callback" data-prefill="${prefill}">Заказать</button>
       </article>
@@ -1198,7 +1204,7 @@
   // ---------------- Views ----------------
   function viewHome(){
     return `
-      <section class="hero-section" style="--hero-bg-image:url('../static/images/main.jpg');">
+      <section class="hero-section" style="--hero-bg-image:url('../static/images/main.png');">
         <!-- Замените URL_ДЛЯ_ФОНА на ссылку на нужное фоновое изображение -->
         <div class="hero-inner">
           <div class="hero-content">
@@ -1337,10 +1343,10 @@
           <div class="space-v-16"></div>
           <div class="card contact-card">
             <div class="contact-info">
-              <div class="contact-info__item"><strong>Телефон</strong><a class="link" href="tel:+74951234567">+7 (495) 123‑45‑67</a></div>
-              <div class="contact-info__item"><strong>E‑mail</strong><a class="link" href="mailto:info@студия-гранита.рф">info@студия‑гранита.рф</a></div>
-              <div class="contact-info__item"><strong>Адрес</strong><span>г. Москва, ул. Примерная, 12</span></div>
-              <div class="contact-info__item"><strong>Часы работы</strong><span>Пн–Сб 10:00–18:00</span></div>
+              <div class="contact-info__item"><strong>Телефон</strong><a class="link" href="tel:+79697119311">+7 (969) 711-93-11</a></div>
+              <div class="contact-info__item"><strong>E‑mail</strong><a class="link" href="mailto:pasha-litvinov@ya.ru">pasha-litvinov@ya.ru</a></div>
+              <div class="contact-info__item"><strong>Адрес</strong><span>г. Псков, улица Некрасова, 33</span></div>
+              <div class="contact-info__item"><strong>Часы работы</strong><span>Пн–Сб 9:00–20:00</span></div>
             </div>
             <div class="space-v-16"></div>
             <button class="btn-outline dark-text" style="color:#246e37, border-color:var(--accent)" data-action="callback">Заказать звонок</button>
@@ -1391,7 +1397,11 @@
     const nameRaw = product.name || product.title || `Памятник ${idValue}`;
     const name = escapeHtml(nameRaw);
     const categoryName = escapeHtml(displayCategoryName(product.category));
-    const price = priceValue(product) || 'по запросу';
+    /* Сделать обязательно: подготовка цены для страницы товара */
+    const detailPriceInfo = priceParts(product);
+    const detailPricePrefix = detailPriceInfo.prefix ? `<span class="product-price-prefix">${escapeHtml(detailPriceInfo.prefix)}</span>` : '';
+    const detailPriceValue = `<span class="product-price-number">${detailPriceInfo.safeValue}</span>`;
+    const detailPriceMarkup = detailPriceInfo.prefix ? detailPricePrefix + detailPriceValue : detailPriceValue;
     const description = product.description
       ? `<div class="product-description-text">${formatTextBlock(product.description)}</div>`
       : `<div class="product-description-text" style="opacity:.7;">Описание появится позже.</div>`;
@@ -1422,7 +1432,7 @@
               <div class="product-info-content">
                 <span class="product-category-pill">${categoryName}</span>
                 <h2 class="product-title">${name}</h2>
-                <div class="product-price-amount">${price}</div>
+                <div class="product-price-amount">${detailPriceMarkup}</div>
                 <div class="product-divider"></div>
                 <div>
                   <div class="description-heading">Описание</div>
@@ -1577,6 +1587,65 @@
   }
 
   // ---------------- Interactions ----------------
+  /* Сделать обязательно: логика оверлея изображения товара */
+  function setupProductImageOverlay(){
+    const overlay = $('[data-product-image-overlay]');
+    const overlayImage = overlay?.querySelector('[data-product-image-overlay-image]');
+    if(!overlay || !overlayImage) return;
+
+    const clearOverlay = () => {
+      overlay.classList.remove('is-visible');
+      overlayImage.removeAttribute('src');
+      overlayImage.removeAttribute('alt');
+      if(!overlay.hasAttribute('hidden')){
+        overlay.setAttribute('hidden', '');
+      }
+      if(overlay.__lightboxKeydown){
+        document.removeEventListener('keydown', overlay.__lightboxKeydown);
+        overlay.__lightboxKeydown = null;
+      }
+    };
+
+    const mainImage = document.querySelector('.product-main-image img');
+    if(!mainImage){
+      clearOverlay();
+      return;
+    }
+    if(mainImage.dataset.overlayBound === '1') return;
+    mainImage.dataset.overlayBound = '1';
+
+    const handleKeydown = (event) => {
+      if(event.key === 'Escape'){
+        clearOverlay();
+      }
+    };
+
+    const openOverlay = () => {
+      const src = mainImage.currentSrc || mainImage.src;
+      if(!src) return;
+      overlayImage.src = src;
+      overlayImage.alt = mainImage.alt || '';
+      overlay.removeAttribute('hidden');
+      requestAnimationFrame(() => overlay.classList.add('is-visible'));
+      overlay.__lightboxKeydown = handleKeydown;
+      document.addEventListener('keydown', handleKeydown);
+    };
+
+    if(!overlay.dataset.overlayClickBound){
+      overlay.dataset.overlayClickBound = '1';
+      overlay.addEventListener('click', (event) => {
+        if(event.target === overlay){
+          clearOverlay();
+        }
+      });
+    }
+
+    mainImage.addEventListener('click', (event) => {
+      event.preventDefault();
+      openOverlay();
+    });
+  }
+
   function wirePageInteractions(){
     // Modal open triggers
     $all('[data-action="callback"]').forEach(btn=>{
@@ -1610,6 +1679,8 @@
       });
     });
     setupCarousels();
+    /* Сделать обязательно: активация увеличения изображения */
+    setupProductImageOverlay();
   }
 
 
