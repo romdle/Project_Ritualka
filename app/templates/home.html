@@ -13,12 +13,6 @@
           <a class="hero-button" id="cta-home" href="/catalog">Перейти в каталог</a>
         </div>
       </div>
-      <div class="hero-media">
-        <div class="media has-image">
-          <img src="{{ url_for('static', path='images/main.jpg') }}" alt="Пример памятника" loading="lazy" />
-        </div>
-        <span class="hero-media-note">Изготовление, установка и сопровождение — под ключ.</span>
-      </div>
     </div>
   </section>
 
@@ -69,7 +63,7 @@
               <h2 class="category-heading">{{ group.display }}</h2>
               <a class="btn-view-all" href="/catalog?category={{ group.slug }}">Смотреть все</a>
             </div>
-            {{ ui.product_carousel(group.items, label='Категория ' ~ group.display) }}
+            {{ ui.product_carousel(group["items"], label='Категория ' ~ group.display) }}
           </section>
         {% endfor %}
       {% else %}
