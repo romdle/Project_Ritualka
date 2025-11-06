@@ -69,7 +69,11 @@
                 <strong>{{ filters.price_to | int | format_number_ru }} ₽</strong>
               </div>
               {% if filters.price_max > filters.price_min %}
-                <div class="catalog-range-slider" data-price-slider style="--range-min:{{ filters.price_min }};--range-max:{{ filters.price_max }};--range-from:{{ filters.price_from }};--range-to:{{ filters.price_to }};">
+                <div
+                  class="catalog-range-slider"
+                  data-price-slider
+                  style="--range-min: {{ filters.price_min }}; --range-max: {{ filters.price_max }}; --range-from: {{ filters.price_from }}; --range-to: {{ filters.price_to }};"
+                >
                   <input type="range" min="{{ filters.price_min }}" max="{{ filters.price_max }}" value="{{ filters.price_from }}" step="{{ slider_step }}" data-price-input="from" />
                   <input type="range" min="{{ filters.price_min }}" max="{{ filters.price_max }}" value="{{ filters.price_to }}" step="{{ slider_step }}" data-price-input="to" />
                 </div>
