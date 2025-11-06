@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1E1E1E" />
   <title>студия-гранита.рф — Главная</title>
   <style>
-  :root{ --accent:#246e37; --dark:#1E1E1E; --bg:#F6F6F6; --card:#ffffff; --text:#2B2B2B; --maxw:1200px; --header-height:100px; --home-section-gap:48px; }
+  :root{ --accent:#246e37; --dark:#1E1E1E; --bg:#F3F1ED; --card:#ffffff; --text:#2B2B2B; --maxw:1360px; --header-height:100px; --home-section-gap:48px; }
   html,body{height:100%}
   body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
   .hero-section{position:relative;background:linear-gradient(135deg,#131313,#000000);overflow:hidden}
@@ -94,25 +94,26 @@
   .font-medium{font-weight:500}
   .product-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
   .product-row.product-row--home{margin-top:var(--home-section-gap);margin-bottom:var(--home-section-gap)}
-  .product-row--catalog{justify-content:flex-start;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;justify-items:center}
-  .product-tile{background:var(--card);border-radius:18px;display:flex;flex-direction:column;align-items:center;overflow:hidden;box-sizing:border-box;transition:box-shadow .3s ease,transform .3s ease;width:100%;min-width:0;max-width:320px;margin:0 auto;padding:24px 20px 22px;gap:14px;min-height:280px;text-align:center;position:relative;cursor:pointer;outline:none}
-  .product-tile:hover{box-shadow:0 16px 32px rgba(0,0,0,.08);transform:translateY(-4px)}
-  .product-tile:focus-visible{box-shadow:0 0 0 3px rgba(36,110,55,.35)}
-  .product-image-link{width:calc(100% + 40px);aspect-ratio:1/1;border-radius: 0;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;margin:-24px -20px 16px;background:#fff;box-shadow:0 18px 42px rgba(17,24,39,.18)}
+  .product-row--catalog{justify-content:flex-start;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;justify-items:stretch}
+  .product-tile{background:linear-gradient(140deg,rgba(255,255,255,.96),rgba(248,243,236,.88));border-radius:22px;border:1px solid rgba(36,110,55,.08);display:flex;flex-direction:column;align-items:stretch;overflow:hidden;box-sizing:border-box;transition:box-shadow .35s ease,transform .35s ease,border-color .35s ease;width:100%;min-width:0;max-width:340px;margin:0 auto;padding:26px 24px 24px;gap:18px;min-height:320px;text-align:left;position:relative;cursor:pointer;outline:none;box-shadow:0 22px 44px rgba(17,24,39,.08)}
+  .product-tile::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,rgba(36,110,55,.04),transparent 55%);pointer-events:none}
+  .product-tile:hover{box-shadow:0 28px 54px rgba(17,24,39,.14);transform:translateY(-6px);border-color:rgba(36,110,55,.22)}
+  .product-tile:focus-visible{box-shadow:0 0 0 3px rgba(36,110,55,.35),0 28px 54px rgba(17,24,39,.16)}
+  .product-image-link{width:100%;aspect-ratio:4/3;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;margin:0;background:linear-gradient(135deg,rgba(36,110,55,.12),rgba(36,110,55,.05));box-shadow:0 18px 42px rgba(17,24,39,.12)}
   .product-image-link img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease;display:block}
   .product-tile:hover .product-image-link img,.product-tile:focus-visible .product-image-link img{transform:scale(1.05)}
   .product-image-placeholder{width:100%;height:100%;position:relative}
   .product-image-placeholder::after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 12px)}
-  .product-card-content{display:flex;flex-direction:column;gap:8px;align-items:center;width:100%}
-  .product-name{color:#2B2B2B;font-family:Georgia,serif;font-size:18px;line-height:1.5;font-weight:400;margin: 0}
+  .product-card-content{display:flex;flex-direction:column;gap:12px;align-items:flex-start;width:100%;position:relative;z-index:1}
+  .product-name{color:#1f1f1f;font-family:Georgia,serif;font-size:22px;line-height:1.35;font-weight:500;margin:0}
   /* Сделать обязательно: базовая стилизация цены с акцентом на значение */
-  .product-price{color:#2B2B2B;font-size:17px;font-weight:600;margin:0;display:flex;align-items:baseline;gap:6px;font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .product-price{color:#2B2B2B;font-size:19px;font-weight:600;margin:0;display:flex;align-items:baseline;gap:6px;font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
   /* Сделать обязательно: стили для префикса и значения цены */
   .product-price-prefix{font-size:.82em;color:#6f6f6f;font-weight:500;font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
   .product-price-number{color:#1f1f1f;font-weight:600;letter-spacing:.1px;font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
-  .product-tile-more{display:inline-flex;align-items:center;justify-content:center;margin-top:auto;font-size:15px;letter-spacing:.2px;color:#fff;text-decoration:none;background:var(--accent);border-radius:18px;padding:12px 26px;min-width:0;transition:background .3s ease,transform .3s ease;border:none;font-family:inherit;cursor:pointer;width:100%;max-width:240px}
-  .product-tile-more:hover{background:#1e5a2d;transform:translateY(-2px)}
-  .product-tile-more:focus-visible{outline:2px solid rgba(36,110,55,.35);outline-offset:2px}
+  .product-card-footer{display:flex;align-items:center;gap:10px;margin-top:auto;font-size:14px;letter-spacing:.28px;text-transform:uppercase;color:#246e37;font-weight:600;font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;transition:color .3s ease}
+  .product-card-footer svg{width:16px;height:16px;stroke:currentColor}
+  .product-tile:hover .product-card-footer,.product-tile:focus-visible .product-card-footer{color:#1e5a2d}
   .product-detail{display:flex;gap:28px;align-items:flex-start}
   .home-category-block{padding:0 0 32px}
   .home-category-block + .home-category-block{margin-top:0}
@@ -147,14 +148,64 @@
   .catalog-title{color:#2B2B2B;font-family:Georgia,serif;font-size:36px;font-weight:400;line-height:1.4;margin:0 0 12px}
   .page-title{color:#2B2B2B;font-family:Georgia,serif;font-size:36px;font-weight:400;line-height:1.4;margin:0 0 24px}
   .catalog-description{color:#6B6B6B;font-size:16px;line-height:1.7;max-width:640px;margin:0 0 32px}
-  .catalog-category-nav{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px}
-  .catalog-category-button{display:inline-flex;align-items:center;justify-content:center;padding:10px 22px;border-radius:17px;border:1px solid rgba(36,110,55,.4);background:rgba(255,255,255,.9);color:#2B2B2B;font-size:14px;line-height:1.4;text-decoration:none;transition:all .3s ease}
-  .catalog-category-button:hover{border-color:#246e37;color:#246e37;box-shadow:0 10px 22px rgba(36,110,55,.15)}
-  .catalog-category-button.is-active{background:#246e37;color:#fff;border-color:#246e37;box-shadow:0 12px 28px rgba(36,110,55,.25)}
-  @media (max-width:820px){
-    .catalog-category-nav{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;margin-left:-24px;margin-right:-24px;padding-left:24px;padding-right:24px;gap:10px}
-    .catalog-category-nav::-webkit-scrollbar{display:none}
-    .catalog-category-button{flex:0 0 auto;white-space:nowrap}
+  .catalog-layout{display:grid;grid-template-columns:320px 1fr;gap:48px;align-items:flex-start}
+  .catalog-content{display:flex;flex-direction:column;gap:32px}
+  .catalog-sidebar{background:rgba(255,255,255,.94);border-radius:26px;border:1px solid rgba(36,110,55,.12);padding:28px 26px;display:flex;flex-direction:column;gap:28px;position:sticky;top:calc(var(--header-height) + 24px);max-height:calc(100vh - var(--header-height) - 48px);overflow:auto;box-shadow:0 28px 64px rgba(17,24,39,.08)}
+  .catalog-sidebar::-webkit-scrollbar{width:8px}
+  .catalog-sidebar::-webkit-scrollbar-thumb{background:rgba(36,110,55,.3);border-radius:999px}
+  .catalog-sidebar::-webkit-scrollbar-track{background:transparent}
+  .catalog-filters-heading{font-family:Georgia,serif;font-size:24px;font-weight:400;color:#1f1f1f;margin:0 0 4px}
+  .catalog-filters-note{margin:0;font-size:14px;color:#6f6f6f;line-height:1.6}
+  .catalog-filter-group{display:flex;flex-direction:column;gap:14px}
+  .catalog-filter-title{font-size:15px;text-transform:uppercase;letter-spacing:.18em;color:#7b7b7b;font-weight:600}
+  .catalog-category-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .catalog-category-button{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:16px;border:1px solid rgba(36,110,55,.16);background:rgba(255,255,255,.84);color:#2B2B2B;font-size:15px;font-weight:500;font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;cursor:pointer;transition:all .3s ease}
+  .catalog-category-button span{pointer-events:none}
+  .catalog-category-button:hover{border-color:#246e37;color:#246e37;box-shadow:0 12px 26px rgba(36,110,55,.15)}
+  .catalog-category-button.is-active{background:rgba(36,110,55,.12);color:#246e37;border-color:#246e37;box-shadow:0 18px 36px rgba(36,110,55,.2)}
+  .catalog-category-count{font-size:13px;color:inherit;opacity:.8}
+  .catalog-sort-group{display:flex;flex-wrap:wrap;gap:10px}
+  .catalog-sort-button{flex:1 1 110px;padding:10px 16px;border-radius:999px;border:1px solid rgba(36,110,55,.16);background:rgba(255,255,255,.85);font-size:14px;font-weight:600;font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#2B2B2B;cursor:pointer;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:8px}
+  .catalog-sort-button svg{width:16px;height:16px;stroke:currentColor}
+  .catalog-sort-button:hover{border-color:#246e37;color:#246e37;box-shadow:0 10px 24px rgba(36,110,55,.15)}
+  .catalog-sort-button.is-active{background:#246e37;color:#fff;border-color:#246e37;box-shadow:0 18px 36px rgba(36,110,55,.28)}
+  .catalog-price-range{display:flex;flex-direction:column;gap:16px}
+  .catalog-price-values{display:flex;justify-content:space-between;font-size:14px;color:#4f4f4f;font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .catalog-price-values strong{color:#1f1f1f;font-size:16px}
+  .catalog-range-slider{position:relative;height:44px;display:flex;align-items:center;--range-min:0;--range-max:1;--range-from:0;--range-to:1}
+  .catalog-range-slider::before{content:"";position:absolute;left:0;right:0;height:4px;border-radius:999px;background:rgba(36,110,55,.2)}
+  .catalog-range-slider::after{content:"";position:absolute;height:4px;border-radius:999px;background:var(--accent);left:calc((max(var(--range-from),var(--range-min)) - var(--range-min)) / max(1,(var(--range-max) - var(--range-min))) * 100%);right:calc(100% - (max(var(--range-to),var(--range-min)) - var(--range-min)) / max(1,(var(--range-max) - var(--range-min))) * 100%)}
+  .catalog-range-slider input[type=range]{-webkit-appearance:none;appearance:none;width:100%;position:absolute;left:0;right:0;margin:0;height:44px;background:transparent;pointer-events:auto}
+  .catalog-range-slider input[type=range]:focus{outline:none}
+  .catalog-range-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:18px;width:18px;border-radius:50%;background:#fff;border:2px solid var(--accent);box-shadow:0 6px 16px rgba(36,110,55,.35);cursor:pointer}
+  .catalog-range-slider input[type=range]::-webkit-slider-runnable-track{height:4px;background:transparent}
+  .catalog-range-slider input[type=range]::-moz-range-thumb{height:18px;width:18px;border-radius:50%;background:#fff;border:2px solid var(--accent);box-shadow:0 6px 16px rgba(36,110,55,.35);cursor:pointer}
+  .catalog-range-slider input[type=range]::-moz-range-track{height:4px;background:transparent}
+  .catalog-reset{align-self:flex-start;background:transparent;border:none;color:#6f6f6f;font-size:13px;text-decoration:underline;cursor:pointer;padding:0}
+  .catalog-reset:hover{color:#246e37}
+  .catalog-filters-toggle{display:none;margin-bottom:28px}
+  .catalog-filters-toggle button{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:16px;border:1px solid rgba(36,110,55,.2);background:rgba(255,255,255,.92);font-size:15px;font-weight:600;color:#246e37;cursor:pointer;box-shadow:0 14px 32px rgba(36,110,55,.16);transition:all .3s ease}
+  .catalog-filters-toggle button svg{width:18px;height:18px;stroke:currentColor}
+  .catalog-filters-toggle button:hover{background:#246e37;color:#fff}
+  .catalog-overlay{position:fixed;inset:0;background:rgba(17,17,17,.6);display:none;align-items:flex-start;justify-content:flex-end;padding:18px;z-index:1600}
+  .catalog-overlay.is-open{display:flex}
+  .catalog-overlay-panel{background:rgba(255,255,255,.97);width:min(80%,420px);max-width:420px;height:100%;border-radius:24px 0 0 24px;box-shadow:0 30px 70px rgba(17,24,39,.38);padding:32px 26px 40px;display:flex;flex-direction:column;gap:24px;overflow:auto;position:relative}
+  .catalog-overlay-close{align-self:flex-end;background:transparent;border:none;font-size:14px;color:#6f6f6f;cursor:pointer;text-transform:uppercase;letter-spacing:.2em;font-weight:600}
+  .catalog-overlay-close:hover{color:#246e37}
+  .catalog-overlay-heading{font-family:Georgia,serif;font-size:26px;font-weight:400;margin:0;color:#1f1f1f}
+  @media (max-width:1280px){
+    .catalog-layout{grid-template-columns:280px 1fr;gap:36px}
+    .catalog-sidebar{padding:26px 22px}
+  }
+  @media (max-width:960px){
+    .catalog-layout{grid-template-columns:1fr}
+    .catalog-sidebar{display:none}
+    .catalog-filters-toggle{display:flex}
+  }
+  @media (max-width:680px){
+    .catalog-overlay{padding:0}
+    .catalog-overlay-panel{width:100%;max-width:none;border-radius:0;box-shadow:none}
+    .catalog-overlay-close{position:absolute;top:18px;right:24px}
   }
   .card{background:var(--card);border-radius:16px;padding:16px}
   .contact-card{padding:24px}
@@ -236,7 +287,7 @@
   /* Responsive */
   .product-carousel{display:flex;align-items:center;gap:16px;position:relative}
   .product-carousel-viewport{flex:1;overflow:hidden}
-  .product-carousel-track{--carousel-gap:24px;--carousel-visible:3;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--carousel-visible) - 1)*var(--carousel-gap))/var(--carousel-visible));gap:var(--carousel-gap);transition:transform .4s ease;justify-items:center}
+  .product-carousel-track{--carousel-gap:24px;--carousel-visible:4;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--carousel-visible) - 1)*var(--carousel-gap))/var(--carousel-visible));gap:var(--carousel-gap);transition:transform .4s ease;justify-items:center}
   .product-carousel-track .product-tile{width:100%}
   /* Сделать обязательно: оверлей для увеличенного изображения товара */
   .product-image-overlay{position:fixed;inset:0;background:rgba(17,17,17,.76);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:1400;padding:32px}
@@ -250,8 +301,8 @@
   .product-carousel.is-touch .product-carousel-track{transition:none}
   .product-carousel.is-touch .carousel-arrow{display:none}
   @media (max-width:1200px){
-    .product-carousel-track{--carousel-visible:2}
-    .product-row--catalog{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .product-carousel-track{--carousel-visible:3}
+    .product-row--catalog{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
   }
   @media (max-width:960px){
     .grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -264,13 +315,13 @@
     .hero-button{width:100%;min-width:0}
     .product-detail{flex-direction:column}
     .product-info{min-height:auto;width:100%;padding:24px;box-shadow:none}
-    .product-row--catalog{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .product-tile{aspect-ratio:auto;min-height:0;padding:20px 16px 20px}
+    .product-row--catalog{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .product-tile{aspect-ratio:auto;min-height:0;padding:22px 18px 22px;gap:16px}
     .product-carousel-track{--carousel-visible:1}
     .product-carousel{gap:0}
     .product-carousel-viewport{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -24px;padding:0 24px 16px;scroll-padding-left:24px}
     .product-carousel-track{display:flex;gap:16px;width:max-content}
-    .product-carousel-track .product-tile{flex:0 0 clamp(260px,82vw,320px);scroll-snap-align:start}
+    .product-carousel-track .product-tile{flex:0 0 clamp(240px,78vw,320px);scroll-snap-align:start}
     .product-carousel-track::-webkit-scrollbar{display:none}
   }
   @media (max-width:540px){
@@ -368,23 +419,24 @@
 
       /* Product tile adjustments */
       .product-tile {
-          padding: 20px 16px 20px;
+          padding: 22px 18px 22px;
+          gap: 16px;
       }
       .product-image-link {
-          width: calc(100% + 48px);
-          margin: -20px -24px 14px;
-          border-radius: 16px 16px 0 0;
+          width: 100%;
+          margin: 0;
+          border-radius: 16px;
       }
   }
 
   @media (max-width: 540px) {
       /* Further reduce font size and padding on very small screens */
       .product-tile {
-          padding: 18px 14px 18px;
+          padding: 20px 16px 20px;
       }
       .product-image-link {
-          width: calc(100% + 36px);
-          margin: -18px -18px 12px;
+          width: 100%;
+          margin: 0;
       }
       .hero-title {
           font-size: 24px;
@@ -583,6 +635,11 @@
     products: [],
     loading: true,
     error: null,
+    catalog: {
+      priceMin: 0,
+      priceMax: 0,
+      mobileOpen: false,
+    },
   };
   const activeCarousels = new Set();
   const CATEGORY_TITLES = {
@@ -608,6 +665,16 @@
 
   const DEFAULT_CATALOG_CATEGORY = 'standartnye';
 
+  const CATALOG_SORT_OPTIONS = [
+    { value: 'price-asc', label: 'По цене ↑', icon: 'arrow-up' },
+    { value: 'price-desc', label: 'По цене ↓', icon: 'arrow-down' },
+    { value: 'category', label: 'По категории', icon: 'grid' },
+    { value: 'name', label: 'По названию', icon: 'letters' },
+  ];
+
+  const NAME_COLLATOR = new Intl.Collator('ru', { sensitivity: 'base', usage: 'sort' });
+  let catalogEscapeListenerBound = false;
+
   // ---------------- Helpers ----------------
   function $(sel, root=document){ return root.querySelector(sel); }
   function $all(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
@@ -615,6 +682,10 @@
   function setState(partial){
     Object.assign(state, partial);
     render();
+  }
+
+  function setCatalogState(partial){
+    setState({ catalog: { ...state.catalog, ...partial } });
   }
 
   function setActiveNav(base){
@@ -660,6 +731,23 @@
     return resolveImagePath(image);
   }
 
+  function parseNumericPrice(rawValue){
+    if(rawValue === null || rawValue === undefined) return null;
+    if(typeof rawValue === 'number' && Number.isFinite(rawValue)){
+      return rawValue;
+    }
+    const str = String(rawValue).trim();
+    if(!str) return null;
+    if(/по запросу/i.test(str)) return null;
+    const digits = str.replace(/[^0-9]/g, '');
+    if(!digits) return null;
+    const num = Number(digits);
+    if(Number.isFinite(num)){
+      return num;
+    }
+    return null;
+  }
+
   function displayCategoryName(category){
     const raw = (category ?? '').trim();
     if(!raw) return 'Без категории';
@@ -703,14 +791,14 @@
   function priceParts(product){
     const fallback = { prefix: '', value: 'по запросу', safeValue: escapeHtml('по запросу') };
     if(!product) return fallback;
+    const numeric = Number.isFinite(product.numericPrice) ? product.numericPrice : null;
+    if(numeric !== null){
+      const display = new Intl.NumberFormat('ru-RU').format(numeric) + ' ₽';
+      return { prefix: 'от', value: display, safeValue: escapeHtml(display) };
+    }
     const value = product.price;
     if(value === null || value === undefined || value === ''){
       return fallback;
-    }
-    const num = Number(value);
-    if(Number.isFinite(num)){
-      const display = new Intl.NumberFormat('ru-RU').format(num) + ' ₽';
-      return { prefix: 'от', value: display, safeValue: escapeHtml(display) };
     }
     const textValue = String(value).trim();
     if(!textValue){
@@ -773,6 +861,7 @@
 
   function normalizeProduct(raw){
     if(!raw || typeof raw !== 'object') return {};
+    const numericPrice = parseNumericPrice(raw.price);
     return {
       id: raw.id,
       name: raw.name ?? raw.title ?? '',
@@ -780,6 +869,7 @@
       description: raw.description ?? '',
       img_path: raw.img_path ?? raw.image_path ?? '',
       category: raw.category ?? '',
+      numericPrice,
     };
   }
 
@@ -860,44 +950,378 @@
     return list;
   }
 
-  function renderCatalogCategoryNav(categories, activeSlug){
-    if(!categories || !categories.length) return '';
-    const active = (activeSlug ?? '').trim().toLowerCase();
-    const items = categories.map(category => {
-      const isActive = category.slug === active;
-      const href = '/catalog?category=' + encodeURIComponent(category.slug);
-      const label = escapeHtml(category.label);
-      const ariaCurrent = isActive ? ' aria-current="page"' : '';
-      const classes = 'catalog-category-button' + (isActive ? ' is-active' : '');
-      return `<a class="${classes}" href="${escapeAttribute(href)}"${ariaCurrent}>${label}</a>`;
-    }).join('');
-    return `<nav class="catalog-category-nav" aria-label="Категории памятников">${items}</nav>`;
+  function catalogPriceBounds(products){
+    let min = Infinity;
+    let max = 0;
+    products.forEach(product => {
+      if(Number.isFinite(product.numericPrice)){
+        min = Math.min(min, product.numericPrice);
+        max = Math.max(max, product.numericPrice);
+      }
+    });
+    if(min === Infinity || max <= 0){
+      return { min: 0, max: 0 };
+    }
+    return { min, max };
   }
 
-  function resolveCatalogActive(categories, query){
-    if(!categories || !categories.length){
-      return { slug: '', group: null };
+  function catalogPriceLimits(){
+    const min = Number(state.catalog?.priceMin ?? 0) || 0;
+    const max = Number(state.catalog?.priceMax ?? 0) || 0;
+    if(max < min){
+      return { min: max, max: min };
     }
-    const raw = (query?.get?.('category') ?? '').trim().toLowerCase();
-    if(raw){
-      const matched = categories.find(category => category.slug === raw);
-      if(matched){
-        return { slug: matched.slug, group: matched };
+    return { min, max };
+  }
+
+  function catalogFilterCategories(){
+    const groups = catalogCategoryGroups();
+    const total = state.products.length;
+    const categories = [{ slug: 'all', label: 'Все памятники', count: total }];
+    groups.forEach(group => {
+      categories.push({ slug: group.slug, label: group.label, count: group.items.length });
+    });
+    return categories;
+  }
+
+  function formatCatalogPrice(value){
+    if(!Number.isFinite(value) || value <= 0){
+      return '—';
+    }
+    return new Intl.NumberFormat('ru-RU').format(Math.round(value)) + ' ₽';
+  }
+
+  function catalogRangeStep(min, max){
+    const span = Math.max(1, max - min);
+    if(span <= 10000) return 1000;
+    if(span <= 50000) return 5000;
+    if(span <= 200000) return 10000;
+    return 20000;
+  }
+
+  function catalogSliderStyle(filters){
+    const min = Number.isFinite(filters.priceMin) ? filters.priceMin : 0;
+    const max = Number.isFinite(filters.priceMax) ? filters.priceMax : min;
+    const from = Math.min(Math.max(Number.isFinite(filters.priceFrom) ? filters.priceFrom : min, min), max);
+    const to = Math.min(Math.max(Number.isFinite(filters.priceTo) ? filters.priceTo : max, min), max);
+    return `--range-min:${min};--range-max:${max};--range-from:${from};--range-to:${to};`;
+  }
+
+  function parseCatalogFilters(query, categories){
+    const limits = catalogPriceLimits();
+    const allowedSorts = new Set(CATALOG_SORT_OPTIONS.map(option => option.value));
+    const availableCategories = new Set(categories.map(category => category.slug));
+    let category = (query?.get?.('category') ?? '').trim().toLowerCase();
+    if(!category || !availableCategories.has(category)){
+      category = 'all';
+    }
+    let sort = (query?.get?.('sort') ?? '').trim().toLowerCase();
+    if(!allowedSorts.has(sort)){
+      sort = 'price-asc';
+    }
+    let priceFrom = Number(query?.get?.('price_from'));
+    let priceTo = Number(query?.get?.('price_to'));
+    if(!Number.isFinite(priceFrom)) priceFrom = limits.min;
+    if(!Number.isFinite(priceTo)) priceTo = limits.max;
+    priceFrom = Math.min(Math.max(priceFrom, limits.min), limits.max);
+    priceTo = Math.min(Math.max(priceTo, limits.min), limits.max);
+    if(priceFrom > priceTo){
+      priceFrom = priceTo;
+    }
+    return {
+      category,
+      sort,
+      priceFrom,
+      priceTo,
+      priceMin: limits.min,
+      priceMax: limits.max,
+    };
+  }
+
+  function sortIconMarkup(name){
+    const icons = {
+      'arrow-up': '<polyline points="8 11 12 7 16 11"></polyline><line x1="12" y1="7" x2="12" y2="17"></line>',
+      'arrow-down': '<polyline points="8 13 12 17 16 13"></polyline><line x1="12" y1="7" x2="12" y2="17"></line>',
+      'grid': '<rect x="5" y="6" width="5" height="5" rx="1"></rect><rect x="14" y="6" width="5" height="5" rx="1"></rect><rect x="5" y="13" width="5" height="5" rx="1"></rect><rect x="14" y="13" width="5" height="5" rx="1"></rect>',
+      'letters': '<path d="M7 16h5L9.5 7.5 7 16Zm8-7h5m-2.5-2v8"></path>',
+    };
+    const content = icons[name];
+    if(!content) return '';
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${content}</svg>`;
+  }
+
+  function renderCatalogFiltersPanel(categories, filters, options={}){
+    const { includeIntro=false } = options;
+    const sliderDisabled = !Number.isFinite(filters.priceMax) || filters.priceMax <= filters.priceMin;
+    const step = catalogRangeStep(filters.priceMin, filters.priceMax);
+    const sliderStyle = catalogSliderStyle(filters);
+    const categoryButtons = categories.map(category => {
+      const isActive = category.slug === filters.category;
+      const classes = 'catalog-category-button' + (isActive ? ' is-active' : '');
+      const label = escapeHtml(category.label);
+      const count = Number.isFinite(category.count) ? `<span class="catalog-category-count">${escapeHtml(String(category.count))}</span>` : '';
+      return `<li><button type="button" class="${classes}" data-filter-category="${escapeAttribute(category.slug)}"><span>${label}</span>${count}</button></li>`;
+    }).join('');
+    const sortButtons = CATALOG_SORT_OPTIONS.map(option => {
+      const isActive = option.value === filters.sort;
+      const classes = 'catalog-sort-button' + (isActive ? ' is-active' : '');
+      const label = escapeHtml(option.label);
+      const icon = sortIconMarkup(option.icon);
+      return `<button type="button" class="${classes}" data-filter-sort="${escapeAttribute(option.value)}">${icon}<span>${label}</span></button>`;
+    }).join('');
+    const sliderInputs = sliderDisabled
+      ? `<div class="catalog-range-slider" data-price-slider><input type="range" disabled><input type="range" disabled></div>`
+      : `<div class="catalog-range-slider" data-price-slider style="${sliderStyle}">
+          <input type="range" min="${filters.priceMin}" max="${filters.priceMax}" value="${filters.priceFrom}" step="${step}" data-price-input="from">
+          <input type="range" min="${filters.priceMin}" max="${filters.priceMax}" value="${filters.priceTo}" step="${step}" data-price-input="to">
+        </div>`;
+    return `
+      ${includeIntro ? `<div><h2 class="catalog-filters-heading">Фильтры</h2><p class="catalog-filters-note">Настройте подбор памятников по категории, стоимости и типу сортировки.</p></div>` : ''}
+      <div class="catalog-filter-group" data-filter-block="categories">
+        <div class="catalog-filter-title">Категории</div>
+        <ul class="catalog-category-list">${categoryButtons}</ul>
+      </div>
+      <div class="catalog-filter-group" data-filter-block="sort">
+        <div class="catalog-filter-title">Сортировка</div>
+        <div class="catalog-sort-group">${sortButtons}</div>
+      </div>
+      <div class="catalog-filter-group" data-filter-block="price">
+        <div class="catalog-filter-title">Стоимость</div>
+        <div class="catalog-price-range">
+          <div class="catalog-price-values"><span>от <strong>${escapeHtml(formatCatalogPrice(filters.priceFrom))}</strong></span><span>до <strong>${escapeHtml(formatCatalogPrice(filters.priceTo))}</strong></span></div>
+          ${sliderInputs}
+        </div>
+      </div>
+      <button class="catalog-reset" type="button" data-filter-reset>Сбросить фильтры</button>
+    `;
+  }
+
+  function sortCatalogItems(items, filters){
+    const list = Array.isArray(items) ? [...items] : [];
+    const compareByName = (a, b) => NAME_COLLATOR.compare(a.name || '', b.name || '');
+    const compareByCategory = (a, b) => NAME_COLLATOR.compare(displayCategoryName(a.category), displayCategoryName(b.category));
+    const compareByPrice = (a, b) => {
+      const aPrice = Number.isFinite(a.numericPrice) ? a.numericPrice : null;
+      const bPrice = Number.isFinite(b.numericPrice) ? b.numericPrice : null;
+      if(aPrice !== null && bPrice !== null){
+        if(aPrice === bPrice) return compareByName(a, b);
+        return aPrice - bPrice;
       }
-      const preset = findCategoryPresetBySlug(raw);
-      if(preset){
-        const presetGroup = categories.find(category => category.slug === preset.slug);
-        if(presetGroup){
-          return { slug: presetGroup.slug, group: presetGroup };
+      if(aPrice !== null) return -1;
+      if(bPrice !== null) return 1;
+      return compareByName(a, b);
+    };
+    if(filters.sort === 'price-desc'){
+      list.sort((a, b) => -compareByPrice(a, b));
+    }else if(filters.sort === 'category'){
+      list.sort((a, b) => {
+        const diff = compareByCategory(a, b);
+        if(diff !== 0) return diff;
+        return compareByName(a, b);
+      });
+    }else if(filters.sort === 'name'){
+      list.sort(compareByName);
+    }else{
+      list.sort(compareByPrice);
+    }
+    return list;
+  }
+
+  function applyCatalogFilters(products, filters){
+    if(!Array.isArray(products)) return [];
+    const priceLimited = Number.isFinite(filters.priceMin) && Number.isFinite(filters.priceMax) && filters.priceMax > filters.priceMin;
+    const priceFilteringActive = priceLimited && (filters.priceFrom > filters.priceMin || filters.priceTo < filters.priceMax);
+    const filtered = products.filter(product => {
+      if(filters.category !== 'all' && categorySlug(product.category) !== filters.category){
+        return false;
+      }
+      if(priceFilteringActive){
+        if(!Number.isFinite(product.numericPrice)) return false;
+        if(product.numericPrice < filters.priceFrom || product.numericPrice > filters.priceTo) return false;
+      }
+      return true;
+    });
+    return sortCatalogItems(filtered, filters);
+  }
+
+  function updateCatalogQuery(updates={}, options={}){
+    if(location.pathname !== '/catalog') return;
+    const params = new URLSearchParams(location.search || '');
+    const limits = catalogPriceLimits();
+    const defaults = {
+      category: 'all',
+      sort: 'price-asc',
+      priceFrom: limits.min,
+      priceTo: limits.max,
+    };
+    let changed = false;
+    const setParam = (key, value, defaultValue) => {
+      const normalized = value === undefined ? params.get(key) : value;
+      if(normalized === undefined){
+        return;
+      }
+      if(normalized === null || normalized === '' || normalized === defaultValue){
+        if(params.has(key)){
+          params.delete(key);
+          changed = true;
         }
+        return;
+      }
+      const next = String(normalized);
+      if(params.get(key) !== next){
+        params.set(key, next);
+        changed = true;
+      }
+    };
+    if('category' in updates){
+      setParam('category', updates.category, defaults.category);
+    }
+    if('sort' in updates){
+      setParam('sort', updates.sort, defaults.sort);
+    }
+    const clampPrice = (value) => {
+      const num = Number(value);
+      if(!Number.isFinite(num)) return null;
+      const clamped = Math.min(Math.max(Math.round(num), limits.min), limits.max);
+      return clamped;
+    };
+    if('priceFrom' in updates){
+      const fromValue = clampPrice(updates.priceFrom);
+      setParam('price_from', fromValue, defaults.priceFrom);
+    }
+    if('priceTo' in updates){
+      const toValue = clampPrice(updates.priceTo);
+      setParam('price_to', toValue, defaults.priceTo);
+    }
+    if(!changed) return;
+    const queryString = params.toString();
+    const target = queryString ? `/catalog?${queryString}` : '/catalog';
+    const current = location.pathname + location.search;
+    if(target !== current){
+      navigate(target, { replace: true });
+    }else if(options.forceRender){
+      render();
+    }
+  }
+
+  function openCatalogFilters(){
+    if(state.catalog.mobileOpen) return;
+    setCatalogState({ mobileOpen: true });
+  }
+
+  function closeCatalogFilters(){
+    if(!state.catalog.mobileOpen) return;
+    setCatalogState({ mobileOpen: false });
+  }
+
+  function bindCatalogEscapeListener(){
+    if(catalogEscapeListenerBound) return;
+    document.addEventListener('keydown', (event) => {
+      if(event.key === 'Escape' && state.catalog.mobileOpen){
+        closeCatalogFilters();
+      }
+    });
+    catalogEscapeListenerBound = true;
+  }
+
+  function setupCatalogFilters(){
+    const page = document.querySelector('[data-catalog-page]');
+    if(!page) return;
+    bindCatalogEscapeListener();
+    const openButton = page.querySelector('[data-filter-open]');
+    if(openButton){
+      openButton.addEventListener('click', () => openCatalogFilters());
+    }
+    const closeButtons = page.querySelectorAll('[data-filter-close]');
+    closeButtons.forEach(button => {
+      button.addEventListener('click', () => closeCatalogFilters());
+    });
+    const overlay = page.querySelector('[data-catalog-overlay]');
+    if(overlay){
+      overlay.addEventListener('click', (event) => {
+        if(event.target === overlay){
+          closeCatalogFilters();
+        }
+      });
+    }
+    const desktopMedia = window.matchMedia('(min-width: 961px)');
+    if(!desktopMedia.__catalogBound){
+      const handleDesktopChange = (event) => {
+        if(event.matches){
+          closeCatalogFilters();
+        }
+      };
+      if(typeof desktopMedia.addEventListener === 'function'){
+        desktopMedia.addEventListener('change', handleDesktopChange);
+      }else if(typeof desktopMedia.addListener === 'function'){
+        desktopMedia.addListener(handleDesktopChange);
+      }
+      desktopMedia.__catalogBound = handleDesktopChange;
+    }
+    page.querySelectorAll('[data-filter-category]').forEach(button => {
+      button.addEventListener('click', () => {
+        const slug = button.getAttribute('data-filter-category') || 'all';
+        closeCatalogFilters();
+        updateCatalogQuery({ category: slug });
+      });
+    });
+    page.querySelectorAll('[data-filter-sort]').forEach(button => {
+      button.addEventListener('click', () => {
+        const value = button.getAttribute('data-filter-sort') || 'price-asc';
+        updateCatalogQuery({ sort: value });
+      });
+    });
+    page.querySelectorAll('[data-filter-reset]').forEach(button => {
+      button.addEventListener('click', () => {
+        const limits = catalogPriceLimits();
+        closeCatalogFilters();
+        updateCatalogQuery({
+          category: 'all',
+          sort: 'price-asc',
+          priceFrom: limits.min,
+          priceTo: limits.max,
+        }, { forceRender: true });
+      });
+    });
+    const slider = page.querySelector('[data-price-slider]');
+    if(slider){
+      const minInput = slider.querySelector('[data-price-input="from"]');
+      const maxInput = slider.querySelector('[data-price-input="to"]');
+      const priceRange = slider.closest('.catalog-price-range');
+      const valueNodes = priceRange ? priceRange.querySelectorAll('.catalog-price-values strong') : [];
+      const updateVisual = (fromValue, toValue) => {
+        slider.style.setProperty('--range-from', String(fromValue));
+        slider.style.setProperty('--range-to', String(toValue));
+        if(valueNodes[0]) valueNodes[0].textContent = formatCatalogPrice(fromValue);
+        if(valueNodes[1]) valueNodes[1].textContent = formatCatalogPrice(toValue);
+      };
+      if(minInput && maxInput && !minInput.disabled && !maxInput.disabled){
+        const syncInputs = (event) => {
+          let fromValue = Number(minInput.value);
+          let toValue = Number(maxInput.value);
+          if(fromValue > toValue){
+            if(event?.target === minInput){
+              toValue = fromValue;
+              maxInput.value = String(toValue);
+            }else{
+              fromValue = toValue;
+              minInput.value = String(fromValue);
+            }
+          }
+          updateVisual(fromValue, toValue);
+        };
+        const commit = () => {
+          const fromValue = Number(minInput.value);
+          const toValue = Number(maxInput.value);
+          updateCatalogQuery({ priceFrom: fromValue, priceTo: toValue });
+        };
+        minInput.addEventListener('input', syncInputs);
+        maxInput.addEventListener('input', syncInputs);
+        minInput.addEventListener('change', commit);
+        maxInput.addEventListener('change', commit);
+        syncInputs();
       }
     }
-    const defaultGroup = categories.find(category => category.slug === DEFAULT_CATALOG_CATEGORY);
-    if(defaultGroup){
-      return { slug: defaultGroup.slug, group: defaultGroup };
-    }
-    const fallback = categories[0];
-    return { slug: fallback?.slug ?? '', group: fallback ?? null };
   }
 
   function renderHomeCategories(){
@@ -927,7 +1351,7 @@
           <section class="home-category-block">
             <div class="section-header home-category-header">
               <h2 class="category-heading">${heading}</h2>
-              <a class="btn-view-all" href="${escapeAttribute(href)}" aria-label="${aria}">Каталог</a>
+              <a class="btn-view-all" href="${escapeAttribute(href)}" aria-label="${aria}">Смотреть все</a>
             </div>
             ${cards}
           </section>
@@ -955,7 +1379,6 @@
     ? `<img src="${safeImage}" alt="${safeAlt}" loading="lazy">`
     : `<div class="product-image-placeholder" aria-hidden="true"></div>`;
     const safeLink = escapeAttribute(link);
-    const prefill = escapeAttribute(nameRaw);
     return `
       <article class="product-tile" data-testid="product-card-${dataId}" data-link="${safeLink}" tabindex="0" role="link" aria-label="${aria}">
         <div class="product-image-link${image ? ' has-image' : ''}">
@@ -965,7 +1388,12 @@
           <div class="product-name">${name}</div>
           ${priceMarkup}
         </div>
-        <button class="product-tile-more" type="button" data-action="callback" data-prefill="${prefill}">Заказать</button>
+        <div class="product-card-footer" aria-hidden="true">
+          <span>Подробнее</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 5.5 15.5 12 8 18.5" />
+          </svg>
+        </div>
       </article>
     `;
   }
@@ -1253,7 +1681,10 @@
 
   function viewCatalog(context={}){
     const query = context?.query instanceof URLSearchParams ? context.query : new URLSearchParams();
-    let nav = '';
+    const categories = catalogFilterCategories();
+    const filters = parseCatalogFilters(query, categories);
+    let filtersMarkup = renderCatalogFiltersPanel(categories, filters, { includeIntro: true });
+    let overlayMarkup = renderCatalogFiltersPanel(categories, filters);
     let body = '';
     if(state.loading){
       body = renderStatus('Загружаем каталог...');
@@ -1262,25 +1693,39 @@
     }else if(!state.products.length){
       body = renderStatus('Каталог пока пуст. Возвращайтесь позже.');
     }else{
-      const categories = catalogCategoryGroups();
-      if(!categories.length){
-        body = renderStatus('Каталог пока пуст. Возвращайтесь позже.');
-      }else{
-        const { slug, group } = resolveCatalogActive(categories, query);
-        nav = renderCatalogCategoryNav(categories, slug);
-        const items = group?.items ?? [];
-        body = items.length
-          ? `<div class="product-row product-row--catalog">${items.map(productCard).join('')}</div>`
-          : `<div class="status-card">В этой категории пока нет товаров.</div>`;
-      }
+      const items = applyCatalogFilters(state.products, filters);
+      body = items.length
+        ? `<div class="product-row product-row--catalog">${items.map(productCard).join('')}</div>`
+        : `<div class="status-card">По выбранным условиям ничего не найдено.</div>`;
     }
     return `
-      <section class="section catalog-section">
+      <section class="section catalog-section" data-catalog-page>
         <div class="container">
           <h1 class="catalog-title">Каталог памятников</h1>
           <p class="catalog-description">Мы создаём памятники с заботой и уважением к памяти ваших близких. Каждое изделие выполнено из качественных материалов и отражает вечную память.</p>
-          ${nav}
-          ${body}
+          <div class="catalog-filters-toggle">
+            <button type="button" data-filter-open>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 6h16M7 12h10M10 18h4" />
+              </svg>
+              <span>Фильтры</span>
+            </button>
+          </div>
+          <div class="catalog-layout">
+            <aside class="catalog-sidebar" data-catalog-sidebar>
+              ${filtersMarkup}
+            </aside>
+            <div class="catalog-content">
+              ${body}
+            </div>
+          </div>
+        </div>
+        <div class="catalog-overlay${state.catalog.mobileOpen ? ' is-open' : ''}" data-catalog-overlay>
+          <div class="catalog-overlay-panel">
+            <button class="catalog-overlay-close" type="button" data-filter-close>Закрыть</button>
+            <h2 class="catalog-overlay-heading">Фильтры</h2>
+            ${overlayMarkup}
+          </div>
         </div>
       </section>
     `;
@@ -1576,7 +2021,13 @@
       const payload = await response.json();
       const items = Array.isArray(payload?.items) ? payload.items : [];
       const normalized = items.map(normalizeProduct);
-      setState({ products: normalized, loading: false, error: null });
+      const bounds = catalogPriceBounds(normalized);
+      setState({
+        products: normalized,
+        loading: false,
+        error: null,
+        catalog: { ...state.catalog, priceMin: bounds.min, priceMax: bounds.max },
+      });
     }catch(error){
       console.error('Ошибка загрузки каталога', error);
       setState({ products: [], loading: false, error: 'Не удалось загрузить каталог. Попробуйте обновить страницу позже.' });
@@ -1675,6 +2126,7 @@
         }
       });
     });
+    setupCatalogFilters();
     setupCarousels();
     /* Сделать обязательно: активация увеличения изображения */
     setupProductImageOverlay();
