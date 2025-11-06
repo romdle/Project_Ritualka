@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}студия-гранита.рф — Контакты{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container">
+      <h1 class="page-title">Контакты</h1>
+      <div class="space-v-16"></div>
+      <div class="card contact-card">
+        <div class="contact-info">
+          <div class="contact-info__item"><strong>Телефон</strong><a class="link" href="tel:+79697119311">+7 (969) 711-93-11</a></div>
+          <div class="contact-info__item"><strong>E‑mail</strong><a class="link" href="mailto:pasha-litvinov@ya.ru">pasha-litvinov@ya.ru</a></div>
+          <div class="contact-info__item"><strong>Адрес</strong><span>г. Псков, улица Некрасова, 33</span></div>
+          <div class="contact-info__item"><strong>Часы работы</strong><span>Пн–Сб 9:00–20:00</span></div>
+        </div>
+        <div class="space-v-16"></div>
+        <button class="btn-outline dark-text" style="border-color:var(--accent)" data-action="callback">Заказать звонок</button>
+      </div>
+      <div class="space-v-16"></div>
+      <div class="card contact-map-card">
+        <div class="contact-map" id="ymap" aria-label="Карта">
+          <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Abb7992e8cefbe38498df6835759ee00aa210782ea5a5783b2af9b1b30884da90&amp;source=constructor" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="map-note">Мы находимся на территории «Примерного мемориального комплекса». Перед визитом позвоните нам для уточнения деталей.</div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

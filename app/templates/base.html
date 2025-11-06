@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1E1E1E" />
+    <title>{% block title %}студия-гранита.рф{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/main.css') }}" />
+  </head>
+  <body>
+    <header>
+      <div class="container header-inner">
+        <a class="brand" href="/">
+          <img class="brand-logo" src="{{ url_for('static', path='images/logo2.png') }}" alt="студия-гранита.рф" />
+        </a>
+        <nav aria-label="Основная навигация">
+          <a href="/catalog" class="{% if active_page == 'catalog' %}active{% endif %}" data-nav="catalog">Каталог</a>
+          <a href="/about" class="{% if active_page == 'about' %}active{% endif %}" data-nav="about">О компании</a>
+          <a href="/contacts" class="{% if active_page == 'contacts' %}active{% endif %}" data-nav="contacts">Контакты</a>
+        </nav>
+        <div class="header-actions">
+          <a class="header-phone" href="tel:+74951234567">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5.5 3h2.8c.4 0 .8.3.9.7l.8 3.1c.1.4 0 .9-.3 1.2l-1.7 1.8c1.4 2.6 3.5 4.7 6.1 6.1l1.8-1.7c.3-.3.8-.4 1.2-.3l3.1.8c.4.1.7.5.7.9v2.8c0 .5-.4.9-.9 1-1 .1-2 .1-3 0-6.4-.6-11.4-5.6-12-12-.1-1-.1-2 0-3 .1-.5.5-.9 1-.9Z" />
+            </svg>
+            <span>+7 (495) 123-45-67</span>
+          </a>
+          <button class="header-call-button" type="button" data-action="callback">Заказать звонок</button>
+          <button class="menu-button" id="menu-toggle-button" type="button" aria-expanded="false" aria-controls="mobile-menu">
+            <span class="visually-hidden">Открыть меню</span>
+            <span class="menu-button-box" aria-hidden="true">
+              <span class="menu-button-bar"></span>
+              <span class="menu-button-bar"></span>
+              <span class="menu-button-bar"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <div class="mobile-menu__inner">
+        <nav class="mobile-menu__nav" aria-label="Мобильная навигация">
+          <a href="/catalog" data-link="catalog">Каталог</a>
+          <a href="/contacts" data-link="contacts">Контакты</a>
+          <a href="/about" data-link="about">О компании</a>
+        </nav>
+        <div class="mobile-menu__contacts">
+          <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+          <a href="mailto:info@студия-гранита.рф">info@студия-гранита.рф</a>
+        </div>
+        <p class="mobile-menu__footer-note">Мы на связи ежедневно и готовы помочь с подбором памятника.</p>
+      </div>
+    </div>
+
+    <main role="main">
+      {% block content %}{% endblock %}
+    </main>
+
+    <div class="product-image-overlay" data-product-image-overlay hidden>
+      <img data-product-image-overlay-image alt="" loading="lazy" />
+    </div>
+
+    <footer>
+      <div class="container footer-top">
+        <div class="grid cols-3">
+          <div>
+            <div style="font-weight:600">студия-гранита.рф</div>
+            <div class="space-v-8" style="opacity:.7;font-size:14px">Изготовление и установка памятников. Работаем с 20XX года.</div>
+          </div>
+          <div>
+            <div style="font-weight:600" class="space-v-8">Навигация</div>
+            <div class="row-wrap">
+              <a href="/catalog">Каталог</a>
+              <a href="/about">О компании</a>
+              <a href="/contacts">Контакты</a>
+            </div>
+          </div>
+          <div>
+            <div style="font-weight:600" class="space-v-8">Контакты</div>
+            <div class="row-wrap">
+              <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+              <a href="mailto:info@студия-гранита.рф">info@студия-гранита.рф</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">© <span id="year"></span> студия-гранита.рф. Все права защищены.</div>
+      </div>
+    </footer>
+
+    <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal" role="document" aria-labelledby="modal-title">
+        <h3 id="modal-title">Заказать звонок</h3>
+        <div id="success" class="success">Спасибо! Заявка отправлена. Мы свяжемся с вами в ближайшее время.</div>
+        <form id="callback-form" novalidate>
+          <div class="form-row">
+            <label for="name">Имя*</label>
+            <input id="name" name="name" type="text" placeholder="Ваше имя" autocomplete="name" required />
+            <div id="err-name" class="error">Введите имя (минимум 2 символа)</div>
+          </div>
+          <div class="form-row">
+            <label for="phone">Телефон*</label>
+            <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="+7 (___) ___-__-__" required />
+            <div id="err-phone" class="error">Введите корректный телефон в формате +7 (XXX) XXX-XX-XX</div>
+          </div>
+          <div class="form-row">
+            <label for="comment">Комментарий</label>
+            <textarea id="comment" name="comment" rows="3" placeholder="Комментарий (опционально)"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn" id="submit-btn">Отправить</button>
+            <button type="button" class="btn secondary" id="close-btn">Закрыть</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="{{ url_for('scripts', path='common.js') }}" defer></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

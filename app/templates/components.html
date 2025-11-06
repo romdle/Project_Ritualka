@@ -1,0 +1,54 @@
+{% macro product_card(product) %}
+  <article class="product-tile" data-testid="product-card-{{ product.id }}">
+    <a class="product-image-link{% if product.image_url %} has-image{% endif %}" href="{{ product.link }}">
+      {% if product.image_url %}
+        <img src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy" />
+      {% else %}
+        <div class="product-image-placeholder" aria-hidden="true"></div>
+      {% endif %}
+    </a>
+    <div class="product-card-content">
+      <div class="product-name">{{ product.name }}</div>
+      <div class="product-price">
+        {% if product.price_display.prefix %}
+          <span class="product-price-prefix">{{ product.price_display.prefix }}</span>
+          <span class="product-price-number">{{ product.price_display.text }}</span>
+        {% else %}
+          {{ product.price_display.text }}
+        {% endif %}
+      </div>
+    </div>
+    <div class="product-card-footer" aria-hidden="true">
+      <span>Подробнее</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 5.5 15.5 12 8 18.5" />
+      </svg>
+    </div>
+  </article>
+{% endmacro %}
+
+{% macro product_carousel(items, label='Каталог') %}
+  <div class="product-carousel" data-carousel data-carousel-label="{{ label }}">
+    <button class="carousel-arrow" type="button" data-carousel-prev aria-label="Предыдущие элементы">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    <div class="product-carousel-viewport">
+      <div class="product-carousel-track">
+        {% for product in items %}
+          {{ product_card(product) }}
+        {% endfor %}
+      </div>
+    </div>
+    <button class="carousel-arrow" type="button" data-carousel-next aria-label="Следующие элементы">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 6 15 12 9 18"></polyline>
+      </svg>
+    </button>
+  </div>
+{% endmacro %}
+
+{% macro status_card(message, is_error=False) %}
+  <div class="status-card{% if is_error %} error{% endif %}">{{ message }}</div>
+{% endmacro %}

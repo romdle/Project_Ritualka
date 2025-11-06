@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% import "components.html" as ui %}
+
+{% block title %}студия-гранита.рф — {{ product.name }}{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container">
+      <a class="back-link" href="/catalog">
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11.707 4.293a1 1 0 0 1 0 1.414L8.414 9H17a1 1 0 1 1 0 2H8.414l3.293 3.293a1 1 0 0 1-1.414 1.414l-5-5a1 1 0 0 1 0-1.414l5-5a1 1 0 0 1 1.414 0Z"/></svg>
+        <span>Назад к каталогу</span>
+      </a>
+      <div class="product-detail">
+        <div class="product-main-image{% if product.image_url %} has-image{% endif %}" data-product-image>
+          {% if product.image_url %}
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy" data-product-image-source />
+          {% endif %}
+        </div>
+        <div class="product-info">
+          <div class="product-info-content">
+            <span class="product-category-pill">{{ product.category_name }}</span>
+            <h2 class="product-title">{{ product.name }}</h2>
+            <div class="product-price-amount">
+              {% if product.price_display.prefix %}
+                <span class="product-price-prefix">{{ product.price_display.prefix }}</span>
+              {% endif %}
+              <span class="product-price-number">{{ product.price_display.text }}</span>
+            </div>
+            <div class="product-divider"></div>
+            <div>
+              <div class="description-heading">Описание</div>
+              {% if product.description %}
+                <div class="product-description-text">{{ product.description | replace('\r\n', '\n') | replace('\n', '<br>') | safe }}</div>
+              {% else %}
+                <div class="product-description-text" style="opacity:.7;">Описание появится позже.</div>
+              {% endif %}
+            </div>
+          </div>
+          <button class="callback-button" data-action="callback" data-prefill="Интересует {{ product.name }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5.5 3.75h4l1.5 3.75-2.25 1.5a11 11 0 0 0 5.75 5.75l1.5-2.25 3.75 1.5v4a1.5 1.5 0 0 1-1.625 1.5 17.5 17.5 0 0 1-15.125-15.125A1.5 1.5 0 0 1 5.5 3.75Z" />
+            </svg>
+            <span>Заказать звонок</span>
+          </button>
+          <div class="product-support-note">Наши специалисты помогут подобрать оптимальный вариант памятника, проконсультируют по материалам и срокам изготовления. Звоните или оставьте заявку на обратный звонок.</div>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="margin-top:56px;">
+      <div class="similar-header">Похожие памятники</div>
+      <div class="similar-accent"></div>
+      {% if similar_items %}
+        {{ ui.product_carousel(similar_items, label='Похожие памятники') }}
+      {% else %}
+        {{ ui.status_card('Пока нет похожих памятников.') }}
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ url_for('scripts', path='product.js') }}" defer></script>
+{% endblock %}
