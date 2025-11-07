@@ -46,11 +46,11 @@
         </div>
       </div>
     </div>
-    <div class="container" style="margin-top:56px;">
+    <div class="container product-similar-container">
       <div class="similar-header">Похожие памятники</div>
       <div class="similar-accent"></div>
       {% if similar_items %}
-        {{ ui.product_carousel(similar_items, label='Похожие памятники') }}
+        {{ ui.product_carousel(similar_items, label='Похожие памятники', class_name='product-carousel--expanded') }}
       {% else %}
         {{ ui.status_card('Пока нет похожих памятников.') }}
       {% endif %}

@@ -436,13 +436,4 @@ def clamp_price(value: Optional[int], *, bounds: dict[str, int]) -> Optional[int
 
 
 def slider_step(bounds: dict[str, int]) -> int:
-    minimum = bounds.get("min", 0)
-    maximum = bounds.get("max", 0)
-    span = max(1, maximum - minimum)
-    if span <= 10_000:
-        return 1_000
-    if span <= 50_000:
-        return 5_000
-    if span <= 200_000:
-        return 10_000
-    return 20_000
+    return 1

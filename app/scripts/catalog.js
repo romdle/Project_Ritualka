@@ -42,6 +42,7 @@
     const overlayTransitionFallback = 400;
     let overlayRestoreTimer = null;
     let overlayTransitionHandler = null;
+    let submitAfterClose = false;
 
     function moveFormTo(target){
       if(!target || !form){
@@ -85,6 +86,10 @@
       }
     }
 
+    function isOverlayOpen(){
+      return Boolean(overlay && overlay.classList.contains('is-open'));
+    }
+
     function openOverlay(){
       if(!overlay){
         return;
@@ -94,6 +99,7 @@
         overlayRestoreTimer = null;
       }
       clearOverlayTransitionListener();
+      submitAfterClose = false;
       restoreForm();
       if(overlayContent){
         moveFormTo(overlayContent);
@@ -129,20 +135,34 @@
         restoreForm();
       }
     }
+    
+    function handleOverlayClose(){
+      const shouldSubmit = submitAfterClose;
+      submitAfterClose = false;
+      closeOverlay();
+      if(shouldSubmit){
+        form.submit();
+      }
+    }
 
     if(openButton){
       openButton.addEventListener('click', () => openOverlay());
     }
-    closeButtons.forEach(button => button.addEventListener('click', () => closeOverlay()));
+    closeButtons.forEach(button => button.addEventListener('click', () => handleOverlayClose()));
     overlay?.addEventListener('click', (event) => {
       if(event.target === overlay){
-        closeOverlay();
+        handleOverlayClose();
       }
     });
 
     function handleDesktopChange(event){
       if(event.matches){
-        closeOverlay();
+        if(isOverlayOpen()){
+          handleOverlayClose();
+        }else{
+          submitAfterClose = false;
+          closeOverlay();
+        }
         ensureFormInSidebar();
       }
     }
@@ -193,7 +213,7 @@
       }
     }
 
-    function submitWithUpdates(updates){
+    function submitWithUpdates(updates, options = {}){
       if(categoryInput){
         if(updates.categories !== undefined){
           writeCategorySelection(updates.categories);
@@ -210,8 +230,19 @@
       if(priceToInput && updates.priceTo !== undefined){
         priceToInput.value = String(updates.priceTo);
       }
-      closeOverlay();
-      form.submit();
+      if(options.immediate){
+        submitAfterClose = false;
+        form.submit();
+        return;
+      }
+      const overlayOpen = isOverlayOpen();
+      const shouldSubmitNow = desktopMedia.matches || !overlayOpen;
+      if(shouldSubmitNow){
+        submitAfterClose = false;
+        form.submit();
+      }else{
+        submitAfterClose = true;
+      }
     }
 
     $$('[data-filter-category]', form).forEach(button => {
@@ -250,6 +281,11 @@
     $$('[data-filter-sort]', form).forEach(button => {
       button.addEventListener('click', () => {
         const value = button.getAttribute('data-filter-sort') || 'price-asc';
+        $$('[data-filter-sort]', form).forEach(control => {
+          const isActive = control === button;
+          control.classList.toggle('is-active', isActive);
+          control.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
         submitWithUpdates({ sort: value });
       });
     });
@@ -399,6 +435,21 @@
           }
         }
         setPriceFields(priceMin, priceMax);
+        $$('[data-filter-category]', form).forEach(control => {
+          const controlSlug = (control.getAttribute('data-filter-category') || '').toLowerCase();
+          const isActive = controlSlug === 'all';
+          control.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          const container = control.closest('.catalog-category-item');
+          if(container){
+            container.classList.toggle('is-active', isActive);
+          }
+        });
+        $$('[data-filter-sort]', form).forEach(control => {
+          const isActive = (control.getAttribute('data-filter-sort') || '') === defaults.sort;
+          control.classList.toggle('is-active', isActive);
+          control.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+        submitWithUpdates(defaults);
       });
     }
 

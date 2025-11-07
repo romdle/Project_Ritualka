@@ -27,8 +27,8 @@
   </a>
 {% endmacro %}
 
-{% macro product_carousel(items, label='Каталог') %}
-  <div class="product-carousel" data-carousel data-carousel-label="{{ label }}">
+{% macro product_carousel(items, label='Каталог', class_name='') %}
+  <div class="product-carousel{% if class_name %} {{ class_name }}{% endif %}" data-carousel data-carousel-label="{{ label }}">
     <button class="carousel-arrow" type="button" data-carousel-prev aria-label="Предыдущие элементы">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="15 18 9 12 15 6"></polyline>
