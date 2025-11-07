@@ -289,6 +289,20 @@ def catalog_categories(products: Sequence[ProductView]) -> List[dict[str, object
         }
     ]
 
+    used: set[str] = set()
+
+    for preset in CATEGORY_PRESETS:
+        slug = preset["slug"]
+        items = totals.get(slug, [])
+        result.append(
+            {
+                "slug": slug,
+                "label": preset["label"],
+                "count": len(items),
+            }
+        )
+        used.add(slug)
+
     def sort_key(item: tuple[str, List[ProductView]]) -> tuple[int, str]:
         slug, items = item
         preset = _category_preset_by_slug(slug)
@@ -301,7 +315,9 @@ def catalog_categories(products: Sequence[ProductView]) -> List[dict[str, object
             fallback = len(CATEGORY_ORDER)
         return (fallback, category_label(first.category if first else ""))
 
-    for slug, items in sorted(totals.items(), key=sort_key):
+    remaining = [(slug, items) for slug, items in totals.items() if slug not in used]
+
+    for slug, items in sorted(remaining, key=sort_key):
         result.append(
             {
                 "slug": slug,

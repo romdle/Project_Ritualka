@@ -32,9 +32,13 @@
               <ul class="catalog-category-list">
                 {% for category in categories %}
                   <li>
-                    <button type="button" class="catalog-category-button{% if category.slug == filters.category %} is-active{% endif %}" data-filter-category="{{ category.slug }}">
+                    <button
+                      type="button"
+                      class="catalog-category-button{% if category.slug == filters.category %} is-active{% endif %}"
+                      data-filter-category="{{ category.slug }}"
+                      aria-pressed="{{ 'true' if category.slug == filters.category else 'false' }}"
+                    >
                       <span>{{ category.label }}</span>
-                      <span class="catalog-category-count">{{ category.count }}</span>
                     </button>
                   </li>
                 {% endfor %}

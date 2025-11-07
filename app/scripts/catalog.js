@@ -39,6 +39,9 @@
     const priceMax = Number(form.dataset.priceMax || '0');
 
     let originalParent = form.parentElement;
+    const overlayTransitionFallback = 400;
+    let overlayRestoreTimer = null;
+    let overlayTransitionHandler = null;
 
     function moveFormTo(target){
       if(!target || !form){
@@ -53,10 +56,33 @@
       }
     }
 
+    function clearOverlayTransitionListener(){
+      if(overlay && overlayTransitionHandler){
+        overlay.removeEventListener('transitionend', overlayTransitionHandler);
+        overlayTransitionHandler = null;
+      }
+    }
+
+    function restoreForm(){
+      if(overlayRestoreTimer !== null){
+        window.clearTimeout(overlayRestoreTimer);
+        overlayRestoreTimer = null;
+      }
+      clearOverlayTransitionListener();
+      if(originalParent && form && form.parentElement !== originalParent){
+        originalParent.appendChild(form);
+      }
+    }
+
     function openOverlay(){
       if(!overlay){
         return;
       }
+      if(overlayRestoreTimer !== null){
+        window.clearTimeout(overlayRestoreTimer);
+        overlayRestoreTimer = null;
+      }
+      clearOverlayTransitionListener();
       if(overlayContent){
         moveFormTo(overlayContent);
       }
@@ -65,11 +91,30 @@
 
     function closeOverlay(){
       if(!overlay){
+        restoreForm();
+        return;
+      }
+      if(!overlay.classList.contains('is-open')){
+        restoreForm();
         return;
       }
       overlay.classList.remove('is-open');
-      if(originalParent){
-        moveFormTo(originalParent);
+      if(overlayContent){
+        clearOverlayTransitionListener();
+        overlayTransitionHandler = (event) => {
+          if(event.target !== overlay){
+            return;
+          }
+          overlayTransitionHandler = null;
+          restoreForm();
+        };
+        overlay.addEventListener('transitionend', overlayTransitionHandler);
+        overlayRestoreTimer = window.setTimeout(() => {
+          overlayRestoreTimer = null;
+          restoreForm();
+        }, overlayTransitionFallback);
+      }else{
+        restoreForm();
       }
     }
 
