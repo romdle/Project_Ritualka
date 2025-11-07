@@ -332,7 +332,7 @@ def catalog_categories(products: Sequence[ProductView]) -> List[dict[str, object
 def apply_catalog_filters(
     products: Sequence[ProductView],
     *,
-    category: str,
+    categories: Sequence[str],
     sort: str,
     price_from: Optional[int],
     price_to: Optional[int],
@@ -344,8 +344,15 @@ def apply_catalog_filters(
         and price_to > price_from
     )
 
+    category_filter = {
+        slug.strip().lower()
+        for slug in categories
+        if slug and slug.strip().lower() != "all"
+    }
+    use_category_filter = len(category_filter) > 0
+
     for product in products:
-        if category != "all" and product.category_slug != category:
+        if use_category_filter and product.category_slug not in category_filter:
             continue
         if price_active:
             value = product.numeric_price
