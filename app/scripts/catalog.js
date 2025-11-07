@@ -153,9 +153,53 @@
       desktopMedia.addListener(handleDesktopChange);
     }
 
+    function normalizeCategorySelection(values){
+      const list = Array.isArray(values) ? values : String(values || '').split(',');
+      const result = [];
+      for(const raw of list){
+        const normalized = String(raw || '').trim().toLowerCase();
+        if(!normalized){
+          continue;
+        }
+        if(normalized === 'all'){
+          return ['all'];
+        }
+        if(!result.includes(normalized)){
+          result.push(normalized);
+        }
+      }
+      if(result.length === 0){
+        return ['all'];
+      }
+      return result;
+    }
+
+    function readCategorySelection(){
+      if(!categoryInput){
+        return ['all'];
+      }
+      return normalizeCategorySelection(categoryInput.value || '');
+    }
+
+    function writeCategorySelection(values){
+      if(!categoryInput){
+        return;
+      }
+      const normalized = normalizeCategorySelection(values);
+      if(normalized.length === 1 && normalized[0] === 'all'){
+        categoryInput.value = 'all';
+      }else{
+        categoryInput.value = normalized.join(',');
+      }
+    }
+
     function submitWithUpdates(updates){
-      if(categoryInput && updates.category !== undefined){
-        categoryInput.value = updates.category;
+      if(categoryInput){
+        if(updates.categories !== undefined){
+          writeCategorySelection(updates.categories);
+        }else if(updates.category !== undefined){
+          writeCategorySelection([updates.category]);
+        }
       }
       if(sortInput && updates.sort !== undefined){
         sortInput.value = updates.sort;
@@ -172,8 +216,34 @@
 
     $$('[data-filter-category]', form).forEach(button => {
       button.addEventListener('click', () => {
-        const value = button.getAttribute('data-filter-category') || 'all';
-        submitWithUpdates({ category: value });
+        const slug = (button.getAttribute('data-filter-category') || '').toLowerCase();
+        let selected = readCategorySelection();
+        if(slug === 'all' || !slug){
+          selected = ['all'];
+        }else{
+          if(selected.includes('all')){
+            selected = [];
+          }
+          if(selected.includes(slug)){
+            selected = selected.filter(item => item !== slug);
+          }else{
+            selected = [...selected, slug];
+          }
+        }
+        if(selected.length === 0){
+          selected = ['all'];
+        }
+        const normalized = normalizeCategorySelection(selected);
+        $$('[data-filter-category]', form).forEach(control => {
+          const controlSlug = (control.getAttribute('data-filter-category') || '').toLowerCase();
+          const isActive = normalized.includes(controlSlug) || (controlSlug === 'all' && normalized.includes('all'));
+          control.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          const container = control.closest('.catalog-category-item');
+          if(container){
+            container.classList.toggle('is-active', isActive);
+          }
+        });
+        submitWithUpdates({ categories: normalized });
       });
     });
 
@@ -287,7 +357,7 @@
         inputTo.addEventListener('change', () => commitValues('to'));
 
         setActiveHandle('to');
-        
+
         if(priceFields.from){
           priceFields.from.addEventListener('change', () => {
             const values = applyValues(Number(priceFields.from.value), Number(priceFields.to?.value ?? priceFields.from.value), 'fromField');

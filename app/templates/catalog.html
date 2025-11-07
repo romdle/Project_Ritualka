@@ -21,7 +21,7 @@
       <div class="catalog-layout">
         <aside class="catalog-sidebar" data-catalog-sidebar>
           <form id="catalog-filters-form" class="catalog-filters" method="get" data-price-min="{{ filters.price_min }}" data-price-max="{{ filters.price_max }}">
-            <input type="hidden" name="category" value="{{ filters.category }}" />
+            <input type="hidden" name="category" value="{{ filters.category_query }}" />
             <input type="hidden" name="sort" value="{{ filters.sort }}" />
             <input type="hidden" name="price_from" value="{{ filters.price_from }}" />
             <input type="hidden" name="price_to" value="{{ filters.price_to }}" />
@@ -32,12 +32,13 @@
               <ul class="catalog-category-list">
                 {% for category in categories %}
                   <li>
-                    <div class="catalog-category-item{% if category.slug == filters.category %} is-active{% endif %}">
+                    {% set is_selected = category.slug in filters.selected_categories %}
+                    <div class="catalog-category-item{% if is_selected %} is-active{% endif %}">
                       <button
                         type="button"
                         class="catalog-category-toggle"
                         data-filter-category="{{ category.slug }}"
-                        aria-pressed="{{ 'true' if category.slug == filters.category else 'false' }}"
+                        aria-pressed="{{ 'true' if is_selected else 'false' }}"
                         aria-label="Выбрать категорию {{ category.label }}"
                       >
                         <span class="visually-hidden">{{ category.label }}</span>

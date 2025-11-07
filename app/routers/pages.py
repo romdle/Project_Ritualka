@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import sqlite3
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse
@@ -57,7 +57,7 @@ async def home(
 @router.get("/catalog", response_class=HTMLResponse)
 async def catalog_page(
     request: Request,
-    category: str = Query("all"),
+    category: Optional[List[str]] = Query(None),
     sort: str = Query("price-asc"),
     price_from: Optional[int] = Query(None, alias="price_from"),
     price_to: Optional[int] = Query(None, alias="price_to"),
@@ -67,7 +67,27 @@ async def catalog_page(
     products = build_product_views(products_raw)
     bounds = catalog_price_bounds(products)
 
-    category_slug = category.strip().lower() if category else "all"
+    raw_categories: List[str] = []
+    source_categories = category or ["all"]
+    for value in source_categories:
+        if not value:
+            continue
+        raw_categories.extend(part.strip() for part in value.split(","))
+
+    selected_categories: List[str] = []
+    for slug in raw_categories:
+        normalized = slug.strip().lower()
+        if not normalized:
+            continue
+        if normalized == "all":
+            selected_categories = ["all"]
+            break
+        if normalized not in selected_categories:
+            selected_categories.append(normalized)
+
+    if not selected_categories:
+        selected_categories = ["all"]
+
     sort_value = sort.strip().lower() if sort else "price-asc"
     allowed_sorts = {option["value"] for option in CATALOG_SORT_OPTIONS}
     if sort_value not in allowed_sorts:
@@ -87,7 +107,7 @@ async def catalog_page(
 
     filtered = apply_catalog_filters(
         products,
-        category=category_slug or "all",
+        categories=selected_categories,
         sort=sort_value,
         price_from=clamped_from,
         price_to=clamped_to,
@@ -101,7 +121,11 @@ async def catalog_page(
         "categories": categories,
         "products": filtered,
         "filters": {
-            "category": category_slug or "all",
+            "category": ",".join(selected_categories) if selected_categories else "all",
+            "category_query": "all"
+            if selected_categories == ["all"]
+            else ",".join(selected_categories),
+            "selected_categories": selected_categories,
             "sort": sort_value,
             "price_from": clamped_from,
             "price_to": clamped_to,
