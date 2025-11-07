@@ -32,18 +32,19 @@
               <ul class="catalog-category-list">
                 {% for category in categories %}
                   <li>
-                    <button
-                      type="button"
-                      class="catalog-category-button{% if category.slug == filters.category %} is-active{% endif %}"
-                      data-filter-category="{{ category.slug }}"
-                      aria-pressed="{{ 'true' if category.slug == filters.category else 'false' }}"
-                    >
-                      <span>{{ category.label }}</span>
-                    </button>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
+                  <button
+                    type="button"
+                    class="catalog-category-button{% if category.slug == filters.category %} is-active{% endif %}"
+                    data-filter-category="{{ category.slug }}"
+                    aria-pressed="{{ 'true' if category.slug == filters.category else 'false' }}"
+                  >
+                    <span class="catalog-category-label">{{ category.label }}</span>
+                    <span class="catalog-category-count">({{ category.count }})</span>
+                  </button>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
 
             <div class="catalog-filter-group">
               <h3 class="catalog-filters-heading">Сортировка</h3>
@@ -69,8 +70,33 @@
               <h3 class="catalog-filters-heading">Стоимость</h3>
               <p class="catalog-filters-note">Укажите диапазон цены.</p>
               <div class="catalog-price-values">
-                <strong>{{ filters.price_from | int | format_number_ru }} ₽</strong>
-                <strong>{{ filters.price_to | int | format_number_ru }} ₽</strong>
+                <label class="catalog-price-input">
+                  <span class="visually-hidden">Минимальная цена</span>
+                  <input
+                    type="number"
+                    inputmode="numeric"
+                    min="{{ filters.price_min }}"
+                    max="{{ filters.price_max }}"
+                    step="{{ slider_step }}"
+                    value="{{ filters.price_from | int }}"
+                    data-price-field="from"
+                    {{ 'disabled' if filters.price_max <= filters.price_min else '' }}
+                  />
+                </label>
+                <span class="catalog-price-separator">—</span>
+                <label class="catalog-price-input">
+                  <span class="visually-hidden">Максимальная цена</span>
+                  <input
+                    type="number"
+                    inputmode="numeric"
+                    min="{{ filters.price_min }}"
+                    max="{{ filters.price_max }}"
+                    step="{{ slider_step }}"
+                    value="{{ filters.price_to | int }}"
+                    data-price-field="to"
+                    {{ 'disabled' if filters.price_max <= filters.price_min else '' }}
+                  />
+                </label>
               </div>
               {% if filters.price_max > filters.price_min %}
                 <div

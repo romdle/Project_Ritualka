@@ -6,14 +6,6 @@
     return Array.from(root.querySelectorAll(selector));
   }
 
-  function formatNumber(value){
-    const num = Number(value);
-    if(!Number.isFinite(num)){
-      return '0';
-    }
-    return num.toLocaleString('ru-RU');
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
     const page = document.querySelector('[data-catalog-page]');
     if(!page){
@@ -83,6 +75,7 @@
         overlayRestoreTimer = null;
       }
       clearOverlayTransitionListener();
+      restoreForm();
       if(overlayContent){
         moveFormTo(overlayContent);
       }
@@ -172,15 +165,20 @@
       });
     });
 
-    const priceLabels = form.querySelectorAll('.catalog-price-values strong');
+    const priceFields = {
+      from: form.querySelector('[data-price-field="from"]'),
+      to: form.querySelector('[data-price-field="to"]'),
+    };
     const slider = form.querySelector('[data-price-slider]');
 
-    function updatePriceLabels(fromValue, toValue){
-      if(priceLabels[0]){
-        priceLabels[0].textContent = `${formatNumber(fromValue)} ₽`;
+    function setPriceFields(fromValue, toValue){
+      const safeFrom = Number.isFinite(fromValue) ? fromValue : priceMin;
+      const safeTo = Number.isFinite(toValue) ? toValue : priceMax;
+      if(priceFields.from){
+        priceFields.from.value = String(Math.round(safeFrom));
       }
-      if(priceLabels[1]){
-        priceLabels[1].textContent = `${formatNumber(toValue)} ₽`;
+      if(priceFields.to){
+        priceFields.to.value = String(Math.round(safeTo));
       }
     }
 
@@ -190,39 +188,72 @@
       if(inputFrom && inputTo && !inputFrom.disabled && !inputTo.disabled){
         const min = Number(inputFrom.min || priceMin);
         const max = Number(inputFrom.max || priceMax);
+        const step = Math.max(Number(inputFrom.step || '1') || 1, 1);
 
-        function syncInputs(event){
-          let fromValue = Number(inputFrom.value);
-          let toValue = Number(inputTo.value);
-          if(fromValue > toValue){
-            if(event?.target === inputFrom){
-              toValue = fromValue;
-              inputTo.value = String(toValue);
+        function clampValue(value){
+          if(!Number.isFinite(value)){
+            return null;
+          }
+          const snapped = Math.round(value / step) * step;
+          return Math.min(Math.max(snapped, min), max);
+        }
+
+        function applyValues(fromValue, toValue, origin){
+          let nextFrom = clampValue(fromValue);
+          let nextTo = clampValue(toValue);
+          if(nextFrom === null){
+            nextFrom = min;
+          }
+          if(nextTo === null){
+            nextTo = max;
+          }
+          if(nextFrom > nextTo){
+            if(origin === 'from' || origin === 'fromField'){
+              nextTo = nextFrom;
             }else{
-              fromValue = toValue;
-              inputFrom.value = String(fromValue);
+              nextFrom = nextTo;
             }
           }
-          slider.style.setProperty('--range-from', String(fromValue));
-          slider.style.setProperty('--range-to', String(toValue));
-          updatePriceLabels(fromValue, toValue);
+          inputFrom.value = String(nextFrom);
+          inputTo.value = String(nextTo);
+          slider.style.setProperty('--range-from', String(nextFrom));
+          slider.style.setProperty('--range-to', String(nextTo));
+          setPriceFields(nextFrom, nextTo);
+          return { from: nextFrom, to: nextTo };
         }
 
-        function commit(){
-          const fromValue = Number(inputFrom.value);
-          const toValue = Number(inputTo.value);
-          submitWithUpdates({ priceFrom: fromValue, priceTo: toValue });
+        function syncFromSlider(event){
+          const origin = event?.target === inputFrom ? 'from' : 'to';
+          applyValues(Number(inputFrom.value), Number(inputTo.value), origin);
         }
 
-        inputFrom.addEventListener('input', syncInputs);
-        inputTo.addEventListener('input', syncInputs);
-        inputFrom.addEventListener('change', commit);
-        inputTo.addEventListener('change', commit);
+        function commitValues(origin){
+          const values = applyValues(Number(inputFrom.value), Number(inputTo.value), origin);
+          submitWithUpdates({ priceFrom: values.from, priceTo: values.to });
+        }
+
+        inputFrom.addEventListener('input', syncFromSlider);
+        inputTo.addEventListener('input', syncFromSlider);
+        inputFrom.addEventListener('change', () => commitValues('from'));
+        inputTo.addEventListener('change', () => commitValues('to'));
+
+        if(priceFields.from){
+          priceFields.from.addEventListener('change', () => {
+            const values = applyValues(Number(priceFields.from.value), Number(priceFields.to?.value ?? priceFields.from.value), 'fromField');
+            submitWithUpdates({ priceFrom: values.from, priceTo: values.to });
+          });
+        }
+        if(priceFields.to){
+          priceFields.to.addEventListener('change', () => {
+            const values = applyValues(Number(priceFields.from?.value ?? priceFields.to.value), Number(priceFields.to.value), 'toField');
+            submitWithUpdates({ priceFrom: values.from, priceTo: values.to });
+          });
+        }
         slider.style.setProperty('--range-min', String(min));
         slider.style.setProperty('--range-max', String(max));
-        syncInputs();
+        applyValues(Number(inputFrom.value), Number(inputTo.value));
       }else{
-        updatePriceLabels(priceMin, priceMax);
+        setPriceFields(priceMin, priceMax);
       }
     }
 
@@ -243,10 +274,10 @@
             inputTo.value = String(priceMax);
             slider.style.setProperty('--range-from', String(priceMin));
             slider.style.setProperty('--range-to', String(priceMax));
-            updatePriceLabels(priceMin, priceMax);
+            setPriceFields(priceMin, priceMax);
           }
         }
-        submitWithUpdates(defaults);
+        setPriceFields(priceMin, priceMax);
       });
     }
 
