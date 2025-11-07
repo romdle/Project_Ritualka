@@ -30,7 +30,15 @@
     const priceMin = Number(form.dataset.priceMin || '0');
     const priceMax = Number(form.dataset.priceMax || '0');
 
-    let originalParent = form.parentElement;
+    const originalParent = form.parentElement;
+    const formPlaceholder = document.createElement('div');
+    formPlaceholder.setAttribute('data-form-placeholder', 'true');
+    formPlaceholder.style.display = 'none';
+    if(form.nextSibling){
+      form.parentElement.insertBefore(formPlaceholder, form.nextSibling);
+    }else if(form.parentElement){
+      form.parentElement.appendChild(formPlaceholder);
+    }
     const overlayTransitionFallback = 400;
     let overlayRestoreTimer = null;
     let overlayTransitionHandler = null;
@@ -44,7 +52,11 @@
 
     function ensureFormInSidebar(){
       if(sidebar && form && !sidebar.contains(form)){
-        sidebar.appendChild(form);
+        if(formPlaceholder && formPlaceholder.parentElement === sidebar){
+          sidebar.insertBefore(form, formPlaceholder);
+        }else{
+          sidebar.appendChild(form);
+        }
       }
     }
 
@@ -61,6 +73,13 @@
         overlayRestoreTimer = null;
       }
       clearOverlayTransitionListener();
+      if(formPlaceholder && formPlaceholder.parentElement && form){
+        const targetParent = formPlaceholder.parentElement;
+        if(form.parentElement !== targetParent || formPlaceholder.previousSibling !== form){
+          targetParent.insertBefore(form, formPlaceholder);
+        }
+        return;
+      }
       if(originalParent && form && form.parentElement !== originalParent){
         originalParent.appendChild(form);
       }
@@ -190,6 +209,36 @@
         const max = Number(inputFrom.max || priceMax);
         const step = Math.max(Number(inputFrom.step || '1') || 1, 1);
 
+        function setActiveHandle(handle){
+          if(!inputFrom || !inputTo){
+            return;
+          }
+          if(handle === 'from'){
+            inputFrom.style.zIndex = '4';
+            inputTo.style.zIndex = '3';
+          }else{
+            inputFrom.style.zIndex = '3';
+            inputTo.style.zIndex = '4';
+          }
+        }
+
+        function bindHandleActivation(element, handle){
+          if(!element){
+            return;
+          }
+          const activate = () => setActiveHandle(handle);
+          if(window.PointerEvent){
+            element.addEventListener('pointerdown', activate);
+          }else{
+            element.addEventListener('mousedown', activate);
+            element.addEventListener('touchstart', activate, { passive: true });
+          }
+          element.addEventListener('focus', activate);
+        }
+
+        bindHandleActivation(inputFrom, 'from');
+        bindHandleActivation(inputTo, 'to');
+
         function clampValue(value){
           if(!Number.isFinite(value)){
             return null;
@@ -237,6 +286,8 @@
         inputFrom.addEventListener('change', () => commitValues('from'));
         inputTo.addEventListener('change', () => commitValues('to'));
 
+        setActiveHandle('to');
+        
         if(priceFields.from){
           priceFields.from.addEventListener('change', () => {
             const values = applyValues(Number(priceFields.from.value), Number(priceFields.to?.value ?? priceFields.from.value), 'fromField');

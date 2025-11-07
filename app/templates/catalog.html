@@ -32,18 +32,24 @@
               <ul class="catalog-category-list">
                 {% for category in categories %}
                   <li>
-                  <button
-                    type="button"
-                    class="catalog-category-button{% if category.slug == filters.category %} is-active{% endif %}"
-                    data-filter-category="{{ category.slug }}"
-                    aria-pressed="{{ 'true' if category.slug == filters.category else 'false' }}"
-                  >
-                    <span class="catalog-category-label">{{ category.label }}</span>
-                    <span class="catalog-category-count">({{ category.count }})</span>
-                  </button>
-                </li>
-              {% endfor %}
-            </ul>
+                    <div class="catalog-category-item{% if category.slug == filters.category %} is-active{% endif %}">
+                      <button
+                        type="button"
+                        class="catalog-category-toggle"
+                        data-filter-category="{{ category.slug }}"
+                        aria-pressed="{{ 'true' if category.slug == filters.category else 'false' }}"
+                        aria-label="Выбрать категорию {{ category.label }}"
+                      >
+                        <span class="visually-hidden">{{ category.label }}</span>
+                      </button>
+                      <div class="catalog-category-text">
+                        <span class="catalog-category-label">{{ category.label }}</span>
+                        <span class="catalog-category-count">({{ category.count }})</span>
+                      </div>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
           </div>
 
             <div class="catalog-filter-group">
