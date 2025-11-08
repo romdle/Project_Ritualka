@@ -43,6 +43,20 @@
     let overlayRestoreTimer = null;
     let overlayTransitionHandler = null;
     let submitAfterClose = false;
+    const overlayReloadParamName = 'tm';
+    let overlayReloadCounter = (() => {
+      try{
+        const params = new URL(window.location.href).searchParams;
+        const currentValue = Number(params.get(overlayReloadParamName));
+        if(Number.isFinite(currentValue) && currentValue >= 0){
+          return currentValue;
+        }
+      }catch(err){
+        // ignore
+      }
+      return 0;
+    })();
+    let overlayReloadInput = null;
 
     function moveFormTo(target){
       if(!target || !form){
@@ -136,11 +150,31 @@
       }
     }
     
-    function handleOverlayClose(){
-      const shouldSubmit = submitAfterClose;
+    function getOverlayReloadInput(){
+      if(overlayReloadInput && overlayReloadInput.isConnected){
+        return overlayReloadInput;
+      }
+      const existing = form.querySelector(`input[name="${overlayReloadParamName}"]`);
+      if(existing){
+        overlayReloadInput = existing;
+        return overlayReloadInput;
+      }
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = overlayReloadParamName;
+      form.appendChild(input);
+      overlayReloadInput = input;
+      return overlayReloadInput;
+    }
+
+    function handleOverlayClose(forceSubmit = false){
+      const shouldSubmit = forceSubmit || submitAfterClose;
       submitAfterClose = false;
       closeOverlay();
       if(shouldSubmit){
+        const reloadInput = getOverlayReloadInput();
+        overlayReloadCounter += 1;
+        reloadInput.value = String(overlayReloadCounter);
         form.submit();
       }
     }
@@ -148,7 +182,7 @@
     if(openButton){
       openButton.addEventListener('click', () => openOverlay());
     }
-    closeButtons.forEach(button => button.addEventListener('click', () => handleOverlayClose()));
+    closeButtons.forEach(button => button.addEventListener('click', () => handleOverlayClose(!desktopMedia.matches)));
     overlay?.addEventListener('click', (event) => {
       if(event.target === overlay){
         handleOverlayClose();

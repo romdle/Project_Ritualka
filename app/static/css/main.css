@@ -270,7 +270,7 @@ footer a{color:#fff}
 .carousel-arrow:disabled{opacity:.4;cursor:default;transform:none}
 .product-carousel:not(.is-scrollable) .carousel-arrow{visibility:hidden; gap: 4}
 .product-carousel.is-touch .product-carousel-track{transition:none}
-.product-carousel.is-touch .carousel-arrow{display:none}
+.product-carousel.is-touch .carousel-arrow{display:none; width: 1px}
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:24px;z-index:1000}
 .modal{background:#fff;border-radius:16px;max-width:520px;width:100%;padding:20px}
 .modal h3{margin:0 0 12px;font-size:22px}
@@ -288,6 +288,7 @@ footer a{color:#fff}
 }
 @media (max-width:1200px){
   .product-carousel-track{--carousel-visible:3}
+  .carousel-arrow{width: 1%;}
   .product-row--catalog{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
   .home-category-block .product-carousel{margin:0 calc(-1 * clamp(20px,calc((100vw - var(--maxw)) / 2 + 24px),72px));padding:0 clamp(20px,calc((100vw - var(--maxw)) / 2 + 24px),72px)}
 }
@@ -312,6 +313,7 @@ footer a{color:#fff}
 @media (max-width:960px){
   .catalog-overlay{padding:0 16px 16px}
   .catalog-overlay-panel{max-width:400px;max-height:calc(100vh - 32px);padding:26px 22px 32px;transform:translate3d(calc(-100% - 16px),0,0)}
+  
 }
 
 @media (max-width:680px){
@@ -327,7 +329,7 @@ footer a{color:#fff}
   .product-image-link{width:100%;margin:0;border-radius:16px}
   .home-category-block .product-carousel{margin:0 -20px;padding:0 20px}
   .catalog-overlay{padding:0 12px 16px}
-  .catalog-overlay-panel{width:100%;max-width:none;max-height:calc(100vh - 20px);border-radius:22px;box-shadow:0 24px 56px rgba(17,24,39,.32);padding:24px 20px 30px;transform:translate3d(calc(-100% - 12px),0,0)}
+  .catalog-overlay-panel{width:100%;max-width:none;margin-top: 3px;max-height:calc(100vh - 20px);border-radius:22px;box-shadow:0 24px 56px rgba(17,24,39,.32);padding:24px 20px 30px;transform:translate3d(calc(-100% - 12px),0,0)}
   .catalog-overlay.is-open .catalog-overlay-panel{transform:translateX(0)}
   .catalog-overlay-close{position:absolute;top:16px;right:20px}
   .product-detail{flex-direction:column}
