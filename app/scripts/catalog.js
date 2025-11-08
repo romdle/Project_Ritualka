@@ -191,92 +191,98 @@
       if(result.length === 0){
         return ['all'];
       }
-      return result;
+      return [result[0]];
     }
 
-    function readCategorySelection(){
-      if(!categoryInput){
-        return ['all'];
-      }
-      return normalizeCategorySelection(categoryInput.value || '');
+    function getSelectedCategory(){
+      return normalizeCategorySelection(categoryInput?.value || '')[0];
+    }
+
+    function updateCategoryButtons(selected){
+      const current = selected || getSelectedCategory();
+      $$('[data-filter-category]', form).forEach(control => {
+        const controlSlug = (control.getAttribute('data-filter-category') || '').toLowerCase() || 'all';
+        const isActive = controlSlug === current || (controlSlug === 'all' && current === 'all');
+        control.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        const container = control.closest('.catalog-category-item');
+        if(container){
+          container.classList.toggle('is-active', isActive);
+        }
+      });
     }
 
     function writeCategorySelection(values){
       if(!categoryInput){
-        return;
+        return false;
       }
       const normalized = normalizeCategorySelection(values);
-      if(normalized.length === 1 && normalized[0] === 'all'){
-        categoryInput.value = 'all';
-      }else{
-        categoryInput.value = normalized.join(',');
+      const nextValue = normalized[0];
+      const currentValue = getSelectedCategory();
+      if(nextValue === currentValue){
+        return false;
       }
+      categoryInput.value = nextValue;
+      return true;
     }
 
-    function submitWithUpdates(updates, options = {}){
+    function submitWithUpdates(updates){
+      let hasChanges = false;
       if(categoryInput){
         if(updates.categories !== undefined){
-          writeCategorySelection(updates.categories);
+          const normalized = normalizeCategorySelection(updates.categories);
+          hasChanges = writeCategorySelection(normalized) || hasChanges;
+          updateCategoryButtons(normalized[0]);
         }else if(updates.category !== undefined){
-          writeCategorySelection([updates.category]);
+          const normalized = normalizeCategorySelection(updates.category);
+          hasChanges = writeCategorySelection(normalized) || hasChanges;
+          updateCategoryButtons(normalized[0]);
         }
       }
       if(sortInput && updates.sort !== undefined){
-        sortInput.value = updates.sort;
+        const nextSort = String(updates.sort);
+        if(sortInput.value !== nextSort){
+          sortInput.value = nextSort;
+          hasChanges = true;
+        }
       }
       if(priceFromInput && updates.priceFrom !== undefined){
-        priceFromInput.value = String(updates.priceFrom);
+        const nextFrom = String(updates.priceFrom);
+        if(priceFromInput.value !== nextFrom){
+          priceFromInput.value = nextFrom;
+          hasChanges = true;
+        }
       }
       if(priceToInput && updates.priceTo !== undefined){
-        priceToInput.value = String(updates.priceTo);
+        const nextTo = String(updates.priceTo);
+        if(priceToInput.value !== nextTo){
+          priceToInput.value = nextTo;
+          hasChanges = true;
+        }
       }
-      if(options.immediate){
-        submitAfterClose = false;
-        form.submit();
-        return;
+      if(!hasChanges){
+        return false;
       }
-      const overlayOpen = isOverlayOpen();
-      const shouldSubmitNow = desktopMedia.matches || !overlayOpen;
-      if(shouldSubmitNow){
-        submitAfterClose = false;
-        form.submit();
-      }else{
-        submitAfterClose = true;
-      }
+      submitAfterClose = false;
+      form.submit();
+      return true;
     }
 
     $$('[data-filter-category]', form).forEach(button => {
       button.addEventListener('click', () => {
         const slug = (button.getAttribute('data-filter-category') || '').toLowerCase();
-        let selected = readCategorySelection();
-        if(slug === 'all' || !slug){
-          selected = ['all'];
-        }else{
-          if(selected.includes('all')){
-            selected = [];
-          }
-          if(selected.includes(slug)){
-            selected = selected.filter(item => item !== slug);
-          }else{
-            selected = [...selected, slug];
-          }
+        const current = getSelectedCategory();
+        let next = 'all';
+        if(slug && slug !== 'all' && slug !== current){
+          next = slug;
+        }else if(slug && slug !== 'all' && slug === current){
+          next = 'all';
         }
-        if(selected.length === 0){
-          selected = ['all'];
-        }
-        const normalized = normalizeCategorySelection(selected);
-        $$('[data-filter-category]', form).forEach(control => {
-          const controlSlug = (control.getAttribute('data-filter-category') || '').toLowerCase();
-          const isActive = normalized.includes(controlSlug) || (controlSlug === 'all' && normalized.includes('all'));
-          control.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-          const container = control.closest('.catalog-category-item');
-          if(container){
-            container.classList.toggle('is-active', isActive);
-          }
-        });
-        submitWithUpdates({ categories: normalized });
+        updateCategoryButtons(next);
+        submitWithUpdates({ category: next });
       });
     });
+
+    updateCategoryButtons();
 
     $$('[data-filter-sort]', form).forEach(button => {
       button.addEventListener('click', () => {
@@ -435,15 +441,7 @@
           }
         }
         setPriceFields(priceMin, priceMax);
-        $$('[data-filter-category]', form).forEach(control => {
-          const controlSlug = (control.getAttribute('data-filter-category') || '').toLowerCase();
-          const isActive = controlSlug === 'all';
-          control.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-          const container = control.closest('.catalog-category-item');
-          if(container){
-            container.classList.toggle('is-active', isActive);
-          }
-        });
+        updateCategoryButtons('all');
         $$('[data-filter-sort]', form).forEach(control => {
           const isActive = (control.getAttribute('data-filter-sort') || '') === defaults.sort;
           control.classList.toggle('is-active', isActive);
