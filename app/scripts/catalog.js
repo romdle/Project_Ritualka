@@ -15,8 +15,11 @@
     const sidebar = page.querySelector('[data-catalog-sidebar]');
     const overlay = page.querySelector('[data-catalog-overlay]');
     const overlayContent = overlay?.querySelector('[data-catalog-overlay-content]');
-    const openButton = page.querySelector('[data-filter-open]');
-    const closeButtons = page.querySelectorAll('[data-filter-close]');
+    const sortOverlay = page.querySelector('[data-sort-overlay]');
+    const filterOpenButton = page.querySelector('[data-filter-open]');
+    const sortOpenButton = page.querySelector('[data-sort-open]');
+    const filterCloseButtons = page.querySelectorAll('[data-filter-close]');
+    const sortCloseButtons = sortOverlay ? sortOverlay.querySelectorAll('[data-sort-close]') : [];
     const desktopMedia = window.matchMedia('(min-width: 961px)');
 
     if(!form){
@@ -29,6 +32,7 @@
     const priceToInput = form.elements.namedItem('price_to');
     const priceMin = Number(form.dataset.priceMin || '0');
     const priceMax = Number(form.dataset.priceMax || '0');
+    const sortControls = $$('[data-filter-sort]');
 
     const originalParent = form.parentElement;
     const formPlaceholder = document.createElement('div');
@@ -167,25 +171,64 @@
       return overlayReloadInput;
     }
 
+    function submitOverlayReloadForm(){
+      const reloadInput = getOverlayReloadInput();
+      overlayReloadCounter += 1;
+      reloadInput.value = String(overlayReloadCounter);
+      form.submit();
+    }
+
     function handleOverlayClose(forceSubmit = false){
       const shouldSubmit = forceSubmit || submitAfterClose;
       submitAfterClose = false;
       closeOverlay();
       if(shouldSubmit){
-        const reloadInput = getOverlayReloadInput();
-        overlayReloadCounter += 1;
-        reloadInput.value = String(overlayReloadCounter);
-        form.submit();
+        submitOverlayReloadForm();
       }
     }
 
-    if(openButton){
-      openButton.addEventListener('click', () => openOverlay());
+    function isSortOverlayOpen(){
+      return Boolean(sortOverlay && sortOverlay.classList.contains('is-open'));
     }
-    closeButtons.forEach(button => button.addEventListener('click', () => handleOverlayClose(!desktopMedia.matches)));
+
+    function openSortOverlay(){
+      if(!sortOverlay){
+        return;
+      }
+      sortOverlay.classList.add('is-open');
+    }
+
+    function closeSortOverlay(){
+      if(!sortOverlay){
+        return;
+      }
+      sortOverlay.classList.remove('is-open');
+    }
+
+    function handleSortOverlayClose(forceSubmit = false){
+      closeSortOverlay();
+      if(forceSubmit){
+        submitOverlayReloadForm();
+      }
+    }
+
+    if(filterOpenButton){
+      filterOpenButton.addEventListener('click', () => openOverlay());
+    }
+    filterCloseButtons.forEach(button => button.addEventListener('click', () => handleOverlayClose(!desktopMedia.matches)));
     overlay?.addEventListener('click', (event) => {
       if(event.target === overlay){
         handleOverlayClose();
+      }
+    });
+
+    if(sortOpenButton){
+      sortOpenButton.addEventListener('click', () => openSortOverlay());
+    }
+    sortCloseButtons.forEach(button => button.addEventListener('click', () => handleSortOverlayClose(!desktopMedia.matches)));
+    sortOverlay?.addEventListener('click', (event) => {
+      if(event.target === sortOverlay){
+        handleSortOverlayClose();
       }
     });
 
@@ -198,6 +241,11 @@
           closeOverlay();
         }
         ensureFormInSidebar();
+        if(isSortOverlayOpen()){
+          handleSortOverlayClose();
+        }else{
+          closeSortOverlay();
+        }
       }
     }
 
@@ -245,6 +293,16 @@
       });
     }
 
+    function updateSortControls(activeValue){
+      const target = String(activeValue || '');
+      sortControls.forEach(control => {
+        const controlValue = control.getAttribute('data-filter-sort') || '';
+        const isActive = controlValue === target;
+        control.classList.toggle('is-active', isActive);
+        control.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    }
+
     function writeCategorySelection(values){
       if(!categoryInput){
         return false;
@@ -278,6 +336,7 @@
           sortInput.value = nextSort;
           hasChanges = true;
         }
+        updateSortControls(nextSort);
       }
       if(priceFromInput && updates.priceFrom !== undefined){
         const nextFrom = String(updates.priceFrom);
@@ -318,15 +377,15 @@
 
     updateCategoryButtons();
 
-    $$('[data-filter-sort]', form).forEach(button => {
+    updateSortControls(sortInput?.value || '');
+
+    sortControls.forEach(button => {
       button.addEventListener('click', () => {
         const value = button.getAttribute('data-filter-sort') || 'price-asc';
-        $$('[data-filter-sort]', form).forEach(control => {
-          const isActive = control === button;
-          control.classList.toggle('is-active', isActive);
-          control.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-        });
-        submitWithUpdates({ sort: value });
+        const changed = submitWithUpdates({ sort: value });
+        if(button.closest('[data-sort-overlay]')){
+          handleSortOverlayClose(changed ? false : !desktopMedia.matches);
+        }
       });
     });
 

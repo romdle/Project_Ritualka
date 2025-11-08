@@ -16,6 +16,12 @@
           </svg>
           <span>Фильтры</span>
         </button>
+        <button type="button" data-sort-open>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 6h16M7 12h10M10 18h4" />
+          </svg>
+          <span>Сортировка</span>
+        </button>
       </div>
 
       <div class="catalog-layout">
@@ -103,7 +109,7 @@
               </ul>
             </div>
 
-            <div class="catalog-filter-group">
+            <div class="catalog-filter-group catalog-filter-group--desktop-only">
               <h3 class="catalog-filters-heading">Сортировка</h3>
               <div class="catalog-sort-group">
                 {% for option in sort_options %}
@@ -149,6 +155,34 @@
         <button class="catalog-overlay-close" type="button" data-filter-close>Закрыть</button>
         <h2 class="catalog-overlay-heading">Фильтры</h2>
         <div data-catalog-overlay-content></div>
+      </div>
+    </div>
+
+    <div class="catalog-overlay" data-sort-overlay>
+      <div class="catalog-overlay-panel">
+        <button class="catalog-overlay-close" type="button" data-sort-close>Закрыть</button>
+        <h2 class="catalog-overlay-heading">Сортировка</h2>
+        <div class="catalog-sort-group">
+          {% for option in sort_options %}
+            <button
+              type="button"
+              class="catalog-sort-button{% if option.value == filters.sort %} is-active{% endif %}"
+              data-filter-sort="{{ option.value }}"
+              aria-pressed="{{ 'true' if option.value == filters.sort else 'false' }}"
+            >
+              {% if option.icon == 'arrow-up' %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8 11 12 7 16 11"></polyline><line x1="12" y1="7" x2="12" y2="17"></line></svg>
+              {% elif option.icon == 'arrow-down' %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8 13 12 17 16 13"></polyline><line x1="12" y1="7" x2="12" y2="17"></line></svg>
+              {% elif option.icon == 'grid' %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="6" width="5" height="5" rx="1"></rect><rect x="14" y="6" width="5" height="5" rx="1"></rect><rect x="5" y="13" width="5" height="5" rx="1"></rect><rect x="14" y="13" width="5" height="5" rx="1"></rect></svg>
+              {% elif option.icon == 'letters' %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16h5L9.5 7.5 7 16Zm8-7h5m-2.5-2v8"></path></svg>
+              {% endif %}
+              <span>{{ option.label }}</span>
+            </button>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </section>
