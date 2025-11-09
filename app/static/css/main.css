@@ -174,18 +174,18 @@ p{line-height:1.7;margin:0}
 .catalog-price-input input::-webkit-inner-spin-button{margin:0;-webkit-appearance:none}
 .catalog-price-separator{color:#6f6f6f;font-weight:600; margin-left: -2px}
 .catalog-price-slider{display:flex;flex-direction:column;gap:12px}
-.catalog-price-slider-track{position:relative;height:36px;display:flex;align-items:center}
-.catalog-price-slider-track input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:linear-gradient(90deg,rgba(36,110,55,.18),rgba(36,110,55,.18));border-radius:999px;outline:none;margin:0;pointer-events:none;position:absolute;left:0;right:0;top:50%;transform:translateY(-50%)}
+.catalog-price-slider-track{position:relative;height:32px;display:flex;align-items:center;justify-content:center;padding:0 2px}
+.catalog-price-slider-track input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:linear-gradient(90deg,rgba(36,110,55,.18),rgba(36,110,55,.18));border-radius:999px;outline:none;margin:0;pointer-events:none;position:absolute;left:2px;right:2px;top:50%;transform:translateY(-50%)}
 .catalog-price-slider-track input[type=range]:first-of-type{z-index:2}
 .catalog-price-slider-track input[type=range]:last-of-type{z-index:3}
-.catalog-price-slider-track input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#246e37;border:2px solid #246e37;box-shadow:0 6px 16px rgba(36,110,55,.25);cursor:pointer;pointer-events:auto;transition:transform .2s ease,box-shadow .2s ease}
-.catalog-price-slider-track input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #246e37;box-shadow:0 6px 16px rgba(36,110,55,.25);cursor:pointer;pointer-events:auto;transition:transform .2s ease,box-shadow .2s ease}
+.catalog-price-slider-track input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#246e37;border:2px solid #246e37;box-shadow:0 6px 16px rgba(36,110,55,.25);cursor:pointer;pointer-events:auto;transition:transform .2s ease,box-shadow .2s ease;box-sizing:border-box;margin-top:-9px}
+.catalog-price-slider-track input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #246e37;box-shadow:0 6px 16px rgba(36,110,55,.25);cursor:pointer;pointer-events:auto;transition:transform .2s ease,box-shadow .2s ease;box-sizing:border-box;margin-top:-9px}
 .catalog-price-slider-track input[type=range]::-webkit-slider-thumb:active,
 .catalog-price-slider-track input[type=range]::-moz-range-thumb:active{transform:scale(1.05);box-shadow:0 8px 18px rgba(36,110,55,.3)}
 .catalog-price-slider-track input[type=range]::-webkit-slider-runnable-track{-webkit-appearance:none;height:4px;border-radius:999px;background:transparent}
 .catalog-price-slider-track input[type=range]::-moz-range-track{height:4px;border-radius:999px;background:transparent}
-.catalog-price-slider-range{position:absolute;left:0;right:0;height:6px;background:rgba(36,110,55,.16);border-radius:999px;pointer-events:none;overflow:hidden;top:50%;transform:translateY(-50%);z-index:1}
-.catalog-price-slider-range::after{content:"";position:absolute;top:0;bottom:0;left:var(--range-start,0%);width:calc(var(--range-end,100%) - var(--range-start,0%));background:linear-gradient(90deg,#246e37 0%,#246e37 100%);border-radius:999px;opacity:.85;transition:opacity .2s ease}
+.catalog-price-slider-range{position:absolute;left:2px;right:2px;height:4px;background:rgba(36,110,55,.12);border-radius:999px;pointer-events:none;overflow:hidden;top:50%;transform:translateY(-50%);z-index:1;box-shadow:0 1px 2px rgba(36,110,55,.18) inset}
+.catalog-price-slider-range::after{content:"";position:absolute;top:0;bottom:0;left:var(--range-start,0%);width:calc(var(--range-end,100%) - var(--range-start,0%));background:linear-gradient(90deg,#246e37 0%,#3d9450 100%);border-radius:999px;opacity:.85;transition:opacity .2s ease}
 .catalog-price-slider-values{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:#2B2B2B;font-weight:600;font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
 .catalog-price-slider-values span{background:rgba(255,255,255,.9);padding:4px 10px;border-radius:999px;border:1px solid rgba(36,110,55,.18);box-shadow:0 6px 14px rgba(17,24,39,.08)}
 .catalog-price-slider.is-disabled{opacity:.4;pointer-events:none}
