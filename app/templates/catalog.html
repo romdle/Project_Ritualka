@@ -64,6 +64,35 @@
                   />
                 </label>
               </div>
+              <div
+                class="catalog-price-slider{% if filters.price_max <= filters.price_min %} is-disabled{% endif %}"
+                data-price-slider
+                aria-hidden="{{ 'true' if filters.price_max <= filters.price_min else 'false' }}"
+              >
+                <div class="catalog-price-slider-track">
+                  <div class="catalog-price-slider-range" data-price-slider-range></div>
+                  <input
+                    type="range"
+                    min="{{ filters.price_min }}"
+                    max="{{ filters.price_max }}"
+                    step="{{ slider_step }}"
+                    value="{{ filters.price_from | int }}"
+                    data-price-slider-input="from"
+                    aria-label="Минимальная цена"
+                    {{ 'disabled' if filters.price_max <= filters.price_min else '' }}
+                  />
+                  <input
+                    type="range"
+                    min="{{ filters.price_min }}"
+                    max="{{ filters.price_max }}"
+                    step="{{ slider_step }}"
+                    value="{{ filters.price_to | int }}"
+                    data-price-slider-input="to"
+                    aria-label="Максимальная цена"
+                    {{ 'disabled' if filters.price_max <= filters.price_min else '' }}
+                  />
+                </div>
+              </div>              
               <button type="button" class="catalog-reset" data-filter-reset>Сбросить фильтры</button>
             </div>
 

@@ -394,7 +394,23 @@
       to: form.querySelector('[data-price-field="to"]'),
     };
 
+    const priceSlider = {
+      container: form.querySelector('[data-price-slider]'),
+      from: form.querySelector('[data-price-slider-input="from"]'),
+      to: form.querySelector('[data-price-slider-input="to"]'),
+      range: form.querySelector('[data-price-slider-range]'),
+      values: {
+        from: form.querySelector('[data-price-slider-value="from"]'),
+        to: form.querySelector('[data-price-slider-value="to"]'),
+      },
+    };
+    
     const hasValidPriceRange = Number.isFinite(priceMax) && Number.isFinite(priceMin) && priceMax > priceMin;
+
+    if(priceSlider.container){
+      priceSlider.container.classList.toggle('is-disabled', !hasValidPriceRange);
+      priceSlider.container.setAttribute('aria-hidden', hasValidPriceRange ? 'false' : 'true');
+    }
 
     function clampPriceValue(value, fallback){
       if(!Number.isFinite(value)){
@@ -407,7 +423,44 @@
       return Math.min(Math.max(rounded, priceMin), priceMax);
     }
 
-    function applyPriceFieldValues(fromValue, toValue, origin = 'to'){
+    function formatPrice(value){
+      if(!Number.isFinite(value)){
+        return '';
+      }
+      try{
+        return new Intl.NumberFormat('ru-RU').format(value);
+      }catch(err){
+        return String(value);
+      }
+    }
+
+    function updateSliderRange(values){
+      if(!priceSlider.range || !hasValidPriceRange){
+        if(priceSlider.range){
+          priceSlider.range.style.setProperty('--range-start', '0%');
+          priceSlider.range.style.setProperty('--range-end', '0%');
+        }
+        return;
+      }
+      const total = priceMax - priceMin;
+      const startPercent = ((values.from - priceMin) / total) * 100;
+      const endPercent = ((values.to - priceMin) / total) * 100;
+      const clampedStart = Math.max(0, Math.min(100, startPercent));
+      const clampedEnd = Math.max(0, Math.min(100, endPercent));
+      priceSlider.range.style.setProperty('--range-start', `${clampedStart}%`);
+      priceSlider.range.style.setProperty('--range-end', `${Math.max(clampedStart, clampedEnd)}%`);
+    }
+
+    function updateSliderValues(values){
+      if(priceSlider.values.from){
+        priceSlider.values.from.textContent = formatPrice(values.from);
+      }
+      if(priceSlider.values.to){
+        priceSlider.values.to.textContent = formatPrice(values.to);
+      }
+    }
+
+    function applyPriceValues(fromValue, toValue, origin = 'to'){
       if(!hasValidPriceRange){
         const base = Number.isFinite(priceMin) ? priceMin : 0;
         if(priceFields.from){
@@ -416,6 +469,14 @@
         if(priceFields.to){
           priceFields.to.value = String(base);
         }
+        if(priceSlider.from){
+          priceSlider.from.value = String(base);
+        }
+        if(priceSlider.to){
+          priceSlider.to.value = String(base);
+        }
+        updateSliderRange({ from: base, to: base });
+        updateSliderValues({ from: base, to: base });        
         return { from: base, to: base };
       }
 
@@ -437,18 +498,28 @@
         priceFields.to.value = String(nextTo);
       }
 
+      if(priceSlider.from){
+        priceSlider.from.value = String(nextFrom);
+      }
+      if(priceSlider.to){
+        priceSlider.to.value = String(nextTo);
+      }
+
+      updateSliderRange({ from: nextFrom, to: nextTo });
+      updateSliderValues({ from: nextFrom, to: nextTo });
+      
       return { from: nextFrom, to: nextTo };
     }
 
     function setPriceFields(fromValue, toValue){
-      return applyPriceFieldValues(fromValue, toValue);
+      return applyPriceValues(fromValue, toValue);
     }
 
     setPriceFields(Number(priceFields.from?.value), Number(priceFields.to?.value));
 
     if(priceFields.from && !priceFields.from.disabled){
       priceFields.from.addEventListener('change', () => {
-        const values = applyPriceFieldValues(
+        const values = applyPriceValues(
           Number(priceFields.from.value),
           Number(priceFields.to?.value ?? priceFields.from.value),
           'from',
@@ -459,13 +530,32 @@
 
     if(priceFields.to && !priceFields.to.disabled){
       priceFields.to.addEventListener('change', () => {
-        const values = applyPriceFieldValues(
+        const values = applyPriceValues(
           Number(priceFields.from?.value ?? priceFields.to.value),
           Number(priceFields.to.value),
           'to',
         );
         submitWithUpdates({ priceFrom: values.from, priceTo: values.to });
       });
+    }
+
+    function handleSliderUpdate(origin, submit){
+      const fromValue = Number(priceSlider.from?.value ?? priceMin);
+      const toValue = Number(priceSlider.to?.value ?? priceMax);
+      const values = applyPriceValues(fromValue, toValue, origin);
+      if(submit){
+        submitWithUpdates({ priceFrom: values.from, priceTo: values.to });
+      }
+    }
+
+    if(priceSlider.from && !priceSlider.from.disabled){
+      priceSlider.from.addEventListener('input', () => handleSliderUpdate('from', false));
+      priceSlider.from.addEventListener('change', () => handleSliderUpdate('from', true));
+    }
+
+    if(priceSlider.to && !priceSlider.to.disabled){
+      priceSlider.to.addEventListener('input', () => handleSliderUpdate('to', false));
+      priceSlider.to.addEventListener('change', () => handleSliderUpdate('to', true));
     }
 
     const resetButton = form.querySelector('[data-filter-reset]');
