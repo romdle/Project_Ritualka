@@ -143,7 +143,7 @@ p{line-height:1.7;margin:0}
 .catalog-sidebar::-webkit-scrollbar-thumb{background:rgba(36,110,55,.3);border-radius:999px}
 .catalog-sidebar::-webkit-scrollbar-track{background:transparent}
 .catalog-filters{display:flex;flex-direction:column;gap:36px}
-.catalog-filters-heading{font-family:Georgia,serif;font-size:24px;font-weight:400;color:#1f1f1f;margin:0 0 4px}
+.catalog-filters-heading{font-family:Georgia,serif;font-size:24px;font-weight:400;color:#1f1f1f;margin:0 0 6px}
 .catalog-filters-note{margin:0;font-size:14px;color:#6f6f6f;line-height:1.6}
 .catalog-filter-group{display:flex;flex-direction:column;gap:14px}
 .catalog-category-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
@@ -164,7 +164,7 @@ p{line-height:1.7;margin:0}
 .catalog-sort-button svg{width:16px;height:16px;stroke:currentColor}
 .catalog-sort-button:hover{border-color:#246e37;color:#246e37;box-shadow:0 10px 24px rgba(36,110,55,.15)}
 .catalog-sort-button.is-active{background:#246e37;color:#fff;border-color:#246e37;box-shadow:0 18px 36px rgba(36,110,55,.28)}
-.catalog-price-range{display:flex;flex-direction:column;gap:16px}
+.catalog-price-range{display:flex;flex-direction:column;gap:14px}
 .catalog-price-values{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
 .catalog-price-values .catalog-price-input{flex:0 0 120px}
 .catalog-price-input{flex:0 0 120px;display:flex}
@@ -339,6 +339,9 @@ footer a{color:#fff}
   .catalog-overlay-panel{width:100%;max-width:none;margin-top: 20px;max-height:calc(100vh - 20px);border-radius:22px;box-shadow:0 24px 56px rgba(17,24,39,.32);padding:24px 20px 30px;transform:translate3d(calc(-100% - 12px),0,0)}
   .catalog-overlay.is-open .catalog-overlay-panel{transform:translateX(0)}
   .catalog-overlay-close{position:absolute;top:16px;right:20px}
+  .catalog-price-values{align-items:stretch;gap:12px}
+  .catalog-price-values .catalog-price-input{flex:1 1 auto;width:38%}
+  .catalog-price-separator{display:flex;justify-content:center;align-items:center;margin:0}
   .product-detail{flex-direction:column}
   .product-main-image{width:100%;max-width:100%;height:auto;aspect-ratio:3/4}
   .product-main-image img{height:100%;width:100%;object-fit:cover}
