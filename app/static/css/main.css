@@ -173,17 +173,6 @@ p{line-height:1.7;margin:0}
 .catalog-price-input input::-webkit-outer-spin-button,
 .catalog-price-input input::-webkit-inner-spin-button{margin:0;-webkit-appearance:none}
 .catalog-price-separator{color:#6f6f6f;font-weight:600; margin-left: -2px}
-.catalog-range-slider{position:relative;height:52px;display:flex;align-items:center;--range-min:0;--range-max:1;--range-from:0;--range-to:1}
-.catalog-range-slider::before{content:"";position:absolute;left:0;right:0;height:4px;border-radius:999px;background:rgba(36,110,55,.18)}
-.catalog-range-slider::after{content:"";position:absolute;height:4px;border-radius:999px;background:var(--accent);left:calc((max(var(--range-from),var(--range-min)) - var(--range-min)) / max(1,(var(--range-max) - var(--range-min))) * 100%);right:calc(100% - (max(var(--range-to),var(--range-min)) - var(--range-min)) / max(1,(var(--range-max) - var(--range-min))) * 100%)}
-.catalog-range-slider input[type=range]{-webkit-appearance:none;appearance:none;width:100%;position:absolute;left:0;right:0;margin:0;top:50%;transform:translateY(-50%);height:52px;background:transparent;pointer-events:auto}
-.catalog-range-slider [data-price-input="from"]{z-index:3}
-.catalog-range-slider [data-price-input="to"]{z-index:2}
-.catalog-range-slider input[type=range]:focus{outline:none}
-.catalog-range-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;width:22px;border-radius:50%;background:var(--accent);border:0;box-shadow:0 10px 24px rgba(36,110,55,.35);cursor:pointer;transform:translateY(0);margin-top:-9px;transition:box-shadow .2s ease,transform .2s ease}
-.catalog-range-slider input[type=range]::-webkit-slider-runnable-track{height:4px;background:transparent}
-.catalog-range-slider input[type=range]::-moz-range-thumb{height:22px;width:22px;border-radius:50%;background:var(--accent);border:0;box-shadow:0 10px 24px rgba(36,110,55,.35);cursor:pointer;transition:box-shadow .2s ease,transform .2s ease}
-.catalog-range-slider input[type=range]::-moz-range-track{height:4px;background:transparent}
 .catalog-reset{align-self:flex-start;background:transparent;border:none;color:#6f6f6f;font-size:13px;text-decoration:underline;cursor:pointer;padding:0}
 .catalog-reset:hover{color:#246e37}
 .catalog-filters-toggle{display:none;margin-bottom:28px;gap:12px;flex-wrap:wrap}

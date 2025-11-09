@@ -64,21 +64,6 @@
                   />
                 </label>
               </div>
-              {% if filters.price_max > filters.price_min %}
-                <div
-                  class="catalog-range-slider"
-                  data-price-slider
-                  style="--range-min: {{ filters.price_min }}; --range-max: {{ filters.price_max }}; --range-from: {{ filters.price_from }}; --range-to: {{ filters.price_to }};"
-                >
-                  <input type="range" min="{{ filters.price_min }}" max="{{ filters.price_max }}" value="{{ filters.price_from }}" step="{{ slider_step }}" data-price-input="from" />
-                  <input type="range" min="{{ filters.price_min }}" max="{{ filters.price_max }}" value="{{ filters.price_to }}" step="{{ slider_step }}" data-price-input="to" />
-                </div>
-              {% else %}
-                <div class="catalog-range-slider" data-price-slider>
-                  <input type="range" disabled />
-                  <input type="range" disabled />
-                </div>
-              {% endif %}
               <button type="button" class="catalog-reset" data-filter-reset>Сбросить фильтры</button>
             </div>
 
